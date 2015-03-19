@@ -32,11 +32,11 @@ Let's take a look at a Core API document by using the python client library.
 
 We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.
 
-#### Link
+#### Links
 
 Links are the available actions that the interface presents.
 
-Links have an associated URL and relation type, and may accept a set of named parameters.
+Links have an associated URL and transition type, and may accept a set of named parameters.
 
 *In object-oriented terms a link can be thought of as a method.*
 
