@@ -6,7 +6,9 @@
 
 Documents are the basic building blocks of Core API.
 
-Documents are key-value pairs that contain the data and actions presented by the interface. Documents always have an associated URL, and should also have a title. In object-oriented terms a document can be thought of as an object.
+Documents are key-value pairs that contain the data and actions presented by the interface. Documents always have an associated URL, and should also have a title.
+
+*In object-oriented terms a document can be thought of as an object.*
 
 Let's take a look at a Core API document by using the python client library.
 
@@ -34,7 +36,9 @@ We've got a document here that contains a couple of other nested documents. We c
 
 Links are the available actions that the interface presents.
 
-Links have an associated URL and relation type, and may accept a set of named parameters. In object-oriented terms a link can be thought of as a method.
+Links have an associated URL and relation type, and may accept a set of named parameters.
+
+*In object-oriented terms a link can be thought of as a method.*
 
 Calling a link will perform one of the following actions:
 
