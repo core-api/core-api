@@ -2,16 +2,38 @@
 
 **Hypermedia driven object interfaces.**
 
+Core API is a general purpose system for exposing service interfaces.
+
+It provides the following benefits:
+
+* **Robust** - Clients interacting with a Core API service always have the available interactions presented to them as part of the interface.
+* **Composable** - Documents may be nested, allowing you to fully express complex interfaces without having to make multiple network calls.
+* **Explorable** - Client libraries allow you to inspect and interact with a Core API interface.
+* **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
+
+There are three layers to the Core API specification.
+
+----------------------|
+Document layer | The abstract object interface that clients interact with.
+Encoding layer | The mapping between a Document and a byte string.
+Transport layer | How document interactions are mapped to network requests.
+
+---
+
 #### Document
 
 Documents are the basic building blocks of Core API.
 
 Documents are key-value pairs that contain the data and actions presented by the interface. Documents always have an associated URL, and should also have a title.
 
+The top level element in any Core API interface is always a Document.
+
 *In object-oriented terms a document can be thought of as an object.*
 
-Let's take a look at a Core API document by using the python client library.
+Let's take a look at a Core API document by using the Python client library.
 
+    $ pip install coreapi
+    $ python
     >>> import coreapi
     >>> doc = coreapi.get('http://coreapi.heroku.com/')
     >>> print(doc)
@@ -93,9 +115,27 @@ Finally we'll update the state of the note we've just created:
 
 Primitives are the set of basic datatypes that may be used to represent data in the interface.
 
-Core API supports the same subset of objects as JSON. These are Object, Array, String, Number, `true`, `false`, `null`.
+Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Number, `true`, `false`, and `null`.
 
     >>> doc['notes'][0]['description']
     'Email venue about conference dates'
     >>> doc['notes'][0]['complete']
     True
+
+#### Errors
+
+**TODO**
+
+---
+
+* Media links.
+* File uploads.
+* Documents as parameters.
+* Generator primitives.
+* Field errors.
+* Authentication.
+* Realtime interfaces.
+* Command line client.
+* Javascript client.
+* HTML encoding.
+* Django test client.
