@@ -75,7 +75,7 @@ Calling a link will perform one of the following actions:
 * Replace the document.
 * Remove the document.
 
-The transition types are defined as followed.
+The transition types are defined as follows:
 
 Name | Document transition | Safe | Idempotent
 ----| ---- | ---- | ----
