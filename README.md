@@ -13,7 +13,7 @@ It provides the following benefits:
 
 There are three layers to the Core API specification.
 
-----------------------|
+----|----
 Document layer | The abstract object interface that clients interact with.
 Encoding layer | The mapping between a Document and a byte string.
 Transport layer | How document interactions are mapped to network requests.
