@@ -73,8 +73,8 @@ Let's return to the python client library, and take a look at calling some links
     >>> while doc['notes']:
     >>>     doc = doc.action(['notes', 0, 'delete'])
 
-The python client always treats transitions as returning a completely 
-new document, so we're always re-assigning the updated state to the `doc` variable.
+The python client treats documents as immutable objects. Transitions return completely 
+new documents, so note that we're always re-assigning the updated state to the `doc` variable.
 
 There should now be no notes remaining:
 
