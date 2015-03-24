@@ -4,7 +4,7 @@
 
 Core API is a general purpose system for exposing service interfaces.
 
-It provides the following benefits:
+It allows you to build Web APIs that describe their available interface, and provides the following benefits:
 
 * **Robust** - Clients interacting with a Core API service always have the available interactions presented to them as part of the interface.
 * **Composable** - Documents may be nested, allowing you to fully express complex interfaces without having to make multiple network calls.
