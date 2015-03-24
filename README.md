@@ -11,9 +11,11 @@ It allows you to build Web APIs that describe their available interface, and pro
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface.
 * **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
 
-There is currently a complete [Python client library][python-client] for Core API.
+Existing tooling and resources:
 
-A [Javascript client library][javascript-client] is also planned.
+* There is a complete [Python client library][python-client] for Core API.
+* A [Javascript client library][javascript-client] is currently planned.
+* We have an [example server implementation][example-server], for demonstration purposes.
 
 ---
 
@@ -204,3 +206,4 @@ I'm currently planning a significant amount of time into building the Core API s
 
 [python-client]: https://github.com/core-api/python-client
 [javascript-client]: https://github.com/core-api/javascript-client
+[example-server]: https://github.com/core-api/example-server
