@@ -11,6 +11,14 @@ It provides the following benefits:
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface.
 * **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
 
+There is currently a complete [Python client library][python-client] for Core API.
+
+A [Javascript client library][javascript-client] is also planned.
+
+---
+
+## Overview
+
 There are three layers to the Core API specification.
 
 Name               |   Description
@@ -19,13 +27,9 @@ Document layer | The abstract object interface that clients interact with.
 Encoding layer | The mapping between a Document and a byte string.
 Transport layer | How document interactions are mapped to network requests.
 
----
-
-## Overview
-
 The following is an overview of the document layer, describing how the client interacts with a Core API interface.
 
-The design work for a JSON-based encoding, and an HTTP transport layer specification have both been completed. These are properly expressed in the Python client library, but they have not yet been written up as part of this documentation.
+The design work for a JSON-based encoding, and an HTTP transport layer specification have both been completed. These are properly expressed in the [Python client library][python-client], but they have not yet been written up as part of this documentation.
 
 #### Document
 
@@ -150,7 +154,7 @@ Encountering an error prevents any transition from taking place, and will normal
     >>> doc.add_note(description = 'x' * 999999)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    LinkError: ['description - Ensure this parameter has no more than 1000 characters.']
+    LinkError: ['description - Ensure this parameter has no more than 100 characters.']
 
 ---
 
@@ -180,13 +184,15 @@ Normally this decision should be self-evident, and will depend on the type of th
 
 ## Plans for the future
 
-I'm currently planning a significant amount of time into building the Core API specification, tooling and ecosystem. Planned work at the moment includes the following:
+I'm currently planning a significant amount of time into building the Core API specification, tooling and ecosystem. Possible future work includes the following:
 
 * **Media links** - Links to images, videos and other downloadable media will be supported.
 * **File uploads** - The HTTP transport should support files as parameters. When files are present multipart encoding will be used.
 * **Documents as parameters** - We should support passing documents as parameters to a link. They can be encoded using the URL, and allow for operations such as `.swap_position(child_document_1, child_document_2)`.
 * **Generator primitives** - We plan to add support for a generator primitive, that transparently deals with paginated result sets.
 * **Field errors** - Currently errors only support a list of messages. We will also support messages being mapped to the fields that they relate too.
+* **Primitive return values** - As well as document transitions and media downloads, we might want to support links that return primitive values.
+* **Richer types** - We could consider expanding the primitives to include a richer set of types. A date-time primitive is one obvious candidate. We'll need to balance this consideration against maximizing language portability.
 * **Authentication** - The HTTP transport needs to discuss what authentication schemes are supported, and how this works between differing domains.
 * **Javascript client** - Currently we only have a Python client library. Having a fully supported Javascript library is a priority.
 * **HTML encoding** - In addition to JSON, we will define an HTML encoding, and provide an API browser.
@@ -195,3 +201,6 @@ I'm currently planning a significant amount of time into building the Core API s
 * **Server tooling** - We should introduce some server tooling support. In particular a package including renderers, parsers and a test client library for Django REST framework.
 * **Timestamps and validation** - There may be scope for design work on timestamp and validation information being associated at the document layer. We could then build on this with better caching support, and support for conditional updates.
 * **Other media types** - The separation of document and encoding concerns in Core API means that we could add support for other encodings such as `application/hal+json`. These encodings might have restrictions on what parts of the document interface they can support. For example some formats might not support parameterized links, or composable documents.
+
+[python-client]: https://github.com/core-api/python-client
+[javascript-client]: https://github.com/core-api/javascript-client
