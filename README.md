@@ -154,7 +154,7 @@ Following a link may result in an error. An error is defined as having a list of
 
 Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.
 
-    >>> doc.add_note(description = 'x' * 999999)
+    >>> doc.action(['add_note'], description = 'x' * 999999)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
