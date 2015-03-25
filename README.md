@@ -157,7 +157,7 @@ Encountering an error prevents any transition from taking place, and will normal
     >>> doc.add_note(description = 'x' * 999999)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    LinkError: ['description - Ensure this parameter has no more than 100 characters.']
+    coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
 
 ---
 
