@@ -16,7 +16,7 @@ Existing tooling and resources:
 * There is a complete [Python client library][python-client] for Core API.
 * A [Javascript client library][javascript-client] is currently planned.
 * We have an [example server implementation][example-server], for demonstration purposes.
-* A live service available at http://coreapi.herokuapp.com for testing.
+* A live service available at [http://coreapi.herokuapp.com](http://coreapi.herokuapp.com) for testing.
 
 For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
 
