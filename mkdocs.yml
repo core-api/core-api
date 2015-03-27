@@ -1,0 +1,12 @@
+site_name: Core API
+site_description: Hypermedia driven Web APIs.
+
+repo_url: https://github.com/core-api/core-api/
+
+pages:
+- ['index.md', 'Home']
+- ['specification/document.md', 'Specification', 'The document layer']
+- ['specification/encoding.md', 'Specification', 'The encoding layer']
+- ['specification/transport.md', 'Specification', 'The transport layer']
+
+copyright: Copyright &copy; 2015, <a href="https://twitter.com/_tomchristie">Tom Christie</a>.

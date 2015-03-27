@@ -2,6 +2,8 @@
 
 **Hypermedia driven Web APIs.**
 
+---
+
 Core API is a general purpose system for exposing service interfaces.
 
 It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:
@@ -30,9 +32,9 @@ There are three layers to the Core API specification.
 
 Name               |   Description
 ------------------- | ---------------------
-[Document layer](docs/specification/document.md) | The abstract object interface that clients interact with.
-[Encoding layer](docs/specification/encoding.md) | The mapping between a Document and a byte string.
-[Transport layer](docs/specification/transport.md) | How document interactions are mapped to network requests.
+[Document layer](specification/document.md) | The abstract object interface that clients interact with.
+[Encoding layer](specification/encoding.md) | The mapping between a Document and a byte string.
+[Transport layer](specification/transport.md) | How document interactions are mapped to network requests.
 
 The following is an overview of the document layer, describing how the client interacts with a Core API interface.
 
