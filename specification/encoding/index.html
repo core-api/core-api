@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+        <title>The encoding layer - Core API</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">Core API</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specification <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            <li >
+                                <a href="../document">The document layer</a>
+                            </li>
+                        
+                            <li class="active">
+                                <a href=".">The encoding layer</a>
+                            </li>
+                        
+                            <li >
+                                <a href="../transport">The transport layer</a>
+                            </li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li >
+                    <a rel="next" href="../document">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../transport">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                
+                <li>
+                    <a href="https://github.com/core-api/core-api/">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#encoding">Encoding</a></li>
+        
+            <li><a href="#json-encoding">JSON encoding</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="encoding">Encoding</h1>
+<hr />
+<p>The <strong>encoding layer</strong> defines the mapping between <a href="../document">the document layer</a>, and its byte string encoding.</p>
+<p>Core API currently defines a single JSON-based encoding scheme.</p>
+<hr />
+<h2 id="json-encoding">JSON encoding</h2>
+<p>A document is represented using standard JSON, with the additional restriction that the object keys "_type" and "_meta" are reserved.</p>
+<p>Any object with the key "_type" may be considered as one of the Core API primitives described below. The keys "_type" and "_meta" are otherwise removed from the normal parsing flow.</p>
+<p>The top level element in a Core API response MUST either be a Document or an Error.</p>
+<p>The RECOMMENDED media type for this scheme is: <code>application/vnd.coreapi+json</code></p>
+<p>An example JSON encoded document is demonstrated below.</p>
+<pre><code>{
+    "_type": "document",
+    "_meta": {
+        "url": "/",
+        "title": "Notes"
+    },
+    "notes": [
+        {
+            "_type": "document",
+            "_meta": {
+                "url": "/1de153fe-6747-41d3-bc0e-d9d7d87e448a",
+                "title": "Note"
+            },
+            "complete": false,
+            "description": "Email venue about conference dates",
+            "delete": {
+                "_type": "link",
+                "trans": "delete"
+            },
+            "edit": {
+                "_type": "link",
+                "trans": "update",
+                "fields": [
+                    "description",
+                    "complete"
+                ]
+            }
+        }
+    ],
+    "add_note": {
+        "_type": "link",
+        "trans": "action",
+        "fields": [
+            {
+                "name": "description",
+                "required": true
+            }
+        ]
+    }
+}
+</code></pre>
+<h4 id="escaping-reserved-keys-during-encoding">Escaping reserved keys during encoding</h4>
+<p>When any object key matching the regular expression <code>/[\_]+(type|meta)/</code> is encountered, it MUST be escaped by pre-pending an additional underscore character.</p>
+<h4 id="unescaping-reserved-keys-during-decoding">Unescaping reserved keys during decoding</h4>
+<p>When any object key matching the regular expression <code>/_[\_]+(type|meta)/</code> is encountered, it MUST be unescaped by removing the leading underscore character.</p>
+<h4 id="handling-unexpected-types">Handling unexpected types</h4>
+<p>A number of the Object structures described below indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.</p>
+<hr />
+<h3 id="document">Document</h3>
+<p><strong>The Document primitive is represented using an object which includes a key-value pair of "_type": "document".</strong></p>
+<ul>
+<li>
+<p>Documents MAY include a "_meta" key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.</p>
+</li>
+<li>
+<p>The "_meta" object MAY include keys named "url" and "title".</p>
+</li>
+<li>
+<p>Any other keys occurring in the Document "_meta" section SHOULD be ignored by clients.</p>
+</li>
+<li>
+<p>The value of the "url" field SHOULD be a string. This value is treated as relative to the URL of any parent containing document. When a document is loaded from the network then the URL of the top level document is treated as relative to the URL that the content was fetched from. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document or network URL, as above.</p>
+</li>
+<li>
+<p>The value of the "title" field SHOULD be a string. If omitted, the default value is treated as the empty string.</p>
+</li>
+<li>
+<p>All other key-value pairs are treated as the document content.</p>
+</li>
+</ul>
+<h3 id="link">Link</h3>
+<p><strong>The Link primitive is represented using an object which includes a key-value pair of "_type": "link".</strong></p>
+<ul>
+<li>
+<p>Links MAY include keys named "url", "trans", and "fields".</p>
+</li>
+<li>
+<p>Any other keys occurring in an Link SHOULD be ignored by clients.</p>
+</li>
+<li>
+<p>The value of the "url" field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.</p>
+</li>
+<li>
+<p>The value of the "trans" field SHOULD be a string, and SHOULD be one of the valid transition types. These are "follow", "action", "create", "update" and "delete". If omitted, the link transition type defaults to "follow".</p>
+</li>
+<li>
+<p>The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.</p>
+</li>
+<li>
+<p>A string item in the "fields" list is to be interpreted as the name of an optional field.</p>
+</li>
+<li>
+<p>An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.</p>
+</li>
+<li>
+<p>Links SHOULD only be contained by parent a Document or Object. Any Link occurring in an Array SHOULD be ignored. This constraint ensures that Links are always named items, with the key indicating the link name.</p>
+</li>
+</ul>
+<h3 id="error">Error</h3>
+<p><strong>The Error primitive is represented using an object which includes a key-value pair of "_type": "error".</strong></p>
+<ul>
+<li>
+<p>Errors MAY include a single key named "message". The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.</p>
+</li>
+<li>
+<p>Any other keys occurring in an Error SHOULD be ignored by clients.</p>
+</li>
+<li>
+<p>Errors SHOULD only occur as the top level element. Any Error occurring as a child element inside a Document, Object or Array SHOULD be ignored.</p>
+</li>
+</ul>
+<h3 id="data-primitives">Data primitives</h3>
+<p><strong>The standard JSON primitives are represented as usual.</strong></p>
+<ul>
+<li>
+<p>These are Object, Array, String, Number, <code>true</code>, <code>false</code> and <code>null</code>.</p>
+</li>
+<li>
+<p>Any Object with a "_type" key that is not "document", "link" or "error" indicates an unknown type. The "_type" key and any "_meta" key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.</p>
+</li>
+</ul>
+<hr />
+<h3 id="canonical-style">Canonical style</h3>
+<p>The following canonical style indicates a set of guidelines that server implementations or client libraries MAY choose to follow, in order to generate a consistent output format for the JSON encoding.</p>
+<h4 id="key-ordering">Key ordering</h4>
+<p>Clients MAY choose to order any Object or Document keys in their output, as follows.</p>
+<ul>
+<li>"_type"</li>
+<li>"_meta" (With "url" occurring before "title" in the child Object.)</li>
+<li>All keys with a value <em>that is not</em> a Link, ordered alphabetically.</li>
+<li>All keys with a value <em>this is</em> a Link, ordered alphabetically.</li>
+</ul>
+<h4 id="omitting-default-values">Omitting default values</h4>
+<p>Clients MAY choose to omit any values that are the default when encoding a document.</p>
+<p>For example, a link with a transition type of <code>"follow"</code> will typically be encoded without including the <code>"trans": "follow"</code> key-value pair.</p>
+<h4 id="using-relative-links">Using relative links</h4>
+<p>Clients MAY take advantage of the relative URL transformations made when parsing Documents and Links, in order to encode minimal URL outputs.</p>
+<ul>
+<li>The top level Document MUST include its URL value, without transformation.</li>
+<li>If a child Document or Link has the same scheme, host and port portion as its parent, it MAY omit those portions of the URL, and include only the path, query string and fragment identifier portion of the URL.</li>
+<li>If a child Document or Link has the the same URL as its parent, it may omit the URL entirely.</li>
+</ul>
+<h4 id="indentation-and-spacing">Indentation and spacing</h4>
+<p>Client MAY choose to use a concise style as the default. Using this style will ensure that no spacing or indentation is used between tokens.</p>
+<p>Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.</p>
+</div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Copyright &copy; 2015, <a href="https://twitter.com/_tomchristie">Tom Christie</a>.</p>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/prettify-1.0.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script src="../../js/base.js"></script>
+    </body>
+</html>

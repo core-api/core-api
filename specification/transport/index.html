@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+        <title>The transport layer - Core API</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">Core API</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specification <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            <li >
+                                <a href="../document">The document layer</a>
+                            </li>
+                        
+                            <li >
+                                <a href="../encoding">The encoding layer</a>
+                            </li>
+                        
+                            <li class="active">
+                                <a href=".">The transport layer</a>
+                            </li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li >
+                    <a rel="next" href="../encoding">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a rel="prev" >
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                
+                <li>
+                    <a href="https://github.com/core-api/core-api/">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#transport">Transport</a></li>
+        
+            <li><a href="#the-http-transport">The HTTP transport</a></li>
+        
+            <li><a href="#encoding-link-parameters">Encoding link parameters</a></li>
+        
+            <li><a href="#constraints-of-the-http-transport">Constraints of the HTTP transport</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="transport">Transport</h1>
+<hr />
+<p>The <strong>transport layer</strong> defines how link transitions made at <a href="../document">the document layer</a> are mapped to network requests.</p>
+<p>Core API currently defines a single HTTP and HTTPS transport scheme.</p>
+<hr />
+<h2 id="the-http-transport">The HTTP transport</h2>
+<p>Link transition types are mapped to HTTP methods as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Transition type</th>
+<th>HTTP method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"follow"</td>
+<td><code>GET</code></td>
+</tr>
+<tr>
+<td>"action"</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>"create"</td>
+<td><code>POST</code></td>
+</tr>
+<tr>
+<td>"update"</td>
+<td><code>PUT</code></td>
+</tr>
+<tr>
+<td>"delete"</td>
+<td><code>DELETE</code></td>
+</tr>
+</tbody>
+</table>
+<p>A link transition is effected by making an HTTP request to the link URL, with the appropriate method. Any link parameters provided are to be encoded as described below.</p>
+<p>Clients MAY choose to include an appropriate <code>Accept</code> header in the request, indicating the encodings that the client supports.</p>
+<p>The resulting content is decoded by selecting <a href="../encoding">an available codec</a> based on the response <code>Content-Type</code>. If no content is present in the response then the transport layer should return a <code>null</code> indicator.</p>
+<p>The decoded object or <code>null</code> is then presented to <a href="../document">the document layer</a>, which will effect the transform on the document.</p>
+<hr />
+<h2 id="encoding-link-parameters">Encoding link parameters</h2>
+<h4 id="encoding-for-get-and-delete-requests">Encoding for <code>GET</code> and <code>DELETE</code> requests</h4>
+<p>If the request method is <code>GET</code> or <code>DELETE</code> and link parameters are included, then the parameters MUST be included as additional query parameters in the request URL.</p>
+<p>Because query parameters can only handle string encodings a simple mapping of the parameter values is required.</p>
+<ul>
+<li>String and Number values are encoded as-is, without any additional quoting.</li>
+<li>The <code>true</code>, <code>false</code> and <code>null</code> values SHOULD be encoded as <code>"1"</code>, <code>"0"</code>, and <code>""</code> respectively.</li>
+<li>Array and Object parameter values are not supported and their usage SHOULD raise an error.</li>
+</ul>
+<h4 id="encoding-for-post-and-put-requests">Encoding for <code>POST</code> and <code>PUT</code> requests</h4>
+<p>If the request method is <code>POST</code> or <code>PUT</code> and link parameters are included, then the parameters MUST be <code>JSON</code> encoded. The encoded parameters MUST then be included in the request body and the <code>Content-Type</code> header of the request SHOULD be set to <code>application/json</code>.</p>
+<hr />
+<h2 id="constraints-of-the-http-transport">Constraints of the HTTP transport</h2>
+<p>The HTTP transport layer includes some constraints on the transitions that may be effected.</p>
+<ul>
+<li>As described above "follow" and "delete" links SHOULD only include String, Number, <code>true</code>, <code>false</code> and <code>null</code> parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.</li>
+<li>It is RECOMMENDED that URL lengths greater than 2,048 characters are not supported in requests. When they do occur, they MAY raise an error.</li>
+</ul>
+</div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Copyright &copy; 2015, <a href="https://twitter.com/_tomchristie">Tom Christie</a>.</p>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/prettify-1.0.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script src="../../js/base.js"></script>
+    </body>
+</html>

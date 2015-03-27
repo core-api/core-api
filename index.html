@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Hypermedia driven Web APIs.">
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+        <title>Core API</title>
+
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="./css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/extra.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body class="homepage">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">Core API</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specification <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            <li >
+                                <a href="specification/document/">The document layer</a>
+                            </li>
+                        
+                            <li >
+                                <a href="specification/encoding/">The encoding layer</a>
+                            </li>
+                        
+                            <li >
+                                <a href="specification/transport/">The transport layer</a>
+                            </li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="specification/document/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                
+                <li>
+                    <a href="https://github.com/core-api/core-api/">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#core-api">Core API</a></li>
+        
+            <li><a href="#overview">Overview</a></li>
+        
+            <li><a href="#design-considerations">Design considerations</a></li>
+        
+            <li><a href="#plans-for-the-future">Plans for the future</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="core-api">Core API</h1>
+<p><strong>Hypermedia driven Web APIs.</strong></p>
+<hr />
+<p>Core API is a general purpose system for exposing service interfaces.</p>
+<p>It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:</p>
+<ul>
+<li><strong>Robust</strong> - Clients interacting with a Core API service always have the available interactions presented to them as part of the interface.</li>
+<li><strong>Composable</strong> - Documents may be nested, allowing you to fully express complex interfaces without having to make multiple network calls.</li>
+<li><strong>Explorable</strong> - Client libraries allow you to inspect and interact with a Core API interface.</li>
+<li><strong>Evolvable</strong> - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.</li>
+</ul>
+<p>Existing tooling and resources:</p>
+<ul>
+<li>There is a complete <a href="https://github.com/core-api/python-client">Python client library</a> for Core API.</li>
+<li>A <a href="https://github.com/core-api/javascript-client">Javascript client library</a> is currently planned.</li>
+<li>We have an <a href="https://github.com/core-api/example-server">example server implementation</a>, for demonstration purposes.</li>
+<li>A live service available at http://coreapi.herokuapp.com for testing.</li>
+</ul>
+<p>For news and updates follow <a href="https://twitter.com/core_api">@core-api</a>, or <a href="https://twitter.com/_tomchristie">@_tomchristie</a>.</p>
+<p>For discussion of the tools and specification, use the <a href="https://groups.google.com/forum/#!forum/hypermedia-web">Hypermedia Web mailing list</a>.</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>There are three layers to the Core API specification.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="specification/document/">Document layer</a></td>
+<td>The abstract object interface that clients interact with.</td>
+</tr>
+<tr>
+<td><a href="specification/encoding/">Encoding layer</a></td>
+<td>The mapping between a Document and a byte string.</td>
+</tr>
+<tr>
+<td><a href="specification/transport/">Transport layer</a></td>
+<td>How document interactions are mapped to network requests.</td>
+</tr>
+</tbody>
+</table>
+<p>The following is an overview of the document layer, describing how the client interacts with a Core API interface.</p>
+<p>The design work for a JSON-based encoding, and an HTTP transport layer specification have both been completed. These are properly expressed in the <a href="https://github.com/core-api/python-client">Python client library</a>, but they have not yet been written up as part of this documentation.</p>
+<h4 id="document">Document</h4>
+<p>Documents are the basic building blocks of Core API.</p>
+<p>Documents are key-value pairs that contain the data and actions presented by the interface. Documents always have an associated URL, and should also have a title.</p>
+<p>The top level element in any Core API interface is always a Document.</p>
+<p>Let's take a look at a Core API document by using the Python client library.</p>
+<pre><code>$ pip install coreapi
+$ python
+&gt;&gt;&gt; import coreapi
+&gt;&gt;&gt; doc = coreapi.get('http://coreapi.herokuapp.com/')
+&gt;&gt;&gt; print(doc)
+&lt;Notes 'http://coreapi.herokuapp.com/'&gt;
+    'notes': [
+        &lt;Note '/e7785f34-2b74-41d2-ab3f-f754f688987c/'&gt;
+            'complete': False,
+            'description': 'Schedule design meeting',
+            'delete': link(),
+            'edit': link([description], [complete]),
+        &lt;Note '/626579bd-b2ba-40d0-92af-9ff0bfa5f276/'&gt;
+            'complete: True,
+            'description': 'Write release notes',
+            'delete': link(),
+            'edit': link([description], [complete])
+    ],
+    'add_note': link(description)
+</code></pre>
+<p>We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.</p>
+<h4 id="links">Links</h4>
+<p>Links are the available actions that the interface presents.</p>
+<p>Links have an associated URL and transition type, and may accept a set of named parameters.</p>
+<p>Calling a link will perform one of the following actions:</p>
+<ul>
+<li>Return a new document, or other media.</li>
+<li>Replace the document.</li>
+<li>Remove the document.</li>
+</ul>
+<p>The transition types are defined as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Document transition</th>
+<th>Safe</th>
+<th>Idempotent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"follow"</td>
+<td>Return a new document, or other media.</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>"action"</td>
+<td>Replace the document.</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>"create"</td>
+<td>Return a new document, or other media.</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>"update"</td>
+<td>Replace the document.</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>"delete"</td>
+<td>Remove the document.</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p>When interacting with a nested document, the replace and removal transitions apply only to the child document. The new state is the existing document with the child transformation applied.</p>
+<p>Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:</p>
+<pre><code>&gt;&gt;&gt; while doc['notes']:
+&gt;&gt;&gt;     doc = doc.action(['notes', 0, 'delete'])
+</code></pre>
+<p>The python client treats documents as immutable objects. Transitions return completely 
+new documents, so note that we're always re-assigning the updated state to the <code>doc</code> variable.</p>
+<p>There should now be no notes remaining:</p>
+<pre><code>&gt;&gt;&gt; print(doc)
+&lt;Notes 'http://coreapi.herokuapp.com/'&gt;
+    'notes': [],
+    'add_note': link(description)
+</code></pre>
+<p>Okay, let's create a new note:</p>
+<pre><code>&gt;&gt;&gt; doc = doc.action(['add_note'], description='Email venue about conference dates')
+&gt;&gt;&gt; print(doc)
+&lt;Notes 'http://coreapi.herokuapp.com/'&gt;
+    'notes: [
+        &lt;Note '/e7785f34-2b74-41d2-ab3f-f754f688987c/'&gt;
+            'complete': False,
+            'description': 'Email venue about conference dates',
+            'delete': link(),
+            'edit': link([description], [complete])
+    ],
+    'add_note': link(description)
+</code></pre>
+<p>Finally we'll update the state of the note we've just created:</p>
+<pre><code>&gt;&gt;&gt; doc = doc.action(['notes', 0, 'edit'], complete=True)
+&gt;&gt;&gt; print(doc)
+&lt;Notes 'http://coreapi.herokuapp.com/'&gt;
+    'notes': [
+        &lt;Note '/e7785f34-2b74-41d2-ab3f-f754f688987c/'&gt;
+            'complete': True,
+            'description': 'Email venue about conference dates',
+            'delete': link(),
+            'edit': link([description], [complete])
+    ],
+    'add_note': link(description)
+</code></pre>
+<h4 id="data-primitives">Data primitives</h4>
+<p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
+<p>Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Number, <code>true</code>, <code>false</code>, and <code>null</code>.</p>
+<pre><code>&gt;&gt;&gt; doc['notes'][0]['description']
+'Email venue about conference dates'
+&gt;&gt;&gt; doc['notes'][0]['complete']
+True
+</code></pre>
+<h4 id="errors">Errors</h4>
+<p>Following a link may result in an error. An error is defined as having a list of strings, which represent any error message associated with the failed transition.</p>
+<p>Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.</p>
+<pre><code>&gt;&gt;&gt; doc.action(['add_note'], description = 'x' * 999999)
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
+</code></pre>
+<hr />
+<h2 id="design-considerations">Design considerations</h2>
+<p>Because Core API documents are composable there are a few design decisions you'll want to be aware of, that may not exist in other API systems.</p>
+<h4 id="rich-interfaces">Rich interfaces</h4>
+<p>The status quo with many Web APIs today is to have a close relationship between items in the storage backend and API endpoints. While Core API <em>does</em> allow you to build collection type APIs it can also express richer interfaces.</p>
+<p>You probably want to think of a Core API interface as being similar to a web page, but without any layout or style information. You can embed multiple controls and related elements inside a single document.</p>
+<h4 id="actions-should-effect-child-elements">Actions should effect child elements</h4>
+<p>When in-place link transitions are followed they will only ever update the part of the document that the link is contained by. You should make sure that links are always included at the topmost level of any elements they might effect.</p>
+<p>Failing to follow this constraint will mean that clients may need to have some implicit knowledge about which other parts of a document to reload once a transition takes place. This introduces coupling, and increases the number of required network requests.</p>
+<h4 id="interlinking-vs-nesting">Interlinking vs nesting</h4>
+<p>When building a Core API interface you'll need to decide on when to link to associated document, and when to nest an associated document. The former implies a necessary network request to retrieve the document, while the later embeds the document directly.</p>
+<p>Normally this decision should be self-evident, and will depend on the type of the relationship that the link expresses.</p>
+<hr />
+<h2 id="plans-for-the-future">Plans for the future</h2>
+<p>I'm currently planning a significant amount of time into building the Core API specification, tooling and ecosystem. Possible future work includes the following:</p>
+<ul>
+<li><strong>Media links</strong> - Links to images, videos and other downloadable media will be supported.</li>
+<li><strong>File uploads</strong> - The HTTP transport should support files as parameters. When files are present multipart encoding will be used.</li>
+<li><strong>Documents as parameters</strong> - We should support passing documents as parameters to a link. They can be encoded using the URL, and allow for operations such as <code>.swap_position(child_document_1, child_document_2)</code>.</li>
+<li><strong>Generator primitives</strong> - We plan to add support for a generator primitive, that transparently deals with paginated result sets.</li>
+<li><strong>Field errors</strong> - Currently errors only support a list of messages. We will also support messages being mapped to the fields that they relate too.</li>
+<li><strong>Primitive return values</strong> - As well as document transitions and media downloads, we might want to support links that return primitive values.</li>
+<li><strong>Richer types</strong> - We could consider expanding the primitives to include a richer set of types. A date-time primitive is one obvious candidate. We'll need to balance this consideration against maximizing language portability.</li>
+<li><strong>Authentication</strong> - The HTTP transport needs to discuss what authentication schemes are supported, and how this works between differing domains.</li>
+<li><strong>Javascript client</strong> - Currently we only have a Python client library. Having a fully supported Javascript library is a priority.</li>
+<li><strong>HTML encoding</strong> - In addition to JSON, we will define an HTML encoding, and provide an API browser.</li>
+<li><strong>Command line client</strong> - A command line client for interfacing with Core API, including history, forwards/backwards operations etc.</li>
+<li><strong>Realtime interfaces</strong> - We need to specify at the document layer how realtime interfaces can be supported. At that point we can consider adding either or both of HTTP polling and web sockets as supported transports.</li>
+<li><strong>Server tooling</strong> - We should introduce some server tooling support. In particular a package including renderers, parsers and a test client library for Django REST framework.</li>
+<li><strong>Timestamps and validation</strong> - There may be scope for design work on timestamp and validation information being associated at the document layer. We could then build on this with better caching support, and support for conditional updates.</li>
+<li><strong>Other media types</strong> - The separation of document and encoding concerns in Core API means that we could add support for other encodings such as <code>application/hal+json</code>. These encodings might have restrictions on what parts of the document interface they can support. For example some formats might not support parameterized links, or composable documents.</li>
+</ul>
+</div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Copyright &copy; 2015, <a href="https://twitter.com/_tomchristie">Tom Christie</a>.</p>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/prettify-1.0.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+    </body>
+</html>

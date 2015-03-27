@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+        <title>The document layer - Core API</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/extra.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">Core API</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Specification <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            <li class="active">
+                                <a href=".">The document layer</a>
+                            </li>
+                        
+                            <li >
+                                <a href="../encoding">The encoding layer</a>
+                            </li>
+                        
+                            <li >
+                                <a href="../transport">The transport layer</a>
+                            </li>
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                
+                <li >
+                    <a rel="next" href="../..">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../encoding">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                
+                <li>
+                    <a href="https://github.com/core-api/core-api/">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+            
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#document">Document</a></li>
+        
+            <li><a href="#the-document-primitives">The document primitives</a></li>
+        
+            <li><a href="#effecting-link-transitions">Effecting link transitions</a></li>
+        
+    
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="document">Document</h1>
+<hr />
+<p>The <strong>document layer</strong> is the set of primitives that a Core API client interacts with.</p>
+<p>The available primitives include both data and actions, and may be composed in nested structures.</p>
+<p>This layer is a solely abstract object representation, and is the only point of contact with the interface that the client makes.</p>
+<p>The specification for mapping documents onto byte strings is documented by <a href="../encoding">the encoding layer</a>. The specification for how network requests are made is documented by <a href="../transport">the transport layer</a>.</p>
+<hr />
+<h2 id="the-document-primitives">The document primitives</h2>
+<h4 id="documents">Documents</h4>
+<p>A document is used as a container for the data and actions provided by the interface.</p>
+<ul>
+<li>The top level element in a Core API interface MUST be a Document.</li>
+<li>A Document is a set of key-value pairs.</li>
+<li>The keys in a Document MUST be string values.</li>
+<li>The values in a Document can be any Core API primitive.</li>
+<li>A Document has an associated URL, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Document has an associated title, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+</ul>
+<h4 id="links">Links</h4>
+<p>A link is used to represent a possible transition that the client may take.</p>
+<ul>
+<li>A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated transition type which MUST be one of "follow", "action", "create", "update" or "delete". The "follow" value MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.</li>
+<li>Each element in the parameter list is associated with a name, which MUST be a string.</li>
+<li>Each element in the parameter list is associated as either being <em>required</em> or being <em>optional</em>. The <em>optional</em> state MAY be considered a default value by client libraries.</li>
+<li>A Link MUST always be contained by a parent Document or Object, and MUST not be contained by a parent Array. This constraint ensures that Links can always be treated as named elements.</li>
+</ul>
+<h4 id="data-primitives">Data primitives</h4>
+<p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
+<ul>
+<li>Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Number, <code>true</code>, <code>false</code>, and <code>null</code>.</li>
+</ul>
+<h4 id="errors">Errors</h4>
+<p>Errors are exception states that may occur when a transition fails. This element is allows the server to respond with a message or messages indicating why the transition could not be effected.</p>
+<ul>
+<li>An Error has an associated set of messages, which MUST be a list of strings. The empty list is valid and MAY be considered a default value be client libraries.</li>
+<li>An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.</li>
+<li>An Error MUST NOT not be contained at any point in a Document.</li>
+</ul>
+<hr />
+<h2 id="effecting-link-transitions">Effecting link transitions</h2>
+<p>When client acts on a Link, a transition is effected, and the resulting state is returned to the client.</p>
+<h4 id="link-parameters">Link parameters</h4>
+<p>Clients making a link transition may include parameters to the transition, as follows:</p>
+<ul>
+<li>Link transitions MAY optionally include a set of parameterized key-value pairs.</li>
+<li>Any <em>required</em> field items associated with the Link MUST be included in the set of parameters.</li>
+<li>Any <em>optional</em> field items associated with the Link MAY be included in the set of parameters.</li>
+<li>Any other key values MUST NOT be included in the set of parameters.</li>
+<li>All parameter values MUST be valid Data primitives, as described above.</li>
+</ul>
+<h4 id="link-transition-types">Link transition types</h4>
+<p>The transition type of a Link determines the link behavior, as follows.</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Document transition</th>
+<th>Safe</th>
+<th>Idempotent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"follow"</td>
+<td>Return a new document, or other media. (*)</td>
+<td>✓</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>"action"</td>
+<td>Replace the document.</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>"create"</td>
+<td>Return a new document, or other media. (*)</td>
+<td>✗</td>
+<td>✗</td>
+</tr>
+<tr>
+<td>"update"</td>
+<td>Replace the document.</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>"delete"</td>
+<td>Remove the document.</td>
+<td>✗</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p>(*): <strong>TODO</strong> Link transitions returning other media are not yet fully described in the specification.</p>
+<h4 id="the-resulting-network-request">The resulting network request</h4>
+<p>When undertaking a transition, the resulting transform is applied as follows.</p>
+<ul>
+<li>An <a href="../transport">appropriate transport scheme should be selected</a>, based on the scheme of the Link URL. If the URL scheme is unsupported the transition should fail and raise an exception or other error indicator.</li>
+<li>The <a href="../transport">transport layer</a> is then responsible for handling the transition URL and parameters.</li>
+<li>The "follow", "action", "create" and "update" transition types MUST return a Document or an Error.</li>
+<li>The "delete" transition type MUST return a <code>null</code> value or an Error.</li>
+<li>A returned Error element should result in an exception or other error state, and no transformation is effected.</li>
+</ul>
+<h4 id="the-resulting-object-transformation">The resulting object transformation</h4>
+<p>In all other cases a transition is effected.</p>
+<ul>
+<li>If the Link transition type is "follow" or "new" then the value is returned to the client.</li>
+<li>If the Link transition type is "action" or "updates", then the parent Document of the Link is replaced with the new value, and the result returned to the client.</li>
+<li>If the Link transition type is "delete", then the parent Document of the Link is removed from the Document tree, and the result returned to the client.</li>
+</ul>
+</div>
+            
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <p>Copyright &copy; 2015, <a href="https://twitter.com/_tomchristie">Tom Christie</a>.</p>
+            
+            <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+
+        
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/prettify-1.0.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script src="../../js/base.js"></script>
+    </body>
+</html>
