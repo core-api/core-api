@@ -44,9 +44,9 @@ Data primitives are the set of basic datatypes that may be used to represent dat
 
 #### Errors
 
-Errors are exception states that may occur when a transition fails. This element is allows the server to respond with a message or messages indicating why the transition could not be effected.
+Errors are exception states that may occur when a transition fails. This element allows the server to respond with a message or messages indicating why the transition could not be effected.
 
-* An Error has an associated set of messages, which MUST be a list of strings. The empty list is valid and MAY be considered a default value be client libraries.
+* An Error has an associated set of messages, which MUST be a list of strings. The empty list is valid and MAY be considered a default value by client libraries.
 * An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.
 * An Error MUST NOT not be contained at any point in a Document.
 
