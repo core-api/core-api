@@ -38,8 +38,6 @@ Name               |   Description
 
 The following is an overview of the document layer, describing how the client interacts with a Core API interface.
 
-The design work for a JSON-based encoding, and an HTTP transport layer specification have both been completed. These are properly expressed in the [Python client library][python-client], but they have not yet been written up as part of this documentation.
-
 #### Document
 
 Documents are the basic building blocks of Core API.
