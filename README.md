@@ -1,4 +1,4 @@
-# Core API
+# [Core API](http://core-api.github.io/core-api)
 
 **Hypermedia driven Web APIs.**
 
