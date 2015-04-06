@@ -216,7 +216,7 @@ Each row SHOULD contain a single `<td>` element, containing the item at that poi
 
 ### Links
 
-**Links are encoded as `<a>` elements.**
+**Links are encoded as `<a>` elements, with a `coreapi-link` class.**
 
 The key under which under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.
 
@@ -227,6 +227,8 @@ The transition value of the Link SHOULD be include in a `data-trans` attribute.
 The fields for the Link SHOULD be included in a `data-fields` attribute, which should be a whitespace separated list of the field names.
 
 ### Data primitives
+
+**Data primitives are encoded as `<code>` and `<span>` elements.**
 
 The `true`, `false` and `null` primitives SHOULD be enclosed within a `<code>` element, using their textual name as the content. For example `<code>true</code>`.
 
