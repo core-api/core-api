@@ -118,6 +118,8 @@
         
             <li><a href="#json-encoding">JSON encoding</a></li>
         
+            <li><a href="#html-encoding">HTML encoding</a></li>
+        
     
     </ul>
 </div></div>
@@ -126,13 +128,14 @@
 <h1 id="encoding">Encoding</h1>
 <hr />
 <p>The <strong>encoding layer</strong> defines the mapping between <a href="../document">the document layer</a>, and its byte string encoding.</p>
-<p>Core API currently defines a single JSON-based encoding scheme.</p>
+<p>Core API currently defines JSON and HTML encoding schemes.</p>
+<p>Servers implementations are free to support and respond with either of these schemes. Server implementations MAY choose to use the client <code>Accept</code> header to determine which of the two representations to respond with.</p>
 <hr />
 <h2 id="json-encoding">JSON encoding</h2>
 <p>A document is represented using standard JSON, with the additional restriction that the object keys "_type" and "_meta" are reserved.</p>
 <p>Any object with the key "_type" may be considered as one of the Core API primitives described below. The keys "_type" and "_meta" are otherwise removed from the normal parsing flow.</p>
 <p>The top level element in a Core API response MUST either be a Document or an Error.</p>
-<p>The RECOMMENDED media type for this scheme is: <code>application/vnd.coreapi+json</code></p>
+<p>The RECOMMENDED media type for this scheme is: <code>application/vnd.coreapi+json</code>, but <code>application/json</code> MAY also be used.</p>
 <p>An example JSON encoded document is demonstrated below.</p>
 <pre><code>{
     "_type": "document",
@@ -279,6 +282,46 @@
 <h4 id="indentation-and-spacing">Indentation and spacing</h4>
 <p>Client MAY choose to use a concise style as the default. Using this style will ensure that no spacing or indentation is used between tokens.</p>
 <p>Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.</p>
+<hr />
+<h2 id="html-encoding">HTML encoding</h2>
+<p>The HTML encoding for Core API allows servers to respond in a way that allows for direct Web browser based interaction with the API.</p>
+<p>This encoding is primarily intended for usage in Web browsers, but MAY also be parsed as a machine readable format.</p>
+<p><img alt="HTML Encoding" src="../../../images/html-encoding.png" /></p>
+<p>Elements defined in the HTML encoding specification may include extra classes and attributes, and may be enclosed inside any parent HTML structure. This allows APIs to customize the style with which the browser based interaction is presented.</p>
+<p>In order to to be properly supported the rendered HTML should include javascript and styling in order to allow the user to perform any available transitions included in the document.</p>
+<p>The media type for this scheme may either be: <code>application/vnd.coreapi+html</code>, or <code>text/html</code>. To render in a Web browser, the <code>text/html</code> type should be used.</p>
+<p>The <a href="https://github.com/core-api/python-client">python client library</a> can be taken as the canonical example for implementing an HTML rendering.</p>
+<h3 id="document_1">Document</h3>
+<p><strong>Documents are encoded as <code>table</code> elements with a <code>coreapi-document</code> class.</strong></p>
+<p>The document name and URL are represented in a single row in the <code>thead</code> element.</p>
+<p>The  <code>thead</code> element, SHOULD enclose a single <code>tr</code> element, which SHOULD enclose a single <code>th</code> element. This element contains the document name and URL. The name and URL SHOULD be included as an <code>a</code> element, with the <code>href</code> indicating the URL, and the element text indicating the document name.</p>
+<p>The document content is represented as the <code>&lt;tbody&gt;</code> element enclosing multiple <code>&lt;tr&gt;</code> elements.</p>
+<p>Each data item in the document is represented as a row, which SHOULD include a single <code>&lt;th&gt;</code> and <code>&lt;td&gt;</code> element. The <code>&lt;th&gt;</code> element SHOULD contain the key of the item, and the <code>&lt;td&gt;</code> element SHOULD contain the value of the item.</p>
+<p>Each link item in the document is represented as a row, which SHOULD include a single <code>&lt;th&gt;</code> element, containing the link.</p>
+<h3 id="objects">Objects</h3>
+<p><strong>Objects are encoded as <code>&lt;table&gt;</code> elements with a <code>coreapi-object</code> class.</strong></p>
+<p>The object content is represented as the <code>&lt;tbody&gt;</code> element enclosing multiple <code>&lt;tr&gt;</code> elements.</p>
+<p>Each data item in the object is represented as a row, which SHOULD include a single <code>&lt;th&gt;</code> and <code>&lt;td&gt;</code> element. The <code>&lt;th&gt;</code> element SHOULD contain the key of the item, and the <code>&lt;td&gt;</code> element SHOULD contain the value of the item.</p>
+<p>Each link item in the object is represented as a row, which SHOULD include a single <code>&lt;th&gt;</code> element, containing the link.</p>
+<h3 id="arrays">Arrays</h3>
+<p><strong>Documents are encoded as <code>&lt;table&gt;</code> elements with a <code>coreapi-array</code> class.</strong></p>
+<p>The array content is represented as the <code>&lt;tbody&gt;</code> element enclosing multiple <code>&lt;tr&gt;</code> elements.</p>
+<p>Each row SHOULD containing a single <code>&lt;th&gt;</code> element, with a textual context indicating the array index for that row.</p>
+<p>Each row SHOULD contain a single <code>&lt;td&gt;</code> element, containing the item at that point in the array.</p>
+<h3 id="links">Links</h3>
+<p><strong>Links are encoded as <code>&lt;a&gt;</code> elements, with a <code>coreapi-link</code> class.</strong></p>
+<p>The key under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.</p>
+<p>The URL of the Link SHOULD be contained in the <code>href</code> value of the element.</p>
+<p>The transition value of the Link SHOULD be include in a <code>data-trans</code> attribute.</p>
+<p>The fields for the Link SHOULD be included in a <code>data-fields</code> attribute, which should be a whitespace separated list of the field names.</p>
+<h3 id="data-primitives_1">Data primitives</h3>
+<p><strong>Data primitives are encoded as <code>&lt;code&gt;</code> and <code>&lt;span&gt;</code> elements.</strong></p>
+<p>The <code>true</code>, <code>false</code> and <code>null</code> primitives SHOULD be enclosed within a <code>&lt;code&gt;</code> element, using their textual name as the content. For example <code>&lt;code&gt;true&lt;/code&gt;</code>.</p>
+<p>Number primitives SHOULD be enclosed within a <code>&lt;code&gt;</code> element.</p>
+<p>String primitives, SHOULD be enclosed within a <code>&lt;span&gt;</code> element.</p>
+<h3 id="errors">Errors</h3>
+<p><strong>Errors are encoded as <code>&lt;ul&gt;</code> elements, with a <code>coreapi-error</code> class.</strong></p>
+<p>Each message in the error SHOULD be included as a <code>&lt;li&gt;</code> element, with the text of the element containing the message value.</p>
 </div>
             
         </div>
