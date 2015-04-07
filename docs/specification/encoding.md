@@ -18,7 +18,7 @@ Any object with the key "\_type" may be considered as one of the Core API primit
 
 The top level element in a Core API response MUST either be a Document or an Error.
 
-The RECOMMENDED media type for this scheme is: `application/vnd.coreapi+json`
+The RECOMMENDED media type for this scheme is: `application/vnd.coreapi+json`, but `application/json` MAY also be used.
 
 An example JSON encoded document is demonstrated below.
 
@@ -172,11 +172,15 @@ Clients MAY choose to allow an optional verbose style. Using this style will ens
 
 The HTML encoding for Core API allows servers to respond in a way that allows for direct Web browser based interaction with the API.
 
+This encoding is primarily intended for usage in Web browsers, but MAY also be parsed as a machine readable format.
+
 ![HTML Encoding](../images/html-encoding.png)
 
 Elements defined in the HTML encoding specification may include extra classes and attributes, and may be enclosed inside any parent HTML structure. This allows APIs to customize the style with which the browser based interaction is presented.
 
 In order to to be properly supported the rendered HTML should include javascript and styling in order to allow the user to perform any available transitions included in the document.
+
+The media type for this scheme may either be: `application/vnd.coreapi+html`, or `text/html`. To render in a Web browser, the `text/html` type should be used.
 
 The [python client library](https://github.com/core-api/python-client) can be taken as the canonical example for implementing an HTML rendering.
 
@@ -218,7 +222,7 @@ Each row SHOULD contain a single `<td>` element, containing the item at that poi
 
 **Links are encoded as `<a>` elements, with a `coreapi-link` class.**
 
-The key under which under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.
+The key under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.
 
 The URL of the Link SHOULD be contained in the `href` value of the element.
 

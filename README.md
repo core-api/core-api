@@ -2,6 +2,8 @@
 
 **Hypermedia driven Web APIs.**
 
+**Documentation**: [www.coreapi.org](www.coreapi.org)
+
 Core API is a general purpose system for exposing service interfaces.
 
 It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:
