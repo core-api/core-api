@@ -2,13 +2,15 @@
 
 **Hypermedia driven Web APIs.**
 
+**Documentation**: [www.coreapi.org](www.coreapi.org)
+
 Core API is a general purpose system for exposing service interfaces.
 
 It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:
 
-* **Robust** - Clients interacting with a Core API service always have the available interactions presented to them as part of the interface.
+* **Robust** - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.
 * **Composable** - Documents may be nested, allowing you to fully express complex interfaces without having to make multiple network calls.
-* **Explorable** - Client libraries allow you to inspect and interact with a Core API interface.
+* **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.
 * **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
 
 Existing tooling and resources:
@@ -21,6 +23,55 @@ Existing tooling and resources:
 For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
 
 For discussion of the tools and specification, use the [Hypermedia Web mailing list](https://groups.google.com/forum/#!forum/hypermedia-web).
+
+#### What does it look like?
+
+Core API has a lightweight JSON encoding. For example:
+
+    {
+        "_type": "document",
+        "_meta": {
+            "url": "/",
+            "title": "Notes"
+        },
+        "notes": [
+            {
+                "_type": "document",
+                "_meta": {
+                    "url": "/1de153fe-6747-41d3-bc0e-d9d7d87e448a",
+                    "title": "Note"
+                },
+                "complete": false,
+                "description": "Email venue about conference dates",
+                "delete": {
+                    "_type": "link",
+                    "trans": "delete"
+                },
+                "edit": {
+                    "_type": "link",
+                    "trans": "update",
+                    "fields": [
+                        "description",
+                        "complete"
+                    ]
+                }
+            }
+        ],
+        "add_note": {
+            "_type": "link",
+            "trans": "action",
+            "fields": [
+                {
+                    "name": "description",
+                    "required": true
+                }
+            ]
+        }
+    }
+
+Additionally, an HTML based encoding is defined. This allows servers to present APIs that can be interacted with directly from a Web browser. The previous example rendered in HTML looks like this:
+
+![HTML encoding example](docs/images/html-encoding.png)
 
 ---
 
@@ -196,7 +247,6 @@ I'm currently planning a significant amount of time into building the Core API s
 * **Richer types** - We could consider expanding the primitives to include a richer set of types. A date-time primitive is one obvious candidate. We'll need to balance this consideration against maximizing language portability.
 * **Authentication** - The HTTP transport needs to discuss what authentication schemes are supported, and how this works between differing domains.
 * **Javascript client** - Currently we only have a Python client library. Having a fully supported Javascript library is a priority.
-* **HTML encoding** - In addition to JSON, we will define an HTML encoding, and provide an API browser.
 * **Command line client** - A command line client for interfacing with Core API, including history, forwards/backwards operations etc.
 * **Realtime interfaces** - We need to specify at the document layer how realtime interfaces can be supported. At that point we can consider adding either or both of HTTP polling and web sockets as supported transports.
 * **Server tooling** - We should introduce some server tooling support. In particular a package including renderers, parsers and a test client library for Django REST framework.

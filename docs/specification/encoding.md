@@ -4,7 +4,9 @@
 
 The **encoding layer** defines the mapping between [the document layer](document.md), and its byte string encoding.
 
-Core API currently defines a single JSON-based encoding scheme.
+Core API currently defines JSON and HTML encoding schemes.
+
+Servers implementations are free to support and respond with either of these schemes. Server implementations MAY choose to use the client `Accept` header to determine which of the two representations to respond with.
 
 ---
 
@@ -16,7 +18,7 @@ Any object with the key "\_type" may be considered as one of the Core API primit
 
 The top level element in a Core API response MUST either be a Document or an Error.
 
-The RECOMMENDED media type for this scheme is: `application/vnd.coreapi+json`
+The RECOMMENDED media type for this scheme is: `application/vnd.coreapi+json`, but `application/json` MAY also be used.
 
 An example JSON encoded document is demonstrated below.
 
@@ -163,3 +165,83 @@ Clients MAY take advantage of the relative URL transformations made when parsing
 Client MAY choose to use a concise style as the default. Using this style will ensure that no spacing or indentation is used between tokens.
 
 Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.
+
+---
+
+## HTML encoding
+
+The HTML encoding for Core API allows servers to respond in a way that allows for direct Web browser based interaction with the API.
+
+This encoding is primarily intended for usage in Web browsers, but MAY also be parsed as a machine readable format.
+
+![HTML Encoding](../images/html-encoding.png)
+
+Elements defined in the HTML encoding specification may include extra classes and attributes, and may be enclosed inside any parent HTML structure. This allows APIs to customize the style with which the browser based interaction is presented.
+
+In order to to be properly supported the rendered HTML should include javascript and styling in order to allow the user to perform any available transitions included in the document.
+
+The media type for this scheme may either be: `application/vnd.coreapi+html`, or `text/html`. To render in a Web browser, the `text/html` type should be used.
+
+The [python client library](https://github.com/core-api/python-client) can be taken as the canonical example for implementing an HTML rendering.
+
+### Document
+
+**Documents are encoded as `table` elements with a `coreapi-document` class.**
+
+The document name and URL are represented in a single row in the `thead` element.
+
+The  `thead` element, SHOULD enclose a single `tr` element, which SHOULD enclose a single `th` element. This element contains the document name and URL. The name and URL SHOULD be included as an `a` element, with the `href` indicating the URL, and the element text indicating the document name.
+
+The document content is represented as the `<tbody>` element enclosing multiple `<tr>` elements.
+
+Each data item in the document is represented as a row, which SHOULD include a single `<th>` and `<td>` element. The `<th>` element SHOULD contain the key of the item, and the `<td>` element SHOULD contain the value of the item.
+
+Each link item in the document is represented as a row, which SHOULD include a single `<th>` element, containing the link.
+
+### Objects
+
+**Objects are encoded as `<table>` elements with a `coreapi-object` class.**
+
+The object content is represented as the `<tbody>` element enclosing multiple `<tr>` elements.
+
+Each data item in the object is represented as a row, which SHOULD include a single `<th>` and `<td>` element. The `<th>` element SHOULD contain the key of the item, and the `<td>` element SHOULD contain the value of the item.
+
+Each link item in the object is represented as a row, which SHOULD include a single `<th>` element, containing the link.
+
+### Arrays
+
+**Documents are encoded as `<table>` elements with a `coreapi-array` class.**
+
+The array content is represented as the `<tbody>` element enclosing multiple `<tr>` elements.
+
+Each row SHOULD containing a single `<th>` element, with a textual context indicating the array index for that row.
+
+Each row SHOULD contain a single `<td>` element, containing the item at that point in the array.
+
+### Links
+
+**Links are encoded as `<a>` elements, with a `coreapi-link` class.**
+
+The key under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.
+
+The URL of the Link SHOULD be contained in the `href` value of the element.
+
+The transition value of the Link SHOULD be include in a `data-trans` attribute.
+
+The fields for the Link SHOULD be included in a `data-fields` attribute, which should be a whitespace separated list of the field names.
+
+### Data primitives
+
+**Data primitives are encoded as `<code>` and `<span>` elements.**
+
+The `true`, `false` and `null` primitives SHOULD be enclosed within a `<code>` element, using their textual name as the content. For example `<code>true</code>`.
+
+Number primitives SHOULD be enclosed within a `<code>` element.
+
+String primitives, SHOULD be enclosed within a `<span>` element.
+
+### Errors
+
+**Errors are encoded as `<ul>` elements, with a `coreapi-error` class.**
+
+Each message in the error SHOULD be included as a `<li>` element, with the text of the element containing the message value.
