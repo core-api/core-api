@@ -2,7 +2,7 @@
 
 **Hypermedia driven Web APIs.**
 
-**Documentation**: [www.coreapi.org](www.coreapi.org)
+**Documentation**: [www.coreapi.org](http://www.coreapi.org)
 
 Core API is a general purpose system for exposing service interfaces.
 
