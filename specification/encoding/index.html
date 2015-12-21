@@ -317,8 +317,9 @@
 <h3 id="data-primitives_1">Data primitives</h3>
 <p><strong>Data primitives are encoded as <code>&lt;code&gt;</code> and <code>&lt;span&gt;</code> elements.</strong></p>
 <p>The <code>true</code>, <code>false</code> and <code>null</code> primitives SHOULD be enclosed within a <code>&lt;code&gt;</code> element, using their textual name as the content. For example <code>&lt;code&gt;true&lt;/code&gt;</code>.</p>
-<p>Number primitives SHOULD be enclosed within a <code>&lt;code&gt;</code> element.</p>
-<p>String primitives, SHOULD be enclosed within a <code>&lt;span&gt;</code> element.</p>
+<p>Number and integer primitives SHOULD be enclosed within a <code>&lt;code&gt;</code> element.</p>
+<p>String primitives SHOULD be enclosed within a <code>&lt;span&gt;</code> element.
+The newline character, <code>'\n'</code>, MAY be replaced with a <code>&lt;br/&gt;</code> element.</p>
 <h3 id="errors">Errors</h3>
 <p><strong>Errors are encoded as <code>&lt;ul&gt;</code> elements, with a <code>coreapi-error</code> class.</strong></p>
 <p>Each message in the error SHOULD be included as a <code>&lt;li&gt;</code> element, with the text of the element containing the message value.</p>
