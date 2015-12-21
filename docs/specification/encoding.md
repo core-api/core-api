@@ -236,9 +236,10 @@ The fields for the Link SHOULD be included in a `data-fields` attribute, which s
 
 The `true`, `false` and `null` primitives SHOULD be enclosed within a `<code>` element, using their textual name as the content. For example `<code>true</code>`.
 
-Number primitives SHOULD be enclosed within a `<code>` element.
+Number and integer primitives SHOULD be enclosed within a `<code>` element.
 
-String primitives, SHOULD be enclosed within a `<span>` element.
+String primitives SHOULD be enclosed within a `<span>` element.
+The newline character, `'\n'`, MAY be replaced with a `<br/>` element.
 
 ### Errors
 
