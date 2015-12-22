@@ -52,5 +52,5 @@ If the request method is `POST` or `PUT` and link parameters are included, then 
 
 The HTTP transport layer includes some constraints on the transitions that may be effected.
 
-* As described above "follow" and "delete" links SHOULD only include String, Number, `true`, `false` and `null` parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.
+* As described above "follow" and "delete" links SHOULD only include String, Integer, Number, `true`, `false` and `null` parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.
 * It is RECOMMENDED that URL lengths greater than 2,048 characters are not supported in requests. When they do occur, they MAY raise an error.
