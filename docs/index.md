@@ -1,4 +1,4 @@
-# Core API
+# [Core API](http://www.coreapi.org/)
 
 **Hypermedia driven Web APIs.**
 
@@ -13,12 +13,18 @@ It allows you to build RESTful Web APIs that describe their available interface,
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.
 * **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
 
-Existing tooling and resources:
+### Example services
 
+**Notes** - Create, update and delete items from a list of notes. [http://notes.coreapi.org/](http://notes.coreapi.org/)
+
+**Game** - Find the treasure in 5 turns or less. [http://game.coreapi.org/](http://game.coreapi.org/)
+
+### Tooling
+
+* The command line client.
 * There is a complete [Python client library][python-client] for Core API.
 * A [Javascript client library][javascript-client] is currently planned.
 * We have an [example server implementation][example-server], for demonstration purposes.
-* A live service available at [http://coreapi.herokuapp.com](http://coreapi.herokuapp.com) for testing.
 
 For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
 
@@ -71,7 +77,7 @@ Core API has a lightweight JSON encoding. For example:
 
 Additionally, an HTML based encoding is defined. This allows servers to present APIs that can be interacted with directly from a Web browser. The previous example rendered in HTML looks like this:
 
-![HTML encoding example](images/html-encoding.png)
+![HTML encoding example](docs/images/html-encoding.png)
 
 ---
 
@@ -81,9 +87,9 @@ There are three layers to the Core API specification.
 
 Name               |   Description
 ------------------- | ---------------------
-[Document layer](specification/document.md) | The abstract object interface that clients interact with.
-[Encoding layer](specification/encoding.md) | The mapping between a Document and a byte string.
-[Transport layer](specification/transport.md) | How document interactions are mapped to network requests.
+[Document layer](http://www.coreapi.org/specification/document/) | The abstract object interface that clients interact with.
+[Encoding layer](http://www.coreapi.org/specification/encoding/) | The mapping between a Document and a byte string.
+[Transport layer](http://www.coreapi.org/specification/transport/) | How document interactions are mapped to network requests.
 
 The following is an overview of the document layer, describing how the client interacts with a Core API interface.
 
@@ -100,22 +106,27 @@ Let's take a look at a Core API document by using the Python client library.
     $ pip install coreapi
     $ python
     >>> import coreapi
-    >>> doc = coreapi.get('http://coreapi.herokuapp.com/')
+    >>> doc = coreapi.get('http://notes.coreapi.org/')
     >>> print(doc)
-    <Notes 'http://coreapi.herokuapp.com/'>
-        'notes': [
-            <Note '/e7785f34-2b74-41d2-ab3f-f754f688987c/'>
-                'complete': False,
-                'description': 'Schedule design meeting',
-                'delete': link(),
-                'edit': link([description], [complete]),
-            <Note '/626579bd-b2ba-40d0-92af-9ff0bfa5f276/'>
-                'complete: True,
-                'description': 'Write release notes',
-                'delete': link(),
-                'edit': link([description], [complete])
-        ],
-        'add_note': link(description)
+    <Notes "http://notes.coreapi.org/">
+        notes: [
+            <Note "http://notes.coreapi.org/1f1bc8d6-9411-48d9-a2fc-6d8b82a48888">
+                complete: true
+                description: "Write command line client"
+                delete()
+                edit([description], [complete]),
+            <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
+                complete: true
+                description: "Example"
+                delete()
+                edit([description], [complete]),
+            <Note "http://notes.coreapi.org/0ace0b3b-9db2-4c10-989e-76c5c61265e7">
+                complete: true
+                description: "Fix the kitchen door"
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 
 We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.
 
@@ -145,52 +156,52 @@ When interacting with a nested document, the replace and removal transitions app
 
 Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:
 
-    >>> while doc['notes']:
-    >>>     doc = doc.action(['notes', 0, 'delete'])
+    >>> while doc["notes"]:
+    >>>     doc = doc.action("notes.0.delete")
 
-The python client treats documents as immutable objects. Transitions return completely 
+The python client treats documents as immutable objects. Transitions return completely
 new documents, so note that we're always re-assigning the updated state to the `doc` variable.
 
 There should now be no notes remaining:
 
     >>> print(doc)
-    <Notes 'http://coreapi.herokuapp.com/'>
-        'notes': [],
-        'add_note': link(description)
+    <Notes "http://notes.coreapi.org/">
+        notes: []
+        add_note(description)
 
 Okay, let's create a new note:
 
-    >>> doc = doc.action(['add_note'], description='Email venue about conference dates')
+    >>> doc = doc.action("add_note", description="Email venue about conference dates")
     >>> print(doc)
-    <Notes 'http://coreapi.herokuapp.com/'>
-        'notes: [
-            <Note '/e7785f34-2b74-41d2-ab3f-f754f688987c/'>
-                'complete': False,
-                'description': 'Email venue about conference dates',
-                'delete': link(),
-                'edit': link([description], [complete])
-        ],
-        'add_note': link(description)
+    <Notes "http://notes.coreapi.org/">
+        notes: [
+            <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
+                complete: false
+                description: "Email venue about conference dates"
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 
 Finally we'll update the state of the note we've just created:
 
-    >>> doc = doc.action(['notes', 0, 'edit'], complete=True)
+    >>> doc = doc.action("notes.0.edit", complete=True)
     >>> print(doc)
-    <Notes 'http://coreapi.herokuapp.com/'>
-        'notes': [
-            <Note '/e7785f34-2b74-41d2-ab3f-f754f688987c/'>
-                'complete': True,
-                'description': 'Email venue about conference dates',
-                'delete': link(),
-                'edit': link([description], [complete])
-        ],
-        'add_note': link(description)
+    <Notes "http://notes.coreapi.org/">
+        notes: [
+            <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
+                complete: true
+                description: "Email venue about conference dates"
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 
 #### Data primitives
 
 Data primitives are the set of basic datatypes that may be used to represent data in the interface.
 
-Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Number, `true`, `false`, and `null`.
+Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, `true`, `false`, and `null`.
 
     >>> doc['notes'][0]['description']
     'Email venue about conference dates'
@@ -203,7 +214,7 @@ Following a link may result in an error. An error is defined as having a list of
 
 Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.
 
-    >>> doc.action(['add_note'], description = 'x' * 999999)
+    >>> doc.action('add_note', description = 'x' * 999999)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
