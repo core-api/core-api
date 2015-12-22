@@ -13,18 +13,44 @@ It allows you to build RESTful Web APIs that describe their available interface,
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.
 * **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
 
-### Example services
+#### Example services
 
-**Notes** - Create, update and delete items from a list of notes. [http://notes.coreapi.org/](http://notes.coreapi.org/)
+You can interact with these example services either through your browser, by installing the command-line client, or by using one of the client libraries.
 
-**Game** - Find the treasure in 5 turns or less. [http://game.coreapi.org/](http://game.coreapi.org/)
+* **Notes** - Create, update and delete items from a list of notes. [http://notes.coreapi.org/](http://notes.coreapi.org/)
+* **Game** - Find the treasure in 5 turns or less. [http://game.coreapi.org/](http://game.coreapi.org/)
 
-### Tooling
+For example, let's try interacting with the "Game" service, using the command line client.
+
+First make sure to [install Python](https://www.python.org/downloads/), then...
+
+```bash
+    $ pip install coreapi  # Use Python's package manager `pip` to install the command-line client.
+    $ coreapi get http://game.coreapi.org/
+    <Home "http://game.coreapi.org/">
+        new_game()
+    $ coreapi action new_game
+    <Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
+        board: "...a\n...b\n...c\n123"
+        description: "5 turns remaining."
+        new_game()
+        play([position])
+    $ coreapi action play position=b3
+    <Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
+        board: "...a\n..xb\n...c\n123"
+        description: "4 turns remaining."
+        new_game()
+        play([position])
+```
+
+#### Tooling
 
 * The command line client.
 * There is a complete [Python client library][python-client] for Core API.
 * A [Javascript client library][javascript-client] is currently planned.
 * We have an [example server implementation][example-server], for demonstration purposes.
+
+#### Discussion
 
 For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
 
