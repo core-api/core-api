@@ -77,7 +77,7 @@ Core API has a lightweight JSON encoding. For example:
 
 Additionally, an HTML based encoding is defined. This allows servers to present APIs that can be interacted with directly from a Web browser. The previous example rendered in HTML looks like this:
 
-![HTML encoding example](docs/images/html-encoding.png)
+![HTML encoding example](http://www.coreapi.org/images/html-encoding.png)
 
 ---
 
