@@ -105,12 +105,12 @@ Some actions may take parameters which can be either optional or required. To in
                 edit([description], [complete])
         ]
         add_note(description)
-    $ coreapi action description="Try Core API"
+    $ coreapi action add_note description="Try Core API."
     <Notes "http://notes.coreapi.org/">
         notes: [
             <Note "http://notes.coreapi.org/1fc3f188-0051-43e4-9e43-5bcefd6b0ada">
                 complete: false
-                description: "Try Core API"
+                description: "Try Core API."
                 delete()
                 edit([description], [complete]),
             <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
