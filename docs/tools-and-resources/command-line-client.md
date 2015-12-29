@@ -16,7 +16,7 @@ Finally, make sure that the client has been successfully installed.
 
 ```bash
     $ coreapi --version
-    coreapi version 0.7.1
+    coreapi version 1.0.0
 ```
 
 ## Fetching documents
