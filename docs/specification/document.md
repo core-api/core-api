@@ -40,7 +40,7 @@ A link is used to represent a possible transition that the client may take.
 
 Data primitives are the set of basic datatypes that may be used to represent data in the interface.
 
-* Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Number, `true`, `false`, and `null`.
+* Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, `true`, `false`, and `null`.
 
 #### Errors
 
