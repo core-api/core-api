@@ -45,7 +45,7 @@ First make sure to [install Python](https://www.python.org/downloads/), then...
 
 #### Tooling
 
-* The command line client.
+* A [command line client][command-line-client] for interacting with services from the console.
 * There is a complete [Python client library][python-client] for Core API.
 * A [Javascript client library][javascript-client] is currently planned.
 * We have an [example server implementation][example-server], for demonstration purposes.
@@ -290,6 +290,7 @@ I'm currently planning a significant amount of time into building the Core API s
 * **Timestamps and validation** - There may be scope for design work on timestamp and validation information being associated at the document layer. We could then build on this with better caching support, and support for conditional updates.
 * **Other media types** - The separation of document and encoding concerns in Core API means that we could add support for other encodings such as `application/hal+json`. These encodings might have restrictions on what parts of the document interface they can support. For example some formats might not support parameterized links, or composable documents.
 
+[command-line-client]: http://www.coreapi.org/tools-and-resources/command-line-client/
 [python-client]: https://github.com/core-api/python-client
 [javascript-client]: https://github.com/core-api/javascript-client
 [example-server]: https://github.com/core-api/example-server
