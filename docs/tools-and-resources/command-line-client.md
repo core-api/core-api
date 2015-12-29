@@ -1,4 +1,4 @@
-# The command line client
+# Command line client
 
 The command line client allows you to interact with Core API services from the console.
 
