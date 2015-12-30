@@ -34,7 +34,6 @@ A link is used to represent a possible transition that the client may take.
 * A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 * Each element in the parameter list is associated with a name, which MUST be a string.
 * Each element in the parameter list is associated as either being *required* or being *optional*. The *optional* state MAY be considered a default value by client libraries.
-* A Link MUST always be contained by a parent Document or Object, and MUST not be contained by a parent Array. This constraint ensures that Links can always be treated as named elements.
 
 #### Data primitives
 
