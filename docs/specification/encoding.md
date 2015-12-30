@@ -111,8 +111,6 @@ A number of the Object structures described below indicate a required type for a
 
 * An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.
 
-* Links SHOULD only be contained by parent a Document or Object. Any Link occurring in an Array SHOULD be ignored. This constraint ensures that Links are always named items, with the key indicating the link name.
-
 ### Error
 
 **The Error primitive is represented using an object which includes a key-value pair of "_type": "error".**
