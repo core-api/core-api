@@ -4,23 +4,23 @@
 
 The **encoding layer** defines the mapping between [the document layer](document.md), and its byte string encoding.
 
-Core API currently defines JSON and HTML encoding schemes.
+Core API currently defines a JSON based encoding scheme, and an HTML encoding scheme.
 
 Servers implementations are free to support and respond with either of these schemes. Server implementations MAY choose to use the client `Accept` header to determine which of the two representations to respond with.
 
 ---
 
-## JSON encoding
+## Core JSON encoding
 
 A document is represented using standard JSON, with the additional restriction that the object keys "\_type" and "\_meta" are reserved.
 
 Any object with the key "\_type" may be considered as one of the Core API primitives described below. The keys "\_type" and "\_meta" are otherwise removed from the normal parsing flow.
 
-The top level element in a Core API response MUST either be a Document or an Error.
+The top level element in a Core JSON response MUST either be a Document or an Error.
 
-The RECOMMENDED media type for this scheme is: `application/vnd.coreapi+json`, but `application/json` MAY also be used.
+The media type for this scheme is: `application/vnd.coreapi+json`.
 
-An example JSON encoded document is demonstrated below.
+An example Core JSON encoded document is demonstrated below.
 
     {
         "_type": "document",
@@ -39,11 +39,11 @@ An example JSON encoded document is demonstrated below.
                 "description": "Email venue about conference dates",
                 "delete": {
                     "_type": "link",
-                    "trans": "delete"
+                    "action": "delete"
                 },
                 "edit": {
                     "_type": "link",
-                    "trans": "update",
+                    "action": "put",
                     "fields": [
                         "description",
                         "complete"
@@ -53,7 +53,7 @@ An example JSON encoded document is demonstrated below.
         ],
         "add_note": {
             "_type": "link",
-            "trans": "action",
+            "action": "post",
             "fields": [
                 {
                     "name": "description",
@@ -97,13 +97,15 @@ A number of the Object structures described below indicate a required type for a
 
 **The Link primitive is represented using an object which includes a key-value pair of "_type": "link".**
 
-* Links MAY include keys named "url", "trans", and "fields".
+* Links MAY include keys named "url", "action", "transition", and "fields".
 
 * Any other keys occurring in an Link SHOULD be ignored by clients.
 
 * The value of the "url" field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.
 
-* The value of the "trans" field SHOULD be a string, and SHOULD be one of the valid transition types. These are "follow", "action", "create", "update" and "delete". If omitted, the link transition type defaults to "follow".
+* The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.
+
+* The value of the "transition" field SHOULD be a string. If omitted, the link transition defaults to the empty string..
 
 * The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.
 
@@ -147,8 +149,6 @@ Clients MAY choose to order any Object or Document keys in their output, as foll
 #### Omitting default values
 
 Clients MAY choose to omit any values that are the default when encoding a document.
-
-For example, a link with a transition type of `"follow"` will typically be encoded without including the `"trans": "follow"` key-value pair.
 
 #### Using relative links
 
@@ -224,7 +224,9 @@ The key under which the Link is contained by its parent Object or Document SHOUL
 
 The URL of the Link SHOULD be contained in the `href` value of the element.
 
-The transition value of the Link SHOULD be include in a `data-trans` attribute.
+The action value of the Link SHOULD be include in a `data-action` attribute.
+
+The transition value of the Link SHOULD be include in a `data-transition` attribute.
 
 The fields for the Link SHOULD be included in a `data-fields` attribute, which should be a whitespace separated list of the field names.
 

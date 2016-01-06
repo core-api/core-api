@@ -58,7 +58,7 @@ For discussion of the tools and specification, use the [Hypermedia Web mailing l
 
 #### What does it look like?
 
-Core API has a lightweight JSON encoding. For example:
+Core API has a lightweight JSON encoding called 'Core JSON'. For example:
 
     {
         "_type": "document",
@@ -77,11 +77,11 @@ Core API has a lightweight JSON encoding. For example:
                 "description": "Email venue about conference dates",
                 "delete": {
                     "_type": "link",
-                    "trans": "delete"
+                    "action": "delete"
                 },
                 "edit": {
                     "_type": "link",
-                    "trans": "update",
+                    "action": "put",
                     "fields": [
                         "description",
                         "complete"
@@ -91,7 +91,7 @@ Core API has a lightweight JSON encoding. For example:
         ],
         "add_note": {
             "_type": "link",
-            "trans": "action",
+            "action": "post",
             "fields": [
                 {
                     "name": "description",
@@ -158,27 +158,17 @@ We've got a document here that contains a couple of other nested documents. We c
 
 #### Links
 
-Links are the available actions that the interface presents.
+Links are the available points of interaction that the interface presents.
 
-Links have an associated URL and transition type, and may accept a set of named parameters.
+Links have an associated URL and action, and may accept a set of named parameters.
 
-Calling a link will perform one of the following actions:
+Links inside nested documents links may also have an associated transition type.
+The transition type is used to indicate if transitions should return an entirely
+new document, or if they should effect a partial transformation on the document,
+modifying or removing the nested document from its parent.
 
-* Return a new document, or other media.
-* Replace the document.
-* Remove the document.
-
-The transition types are defined as follows:
-
-Name | Document transition | Safe | Idempotent
-----| ---- | ---- | ----
-"follow" | Return a new document, or other media. | ✓ | ✓
-"action" | Replace the document. | ✗ | ✗
-"create" | Return a new document, or other media. | ✗ | ✗
-"update" | Replace the document. | ✗ | ✓
-"delete" | Remove the document. | ✗ | ✓
-
-When interacting with a nested document, the replace and removal transitions apply only to the child document. The new state is the existing document with the child transformation applied.
+The 'put', 'patch' and 'delete' actions default to a transition type of 'inline'.
+Other actions default to a transition type of 'follow'.
 
 Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:
 

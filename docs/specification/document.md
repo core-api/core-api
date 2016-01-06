@@ -30,7 +30,8 @@ A document is used as a container for the data and actions provided by the inter
 A link is used to represent a possible transition that the client may take.
 
 * A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
-* A Link has an associated transition type which MUST be one of "follow", "action", "create", "update" or "delete". The "follow" value MAY be considered a default value by client libraries.
+* A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
+* A Link has an associated transition type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 * Each element in the parameter list is associated with a name, which MUST be a string.
 * Each element in the parameter list is associated as either being *required* or being *optional*. The *optional* state MAY be considered a default value by client libraries.
@@ -55,6 +56,17 @@ Errors are exception states that may occur when a transition fails. This element
 
 When client acts on a Link, a transition is effected, and the resulting state is returned to the client.
 
+#### Link actions
+
+Links MAY optionally include an action, which MUST be a string.
+
+The set of valid actions and their meaning is determined by the transport layer.
+For HTTP URLs the valid actions will be the HTTP methods, such as 'get', 'put', 'post', and 'delete'.
+
+When no action is specified the transport layer is free to determine a default.
+
+In the case of HTTP, the default method is 'get'.
+
 #### Link parameters
 
 Clients making a link transition may include parameters to the transition, as follows:
@@ -67,32 +79,33 @@ Clients making a link transition may include parameters to the transition, as fo
 
 #### Link transition types
 
-The transition type of a Link determines the link behavior, as follows.
+The transition type of a Link determines how the document is transformed.
+Transition types are relevant when the Link belongs to a nested document,
+and allow for links to effect partial transformations of the document.
 
-Name | Document transition | Safe | Idempotent
-----| ---- | ---- | ----
-"follow" | Return a new document, or other media. (\*) | ✓ | ✓
-"action" | Replace the document. | ✗ | ✗
-"create" | Return a new document, or other media. (\*) | ✗ | ✗
-"update" | Replace the document. | ✗ | ✓
-"delete" | Remove the document. | ✗ | ✓
+Name | Document transition
+----| ----
+"follow" | Return a new document or other media.
+"inline" | Replace or remove the nested document from the existing document tree.
 
-(\*): **TODO** Link transitions returning other media are not yet fully described in the specification.
+When no transition type is specified the transport layer is free to determine a default.
+
+In the case of HTTP, the default transition depends on the method. The 'put',
+'patch', and 'delete' methods default to 'inline'. All other actions default to 'follow'.
 
 #### The resulting network request
 
 When undertaking a transition, the resulting transform is applied as follows.
 
 * An [appropriate transport scheme should be selected](transport.md), based on the scheme of the Link URL. If the URL scheme is unsupported the transition should fail and raise an exception or other error indicator.
-* The [transport layer](transport.md) is then responsible for handling the transition URL and parameters.
-* The "follow", "action", "create" and "update" transition types MUST return a Document or an Error.
-* The "delete" transition type MUST return a `null` value or an Error.
+* The [transport layer](transport.md) is then responsible for handling the transition URL, action, and parameters.
+* The transition MUST return a Document, an Error, or no content.
 * A returned Error element should result in an exception or other error state, and no transformation is effected.
 
 #### The resulting object transformation
 
 In all other cases a transition is effected.
 
-* If the Link transition type is "follow" or "new" then the value is returned to the client.
-* If the Link transition type is "action" or "updates", then the parent Document of the Link is replaced with the new value, and the result returned to the client.
-* If the Link transition type is "delete", then the parent Document of the Link is removed from the Document tree, and the result returned to the client.
+* If the Link transition type is "follow": The value is returned to the client.
+* If the Link transition type is "inline" and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.
+* If the Link transition type is "inline" and no content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.
