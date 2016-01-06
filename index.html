@@ -196,7 +196,7 @@
 <p>For news and updates follow <a href="https://twitter.com/core_api">@core-api</a>, or <a href="https://twitter.com/_tomchristie">@_tomchristie</a>.</p>
 <p>For discussion of the tools and specification, use the <a href="https://groups.google.com/forum/#!forum/hypermedia-web">Hypermedia Web mailing list</a>.</p>
 <h4 id="what-does-it-look-like">What does it look like?</h4>
-<p>Core API has a lightweight JSON encoding. For example:</p>
+<p>Core API has a lightweight JSON encoding called 'Core JSON'. For example:</p>
 <pre><code>{
     "_type": "document",
     "_meta": {
@@ -214,11 +214,11 @@
             "description": "Email venue about conference dates",
             "delete": {
                 "_type": "link",
-                "trans": "delete"
+                "action": "delete"
             },
             "edit": {
                 "_type": "link",
-                "trans": "update",
+                "action": "put",
                 "fields": [
                     "description",
                     "complete"
@@ -228,7 +228,7 @@
     ],
     "add_note": {
         "_type": "link",
-        "trans": "action",
+        "action": "post",
         "fields": [
             {
                 "name": "description",
@@ -298,58 +298,14 @@ $ python
 </code></pre>
 <p>We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.</p>
 <h4 id="links">Links</h4>
-<p>Links are the available actions that the interface presents.</p>
-<p>Links have an associated URL and transition type, and may accept a set of named parameters.</p>
-<p>Calling a link will perform one of the following actions:</p>
-<ul>
-<li>Return a new document, or other media.</li>
-<li>Replace the document.</li>
-<li>Remove the document.</li>
-</ul>
-<p>The transition types are defined as follows:</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Document transition</th>
-<th>Safe</th>
-<th>Idempotent</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"follow"</td>
-<td>Return a new document, or other media.</td>
-<td>✓</td>
-<td>✓</td>
-</tr>
-<tr>
-<td>"action"</td>
-<td>Replace the document.</td>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td>"create"</td>
-<td>Return a new document, or other media.</td>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td>"update"</td>
-<td>Replace the document.</td>
-<td>✗</td>
-<td>✓</td>
-</tr>
-<tr>
-<td>"delete"</td>
-<td>Remove the document.</td>
-<td>✗</td>
-<td>✓</td>
-</tr>
-</tbody>
-</table>
-<p>When interacting with a nested document, the replace and removal transitions apply only to the child document. The new state is the existing document with the child transformation applied.</p>
+<p>Links are the available points of interaction that the interface presents.</p>
+<p>Links have an associated URL and action, and may accept a set of named parameters.</p>
+<p>Links inside nested documents links may also have an associated transition type.
+The transition type is used to indicate if transitions should return an entirely
+new document, or if they should effect a partial transformation on the document,
+modifying or removing the nested document from its parent.</p>
+<p>The 'put', 'patch' and 'delete' actions default to a transition type of 'inline'.
+Other actions default to a transition type of 'follow'.</p>
 <p>Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:</p>
 <pre><code>&gt;&gt;&gt; while doc["notes"]:
 &gt;&gt;&gt;     doc = doc.action("notes.0.delete")

@@ -146,41 +146,12 @@
 <p>Core API currently defines a single HTTP and HTTPS transport scheme.</p>
 <hr />
 <h2 id="the-http-transport">The HTTP transport</h2>
-<p>Link transition types are mapped to HTTP methods as follows.</p>
-<table>
-<thead>
-<tr>
-<th>Transition type</th>
-<th>HTTP method</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"follow"</td>
-<td><code>GET</code></td>
-</tr>
-<tr>
-<td>"action"</td>
-<td><code>POST</code></td>
-</tr>
-<tr>
-<td>"create"</td>
-<td><code>POST</code></td>
-</tr>
-<tr>
-<td>"update"</td>
-<td><code>PUT</code></td>
-</tr>
-<tr>
-<td>"delete"</td>
-<td><code>DELETE</code></td>
-</tr>
-</tbody>
-</table>
-<p>A link transition is effected by making an HTTP request to the link URL, with the appropriate method. Any link parameters provided are to be encoded as described below.</p>
+<p>A link transition is effected by making an HTTP request to the link URL.</p>
+<p>The HTTP method is determined by uppercasing the link action, and defaults to <code>GET</code>.</p>
+<p>Any link parameters provided are to be encoded as described below.</p>
 <p>Clients MAY choose to include an appropriate <code>Accept</code> header in the request, indicating the encodings that the client supports.</p>
-<p>The resulting content is decoded by selecting <a href="../encoding">an available codec</a> based on the response <code>Content-Type</code>. If no content is present in the response then the transport layer should return a <code>null</code> indicator.</p>
-<p>The decoded object or <code>null</code> is then presented to <a href="../document">the document layer</a>, which will effect the transform on the document.</p>
+<p>The resulting content is decoded by selecting <a href="../encoding">an available codec</a> based on the response <code>Content-Type</code>. If no content is present in the response then the transport layer should return an indicator value, such as <code>null</code>.</p>
+<p>The decoded object or a "no-content" indicator is then presented to <a href="../document">the document layer</a>, which will effect the transform on the document.</p>
 <hr />
 <h2 id="encoding-link-parameters">Encoding link parameters</h2>
 <h4 id="encoding-for-get-and-delete-requests">Encoding for <code>GET</code> and <code>DELETE</code> requests</h4>
@@ -191,13 +162,13 @@
 <li>The <code>true</code>, <code>false</code> and <code>null</code> values SHOULD be encoded as <code>"1"</code>, <code>"0"</code>, and <code>""</code> respectively.</li>
 <li>Array and Object parameter values are not supported and their usage SHOULD raise an error.</li>
 </ul>
-<h4 id="encoding-for-post-and-put-requests">Encoding for <code>POST</code> and <code>PUT</code> requests</h4>
-<p>If the request method is <code>POST</code> or <code>PUT</code> and link parameters are included, then the parameters MUST be <code>JSON</code> encoded. The encoded parameters MUST then be included in the request body and the <code>Content-Type</code> header of the request SHOULD be set to <code>application/json</code>.</p>
+<h4 id="encoding-for-post-put-and-patch-requests">Encoding for <code>POST</code>, <code>PUT</code> and <code>PATCH</code> requests</h4>
+<p>If the request method is <code>POST</code>, <code>PUT</code> or <code>PATCH</code> and link parameters are included, then the parameters MUST be <code>JSON</code> encoded. The encoded parameters MUST then be included in the request body and the <code>Content-Type</code> header of the request SHOULD be set to <code>application/json</code>.</p>
 <hr />
 <h2 id="constraints-of-the-http-transport">Constraints of the HTTP transport</h2>
 <p>The HTTP transport layer includes some constraints on the transitions that may be effected.</p>
 <ul>
-<li>As described above "follow" and "delete" links SHOULD only include String, Integer, Number, <code>true</code>, <code>false</code> and <code>null</code> parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.</li>
+<li>As described above "GET" and "DELETE" links SHOULD only include String, Integer, Number, <code>true</code>, <code>false</code> and <code>null</code> parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.</li>
 <li>It is RECOMMENDED that URL lengths greater than 2,048 characters are not supported in requests. When they do occur, they MAY raise an error.</li>
 </ul>
 </div>

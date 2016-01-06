@@ -160,11 +160,11 @@
 <p>A link is used to represent a possible transition that the client may take.</p>
 <ul>
 <li>A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
-<li>A Link has an associated transition type which MUST be one of "follow", "action", "create", "update" or "delete". The "follow" value MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated transition type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 <li>A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.</li>
 <li>Each element in the parameter list is associated with a name, which MUST be a string.</li>
 <li>Each element in the parameter list is associated as either being <em>required</em> or being <em>optional</em>. The <em>optional</em> state MAY be considered a default value by client libraries.</li>
-<li>A Link MUST always be contained by a parent Document or Object, and MUST not be contained by a parent Array. This constraint ensures that Links can always be treated as named elements.</li>
 </ul>
 <h4 id="data-primitives">Data primitives</h4>
 <p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
@@ -181,6 +181,12 @@
 <hr />
 <h2 id="effecting-link-transitions">Effecting link transitions</h2>
 <p>When client acts on a Link, a transition is effected, and the resulting state is returned to the client.</p>
+<h4 id="link-actions">Link actions</h4>
+<p>Links MAY optionally include an action, which MUST be a string.</p>
+<p>The set of valid actions and their meaning is determined by the transport layer.
+For HTTP URLs the valid actions will be the HTTP methods, such as 'get', 'put', 'post', and 'delete'.</p>
+<p>When no action is specified the transport layer is free to determine a default.</p>
+<p>In the case of HTTP, the default method is 'get'.</p>
 <h4 id="link-parameters">Link parameters</h4>
 <p>Clients making a link transition may include parameters to the transition, as follows:</p>
 <ul>
@@ -191,65 +197,44 @@
 <li>All parameter values MUST be valid Data primitives, as described above.</li>
 </ul>
 <h4 id="link-transition-types">Link transition types</h4>
-<p>The transition type of a Link determines the link behavior, as follows.</p>
+<p>The transition type of a Link determines how the document is transformed.
+Transition types are relevant when the Link belongs to a nested document,
+and allow for links to effect partial transformations of the document.</p>
 <table>
 <thead>
 <tr>
 <th>Name</th>
 <th>Document transition</th>
-<th>Safe</th>
-<th>Idempotent</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>"follow"</td>
-<td>Return a new document, or other media. (*)</td>
-<td>✓</td>
-<td>✓</td>
+<td>Return a new document or other media.</td>
 </tr>
 <tr>
-<td>"action"</td>
-<td>Replace the document.</td>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td>"create"</td>
-<td>Return a new document, or other media. (*)</td>
-<td>✗</td>
-<td>✗</td>
-</tr>
-<tr>
-<td>"update"</td>
-<td>Replace the document.</td>
-<td>✗</td>
-<td>✓</td>
-</tr>
-<tr>
-<td>"delete"</td>
-<td>Remove the document.</td>
-<td>✗</td>
-<td>✓</td>
+<td>"inline"</td>
+<td>Replace or remove the nested document from the existing document tree.</td>
 </tr>
 </tbody>
 </table>
-<p>(*): <strong>TODO</strong> Link transitions returning other media are not yet fully described in the specification.</p>
+<p>When no transition type is specified the transport layer is free to determine a default.</p>
+<p>In the case of HTTP, the default transition depends on the method. The 'put',
+'patch', and 'delete' methods default to 'inline'. All other actions default to 'follow'.</p>
 <h4 id="the-resulting-network-request">The resulting network request</h4>
 <p>When undertaking a transition, the resulting transform is applied as follows.</p>
 <ul>
 <li>An <a href="../transport">appropriate transport scheme should be selected</a>, based on the scheme of the Link URL. If the URL scheme is unsupported the transition should fail and raise an exception or other error indicator.</li>
-<li>The <a href="../transport">transport layer</a> is then responsible for handling the transition URL and parameters.</li>
-<li>The "follow", "action", "create" and "update" transition types MUST return a Document or an Error.</li>
-<li>The "delete" transition type MUST return a <code>null</code> value or an Error.</li>
+<li>The <a href="../transport">transport layer</a> is then responsible for handling the transition URL, action, and parameters.</li>
+<li>The transition MUST return a Document, an Error, or no content.</li>
 <li>A returned Error element should result in an exception or other error state, and no transformation is effected.</li>
 </ul>
 <h4 id="the-resulting-object-transformation">The resulting object transformation</h4>
 <p>In all other cases a transition is effected.</p>
 <ul>
-<li>If the Link transition type is "follow" or "new" then the value is returned to the client.</li>
-<li>If the Link transition type is "action" or "updates", then the parent Document of the Link is replaced with the new value, and the result returned to the client.</li>
-<li>If the Link transition type is "delete", then the parent Document of the Link is removed from the Document tree, and the result returned to the client.</li>
+<li>If the Link transition type is "follow": The value is returned to the client.</li>
+<li>If the Link transition type is "inline" and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.</li>
+<li>If the Link transition type is "inline" and no content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.</li>
 </ul>
 </div>
             

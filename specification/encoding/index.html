@@ -129,7 +129,7 @@
     
         <li class="main active"><a href="#encoding">Encoding</a></li>
         
-            <li><a href="#json-encoding">JSON encoding</a></li>
+            <li><a href="#core-json-encoding">Core JSON encoding</a></li>
         
             <li><a href="#html-encoding">HTML encoding</a></li>
         
@@ -141,15 +141,15 @@
 <h1 id="encoding">Encoding</h1>
 <hr />
 <p>The <strong>encoding layer</strong> defines the mapping between <a href="../document">the document layer</a>, and its byte string encoding.</p>
-<p>Core API currently defines JSON and HTML encoding schemes.</p>
+<p>Core API currently defines a JSON based encoding scheme, and an HTML encoding scheme.</p>
 <p>Servers implementations are free to support and respond with either of these schemes. Server implementations MAY choose to use the client <code>Accept</code> header to determine which of the two representations to respond with.</p>
 <hr />
-<h2 id="json-encoding">JSON encoding</h2>
+<h2 id="core-json-encoding">Core JSON encoding</h2>
 <p>A document is represented using standard JSON, with the additional restriction that the object keys "_type" and "_meta" are reserved.</p>
 <p>Any object with the key "_type" may be considered as one of the Core API primitives described below. The keys "_type" and "_meta" are otherwise removed from the normal parsing flow.</p>
-<p>The top level element in a Core API response MUST either be a Document or an Error.</p>
-<p>The RECOMMENDED media type for this scheme is: <code>application/vnd.coreapi+json</code>, but <code>application/json</code> MAY also be used.</p>
-<p>An example JSON encoded document is demonstrated below.</p>
+<p>The top level element in a Core JSON response MUST either be a Document or an Error.</p>
+<p>The media type for this scheme is: <code>application/vnd.coreapi+json</code>.</p>
+<p>An example Core JSON encoded document is demonstrated below.</p>
 <pre><code>{
     "_type": "document",
     "_meta": {
@@ -167,11 +167,11 @@
             "description": "Email venue about conference dates",
             "delete": {
                 "_type": "link",
-                "trans": "delete"
+                "action": "delete"
             },
             "edit": {
                 "_type": "link",
-                "trans": "update",
+                "action": "put",
                 "fields": [
                     "description",
                     "complete"
@@ -181,7 +181,7 @@
     ],
     "add_note": {
         "_type": "link",
-        "trans": "action",
+        "action": "post",
         "fields": [
             {
                 "name": "description",
@@ -224,7 +224,7 @@
 <p><strong>The Link primitive is represented using an object which includes a key-value pair of "_type": "link".</strong></p>
 <ul>
 <li>
-<p>Links MAY include keys named "url", "trans", and "fields".</p>
+<p>Links MAY include keys named "url", "action", "transition", and "fields".</p>
 </li>
 <li>
 <p>Any other keys occurring in an Link SHOULD be ignored by clients.</p>
@@ -233,7 +233,10 @@
 <p>The value of the "url" field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.</p>
 </li>
 <li>
-<p>The value of the "trans" field SHOULD be a string, and SHOULD be one of the valid transition types. These are "follow", "action", "create", "update" and "delete". If omitted, the link transition type defaults to "follow".</p>
+<p>The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.</p>
+</li>
+<li>
+<p>The value of the "transition" field SHOULD be a string. If omitted, the link transition defaults to the empty string..</p>
 </li>
 <li>
 <p>The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.</p>
@@ -243,9 +246,6 @@
 </li>
 <li>
 <p>An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.</p>
-</li>
-<li>
-<p>Links SHOULD only be contained by parent a Document or Object. Any Link occurring in an Array SHOULD be ignored. This constraint ensures that Links are always named items, with the key indicating the link name.</p>
 </li>
 </ul>
 <h3 id="error">Error</h3>
@@ -284,7 +284,6 @@
 </ul>
 <h4 id="omitting-default-values">Omitting default values</h4>
 <p>Clients MAY choose to omit any values that are the default when encoding a document.</p>
-<p>For example, a link with a transition type of <code>"follow"</code> will typically be encoded without including the <code>"trans": "follow"</code> key-value pair.</p>
 <h4 id="using-relative-links">Using relative links</h4>
 <p>Clients MAY take advantage of the relative URL transformations made when parsing Documents and Links, in order to encode minimal URL outputs.</p>
 <ul>
@@ -325,7 +324,8 @@
 <p><strong>Links are encoded as <code>&lt;a&gt;</code> elements, with a <code>coreapi-link</code> class.</strong></p>
 <p>The key under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.</p>
 <p>The URL of the Link SHOULD be contained in the <code>href</code> value of the element.</p>
-<p>The transition value of the Link SHOULD be include in a <code>data-trans</code> attribute.</p>
+<p>The action value of the Link SHOULD be include in a <code>data-action</code> attribute.</p>
+<p>The transition value of the Link SHOULD be include in a <code>data-transition</code> attribute.</p>
 <p>The fields for the Link SHOULD be included in a <code>data-fields</code> attribute, which should be a whitespace separated list of the field names.</p>
 <h3 id="data-primitives_1">Data primitives</h3>
 <p><strong>Data primitives are encoded as <code>&lt;code&gt;</code> and <code>&lt;span&gt;</code> elements.</strong></p>
