@@ -30,7 +30,7 @@ A document is used as a container for the data and actions provided by the inter
 A link is used to represent a possible transition that the client may take.
 
 * A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
- A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
+* A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * A Link has an associated transition type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 * Each element in the parameter list is associated with a name, which MUST be a string.
@@ -86,7 +86,7 @@ and allow for links to effect partial transformations of the document.
 Name | Document transition
 ----| ----
 "follow" | Return a new document or other media.
-"inline" | Replace or remove the nested document in-place.
+"inline" | Replace or remove the nested document from the existing document tree.
 
 When no transition type is specified the transport layer is free to determine a default.
 

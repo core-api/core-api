@@ -38,7 +38,7 @@ Because query parameters can only handle string encodings a simple mapping of th
 
 #### Encoding for `POST`, `PUT` and `PATCH` requests
 
-If the request method is `POST` or `PUT` and link parameters are included, then the parameters MUST be `JSON` encoded. The encoded parameters MUST then be included in the request body and the `Content-Type` header of the request SHOULD be set to `application/json`.
+If the request method is `POST`, `PUT` or `PATCH` and link parameters are included, then the parameters MUST be `JSON` encoded. The encoded parameters MUST then be included in the request body and the `Content-Type` header of the request SHOULD be set to `application/json`.
 
 ---
 
