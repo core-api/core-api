@@ -4,23 +4,23 @@
 
 The **encoding layer** defines the mapping between [the document layer](document.md), and its byte string encoding.
 
-Core API currently defines JSON and HTML encoding schemes.
+Core API currently defines a JSON based encoding scheme, and an HTML encoding scheme.
 
 Servers implementations are free to support and respond with either of these schemes. Server implementations MAY choose to use the client `Accept` header to determine which of the two representations to respond with.
 
 ---
 
-## JSON encoding
+## Core JSON encoding
 
 A document is represented using standard JSON, with the additional restriction that the object keys "\_type" and "\_meta" are reserved.
 
 Any object with the key "\_type" may be considered as one of the Core API primitives described below. The keys "\_type" and "\_meta" are otherwise removed from the normal parsing flow.
 
-The top level element in a Core API response MUST either be a Document or an Error.
+The top level element in a Core JSON response MUST either be a Document or an Error.
 
-The RECOMMENDED media type for this scheme is: `application/vnd.coreapi+json`, but `application/json` MAY also be used.
+The media type for this scheme is: `application/vnd.coreapi+json`.
 
-An example JSON encoded document is demonstrated below.
+An example Core JSON encoded document is demonstrated below.
 
     {
         "_type": "document",
