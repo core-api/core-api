@@ -308,10 +308,10 @@ modifying or removing the nested document from its parent.</p>
 Other actions default to a transition type of 'follow'.</p>
 <p>Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:</p>
 <pre><code>&gt;&gt;&gt; while doc["notes"]:
-&gt;&gt;&gt;     doc = doc.action("notes.0.delete")
+&gt;&gt;&gt;     doc = coreapi.action(doc, ['notes', 0, 'delete'])
 </code></pre>
-<p>The python client treats documents as immutable objects. Transitions return completely
-new documents, so note that we're always re-assigning the updated state to the <code>doc</code> variable.</p>
+<p>Calling <code>.action()</code> effects a transition on the given link, and returns a
+new document instance.</p>
 <p>There should now be no notes remaining:</p>
 <pre><code>&gt;&gt;&gt; print(doc)
 &lt;Notes "http://notes.coreapi.org/"&gt;
@@ -319,7 +319,7 @@ new documents, so note that we're always re-assigning the updated state to the <
     add_note(description)
 </code></pre>
 <p>Okay, let's create a new note:</p>
-<pre><code>&gt;&gt;&gt; doc = doc.action("add_note", description="Email venue about conference dates")
+<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, 'add_note', description='Email venue about conference dates')
 &gt;&gt;&gt; print(doc)
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
@@ -332,7 +332,7 @@ new documents, so note that we're always re-assigning the updated state to the <
     add_note(description)
 </code></pre>
 <p>Finally we'll update the state of the note we've just created:</p>
-<pre><code>&gt;&gt;&gt; doc = doc.action("notes.0.edit", complete=True)
+<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, ['notes', 0, 'edit'], complete=True)
 &gt;&gt;&gt; print(doc)
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
@@ -355,7 +355,7 @@ True
 <h4 id="errors">Errors</h4>
 <p>Following a link may result in an error. An error is defined as having a list of strings, which represent any error message associated with the failed transition.</p>
 <p>Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.</p>
-<pre><code>&gt;&gt;&gt; doc.action('add_note', description = 'x' * 999999)
+<pre><code>&gt;&gt;&gt; coreapi.action(doc, 'add_note', description = 'x' * 999999)
 Traceback (most recent call last):
   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
 coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
