@@ -83,8 +83,12 @@ Core API has a lightweight JSON encoding called 'Core JSON'. For example:
                     "_type": "link",
                     "action": "put",
                     "fields": [
-                        "description",
-                        "complete"
+                        {
+                            "name": "description"
+                        },
+                        {
+                            "name": "complete"
+                        }
                     ]
                 }
             }
