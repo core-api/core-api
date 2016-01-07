@@ -45,8 +45,12 @@ An example Core JSON encoded document is demonstrated below.
                     "_type": "link",
                     "action": "put",
                     "fields": [
-                        "description",
-                        "complete"
+                        {
+                            "name": "description"
+                        },
+                        {
+                            "name": "complete"
+                        }
                     ]
                 }
             }
@@ -73,7 +77,7 @@ When any object key matching the regular expression `/_[\_]+(type|meta)/` is enc
 
 #### Handling unexpected types
 
-A number of the Object structures described below indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.
+A number of the type structures described below indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.
 
 ---
 
@@ -81,7 +85,7 @@ A number of the Object structures described below indicate a required type for a
 
 **The Document primitive is represented using an object which includes a key-value pair of "_type": "document".**
 
-* Documents MAY include a "\_meta" key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.
+* Documents MAY include a "\_meta" key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty object.
 
 * The "\_meta" object MAY include keys named "url" and "title".
 
@@ -105,13 +109,11 @@ A number of the Object structures described below indicate a required type for a
 
 * The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.
 
-* The value of the "transition" field SHOULD be a string. If omitted, the link transition defaults to the empty string..
+* The value of the "transition" field SHOULD be a string. If omitted, the link transition defaults to the empty string.
 
-* The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.
+* The value of the "fields" field SHOULD be a list. Each element of the list SHOULD be an object. If omitted the link fields default to an empty list.
 
-* A string item in the "fields" list is to be interpreted as the name of an optional field.
-
-* An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.
+* Each item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.
 
 ### Error
 
@@ -148,15 +150,17 @@ Clients MAY choose to order any Object or Document keys in their output, as foll
 
 #### Omitting default values
 
-Clients MAY choose to omit any values that are the default when encoding a document.
+Clients MAY choose to omit any values that are the same as the default value when encoding a document.
+
+For example an optional field in a link may omit the `"required": false` key-pair.
 
 #### Using relative links
 
 Clients MAY take advantage of the relative URL transformations made when parsing Documents and Links, in order to encode minimal URL outputs.
 
 * The top level Document MUST include its URL value, without transformation.
-* If a child Document or Link has the same scheme, host and port portion as its parent, it MAY omit those portions of the URL, and include only the path, query string and fragment identifier portion of the URL.
 * If a child Document or Link has the the same URL as its parent, it may omit the URL entirely.
+* If a child Document or Link has the same scheme, host and port portion as its parent, it MAY omit those portions of the URL, and include only the path, query string and fragment identifier portion of the URL.
 
 #### Indentation and spacing
 
