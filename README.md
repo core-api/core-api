@@ -173,10 +173,10 @@ Other actions default to a transition type of 'follow'.
 Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:
 
     >>> while doc["notes"]:
-    >>>     doc = doc.action("notes.0.delete")
+    >>>     doc = coreapi.action(doc, ['notes', 0, 'delete'])
 
-The python client treats documents as immutable objects. Transitions return completely
-new documents, so note that we're always re-assigning the updated state to the `doc` variable.
+Calling `.action()` effects a transition on the given link, and returns a
+new document instance.
 
 There should now be no notes remaining:
 
@@ -187,7 +187,7 @@ There should now be no notes remaining:
 
 Okay, let's create a new note:
 
-    >>> doc = doc.action("add_note", description="Email venue about conference dates")
+    >>> doc = coreapi.action(doc, 'add_note', description='Email venue about conference dates')
     >>> print(doc)
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -201,7 +201,7 @@ Okay, let's create a new note:
 
 Finally we'll update the state of the note we've just created:
 
-    >>> doc = doc.action("notes.0.edit", complete=True)
+    >>> doc = coreapi.action(doc, ['notes', 0, 'edit'], complete=True)
     >>> print(doc)
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -230,7 +230,7 @@ Following a link may result in an error. An error is defined as having a list of
 
 Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.
 
-    >>> doc.action('add_note', description = 'x' * 999999)
+    >>> coreapi.action(doc, 'add_note', description = 'x' * 999999)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
