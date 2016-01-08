@@ -97,7 +97,7 @@ A number of the Object structures described below indicate a required type for a
 
 **The Link primitive is represented using an object which includes a key-value pair of "_type": "link".**
 
-* Links MAY include keys named "url", "action", "transition", and "fields".
+* Links MAY include keys named "url", "action", "inplace", and "fields".
 
 * Any other keys occurring in an Link SHOULD be ignored by clients.
 
@@ -105,7 +105,7 @@ A number of the Object structures described below indicate a required type for a
 
 * The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.
 
-* The value of the "transition" field SHOULD be a string. If omitted, the link transition defaults to the empty string..
+* The value of the "inplace" field SHOULD be a boolean. If omitted, the link inplace marker defaults to null.
 
 * The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.
 
@@ -226,7 +226,7 @@ The URL of the Link SHOULD be contained in the `href` value of the element.
 
 The action value of the Link SHOULD be include in a `data-action` attribute.
 
-The transition value of the Link SHOULD be include in a `data-transition` attribute.
+The inplace value of the Link SHOULD be include in a `data-inplace` attribute.
 
 The fields for the Link SHOULD be included in a `data-fields` attribute, which should be a whitespace separated list of the field names.
 
