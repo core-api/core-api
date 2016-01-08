@@ -16,7 +16,7 @@ Finally, make sure that the client has been successfully installed.
 
 ```bash
     $ coreapi --version
-    coreapi version 1.0.0
+    coreapi version 1.3.0
 ```
 
 ## Fetching documents
@@ -71,7 +71,7 @@ The `show` command will display the current active document.
 You can also include a path argument to display only a part of the active document.
 
 ```bash
-    $ coreapi show notes.0.description
+    $ coreapi show notes 0 description
     Write the great American novel.
 ```
 
@@ -80,7 +80,7 @@ You can also include a path argument to display only a part of the active docume
 The `action` command is used to navigate and interact with a document.
 
 ```bash
-    $ coreapi action notes.1.delete
+    $ coreapi action notes 1 delete
     <Notes "http://notes.coreapi.org/">
         notes: [
             <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
@@ -92,10 +92,10 @@ The `action` command is used to navigate and interact with a document.
         add_note(description)
 ```
 
-Some actions may take parameters which can be either optional or required. To include a parameter, use the `key=value` syntax.
+Some actions may take parameters which can be either optional or required. To include parameters, use the `-p key=value` syntax.
 
 ```bash
-    $ coreapi action notes.0.edit complete=true
+    $ coreapi action notes 0 edit -p complete=true
     <Notes "http://notes.coreapi.org/">
         notes: [
             <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
@@ -105,7 +105,7 @@ Some actions may take parameters which can be either optional or required. To in
                 edit([description], [complete])
         ]
         add_note(description)
-    $ coreapi action add_note description="Try Core API."
+    $ coreapi action add_note -p description="Try Core API."
     <Notes "http://notes.coreapi.org/">
         notes: [
             <Note "http://notes.coreapi.org/1fc3f188-0051-43e4-9e43-5bcefd6b0ada">

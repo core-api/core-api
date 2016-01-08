@@ -35,7 +35,7 @@ First make sure to [install Python](https://www.python.org/downloads/), then...
         description: "5 turns remaining."
         new_game()
         play([position])
-    $ coreapi action play position=b3
+    $ coreapi action play --param position=b3
     <Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
         board: "...a\n..xb\n...c\n123"
         description: "4 turns remaining."
@@ -187,7 +187,7 @@ There should now be no notes remaining:
 
 Okay, let's create a new note:
 
-    >>> doc = coreapi.action(doc, 'add_note', description='Email venue about conference dates')
+    >>> doc = coreapi.action(doc, 'add_note', params={'description': 'Email venue about conference dates'})
     >>> print(doc)
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -201,7 +201,7 @@ Okay, let's create a new note:
 
 Finally we'll update the state of the note we've just created:
 
-    >>> doc = coreapi.action(doc, ['notes', 0, 'edit'], complete=True)
+    >>> doc = coreapi.action(doc, ['notes', 0, 'edit'], params={'complete': True})
     >>> print(doc)
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -230,7 +230,7 @@ Following a link may result in an error. An error is defined as having a list of
 
 Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.
 
-    >>> coreapi.action(doc, 'add_note', description = 'x' * 999999)
+    >>> coreapi.action(doc, 'add_note', params={'description': 'x' * 999999})
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
