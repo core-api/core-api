@@ -31,7 +31,7 @@ A link is used to represent a possible transition that the client may take.
 
 * A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
-* A Link has an associated transition type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
+* A Link has an associated in-place marker which MUST be a boolean or null. The null value MAY be considered a default value by client libraries.
 * A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 * Each element in the parameter list is associated with a name, which MUST be a string.
 * Each element in the parameter list is associated as either being *required* or being *optional*. The *optional* state MAY be considered a default value by client libraries.
@@ -75,23 +75,22 @@ Clients making a link transition may include parameters to the transition, as fo
 * Any *required* field items associated with the Link MUST be included in the set of parameters.
 * Any *optional* field items associated with the Link MAY be included in the set of parameters.
 * Any other key values MUST NOT be included in the set of parameters.
-* All parameter values MUST be valid Data primitives, as described above.
+* All parameter values MUST be valid data primitives, as described above.
 
-#### Link transition types
+#### In-place transitions
 
-The transition type of a Link determines how the document is transformed.
-Transition types are relevant when the Link belongs to a nested document,
-and allow for links to effect partial transformations of the document.
+The in-place marker on a Link determines how the document is transformed.
 
-Name | Document transition
-----| ----
-"follow" | Return a new document or other media.
-"inline" | Replace or remove the nested document from the existing document tree.
+This is relevant when the Link belongs to a nested document,
+and allows for links to effect partial transformations of the document.
+
+Transitions that are in-place should replace or remove the nested document
+from the existing document tree, and return the new root document.
 
 When no transition type is specified the transport layer is free to determine a default.
 
 In the case of HTTP, the default transition depends on the method. The 'put',
-'patch', and 'delete' methods default to 'inline'. All other actions default to 'follow'.
+'patch', and 'delete' methods default to being in-place.
 
 #### The resulting network request
 
@@ -106,6 +105,6 @@ When undertaking a transition, the resulting transform is applied as follows.
 
 In all other cases a transition is effected.
 
-* If the Link transition type is "follow": The value is returned to the client.
-* If the Link transition type is "inline" and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.
-* If the Link transition type is "inline" and no content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.
+* If the Link is not an in-place transition: The value is returned to the client.
+* If the Link is an in-place transition and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.
+* If the Link is an in-place transition and content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.

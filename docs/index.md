@@ -162,15 +162,14 @@ Links are the available points of interaction that the interface presents.
 
 Links have an associated URL and action, and may accept a set of named parameters.
 
-Links inside nested documents links may also have an associated transition type.
-The transition type is used to indicate if transitions should return an entirely
-new document, or if they should effect a partial transformation on the document,
-modifying or removing the nested document from its parent.
+Links inside nested documents may optionally be marked as an "in-place" transition.
+Links that are marked as in-place effect a partial transformation on the document,
+modifying or removing the nested document from the document tree.
 
-The 'put', 'patch' and 'delete' actions default to a transition type of 'inline'.
-Other actions default to a transition type of 'follow'.
+The 'put', 'patch' and 'delete' actions default to being in-place.
 
-Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:
+Let's return to the python client library, and take a look at calling some links.
+We'll start by removing all the existing notes:
 
     >>> while doc["notes"]:
     >>>     doc = coreapi.action(doc, ['notes', 0, 'delete'])
