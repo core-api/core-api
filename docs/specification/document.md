@@ -35,6 +35,7 @@ A link is used to represent a possible transition that the client may take.
 * A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 * Each element in the parameter list is associated with a name, which MUST be a string.
 * Each element in the parameter list is associated as either being *required* or being *optional*. The *optional* state MAY be considered a default value by client libraries.
+* Each element in the parameter list is associated has an associated parameter type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 
 #### Data primitives
 
