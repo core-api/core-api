@@ -72,10 +72,10 @@ In the case of HTTP, the default method is 'get'.
 Clients making a link transition may include parameters to the transition, as follows:
 
 * Link transitions MAY optionally include a set of parameterized key-value pairs.
+* All parameter values MUST be valid data primitives, as described above.
 * Any *required* field items associated with the Link MUST be included in the set of parameters.
 * Any *optional* field items associated with the Link MAY be included in the set of parameters.
-* Any other key values MUST NOT be included in the set of parameters.
-* All parameter values MUST be valid data primitives, as described above.
+* The client MAY include additional parameters.
 
 #### In-place transitions
 
