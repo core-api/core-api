@@ -224,7 +224,7 @@
 <p><strong>The Link primitive is represented using an object which includes a key-value pair of "_type": "link".</strong></p>
 <ul>
 <li>
-<p>Links MAY include keys named "url", "action", "transition", and "fields".</p>
+<p>Links MAY include keys named "url", "action", "inplace", and "fields".</p>
 </li>
 <li>
 <p>Any other keys occurring in an Link SHOULD be ignored by clients.</p>
@@ -236,7 +236,7 @@
 <p>The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.</p>
 </li>
 <li>
-<p>The value of the "transition" field SHOULD be a string. If omitted, the link transition defaults to the empty string..</p>
+<p>The value of the "inplace" field SHOULD be a boolean. If omitted, the link inplace marker defaults to null.</p>
 </li>
 <li>
 <p>The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.</p>
@@ -245,8 +245,10 @@
 <p>A string item in the "fields" list is to be interpreted as the name of an optional field.</p>
 </li>
 <li>
-<p>An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.</p>
+<p>An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string.</p>
 </li>
+<li>An object item in the "fields" list MAY include a key "required". The value of this SHOULD be a boolean.</li>
+<li>An object item in the "fields" list MAY include a key "location". The value of this SHOULD be a string.</li>
 </ul>
 <h3 id="error">Error</h3>
 <p><strong>The Error primitive is represented using an object which includes a key-value pair of "_type": "error".</strong></p>
@@ -325,7 +327,7 @@
 <p>The key under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.</p>
 <p>The URL of the Link SHOULD be contained in the <code>href</code> value of the element.</p>
 <p>The action value of the Link SHOULD be include in a <code>data-action</code> attribute.</p>
-<p>The transition value of the Link SHOULD be include in a <code>data-transition</code> attribute.</p>
+<p>The inplace value of the Link SHOULD be include in a <code>data-inplace</code> attribute.</p>
 <p>The fields for the Link SHOULD be included in a <code>data-fields</code> attribute, which should be a whitespace separated list of the field names.</p>
 <h3 id="data-primitives_1">Data primitives</h3>
 <p><strong>Data primitives are encoded as <code>&lt;code&gt;</code> and <code>&lt;span&gt;</code> elements.</strong></p>

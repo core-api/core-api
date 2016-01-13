@@ -161,10 +161,11 @@
 <ul>
 <li>A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 <li>A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
-<li>A Link has an associated transition type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated in-place marker which MUST be a boolean or null. The null value MAY be considered a default value by client libraries.</li>
 <li>A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.</li>
 <li>Each element in the parameter list is associated with a name, which MUST be a string.</li>
 <li>Each element in the parameter list is associated as either being <em>required</em> or being <em>optional</em>. The <em>optional</em> state MAY be considered a default value by client libraries.</li>
+<li>Each element in the parameter list is associated with a location which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 </ul>
 <h4 id="data-primitives">Data primitives</h4>
 <p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
@@ -191,36 +192,20 @@ For HTTP URLs the valid actions will be the HTTP methods, such as 'get', 'put', 
 <p>Clients making a link transition may include parameters to the transition, as follows:</p>
 <ul>
 <li>Link transitions MAY optionally include a set of parameterized key-value pairs.</li>
+<li>All parameter values MUST be valid data primitives, as described above.</li>
 <li>Any <em>required</em> field items associated with the Link MUST be included in the set of parameters.</li>
 <li>Any <em>optional</em> field items associated with the Link MAY be included in the set of parameters.</li>
-<li>Any other key values MUST NOT be included in the set of parameters.</li>
-<li>All parameter values MUST be valid Data primitives, as described above.</li>
+<li>The client MAY include additional parameters.</li>
 </ul>
-<h4 id="link-transition-types">Link transition types</h4>
-<p>The transition type of a Link determines how the document is transformed.
-Transition types are relevant when the Link belongs to a nested document,
-and allow for links to effect partial transformations of the document.</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Document transition</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>"follow"</td>
-<td>Return a new document or other media.</td>
-</tr>
-<tr>
-<td>"inline"</td>
-<td>Replace or remove the nested document from the existing document tree.</td>
-</tr>
-</tbody>
-</table>
+<h4 id="in-place-transitions">In-place transitions</h4>
+<p>The in-place marker on a Link determines how the document is transformed.</p>
+<p>This is relevant when the Link belongs to a nested document,
+and allows for links to effect partial transformations of the document.</p>
+<p>Transitions that are in-place should replace or remove the nested document
+from the existing document tree, and return the new root document.</p>
 <p>When no transition type is specified the transport layer is free to determine a default.</p>
 <p>In the case of HTTP, the default transition depends on the method. The 'put',
-'patch', and 'delete' methods default to 'inline'. All other actions default to 'follow'.</p>
+'patch', and 'delete' methods default to being in-place.</p>
 <h4 id="the-resulting-network-request">The resulting network request</h4>
 <p>When undertaking a transition, the resulting transform is applied as follows.</p>
 <ul>
@@ -232,9 +217,9 @@ and allow for links to effect partial transformations of the document.</p>
 <h4 id="the-resulting-object-transformation">The resulting object transformation</h4>
 <p>In all other cases a transition is effected.</p>
 <ul>
-<li>If the Link transition type is "follow": The value is returned to the client.</li>
-<li>If the Link transition type is "inline" and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.</li>
-<li>If the Link transition type is "inline" and no content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.</li>
+<li>If the Link is not an in-place transition: The value is returned to the client.</li>
+<li>If the Link is an in-place transition and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.</li>
+<li>If the Link is an in-place transition and content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.</li>
 </ul>
 </div>
             

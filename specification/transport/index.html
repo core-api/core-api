@@ -154,16 +154,24 @@
 <p>The decoded object or a "no-content" indicator is then presented to <a href="../document">the document layer</a>, which will effect the transform on the document.</p>
 <hr />
 <h2 id="encoding-link-parameters">Encoding link parameters</h2>
-<h4 id="encoding-for-get-and-delete-requests">Encoding for <code>GET</code> and <code>DELETE</code> requests</h4>
-<p>If the request method is <code>GET</code> or <code>DELETE</code> and link parameters are included, then the parameters MUST be included as additional query parameters in the request URL.</p>
-<p>Because query parameters can only handle string encodings a simple mapping of the parameter values is required.</p>
+<p>Link parameters are encoded into the request in different ways, depending on their associated location.</p>
+<ul>
+<li><code>path</code> - The parameter is included in the URL, using URL templating.</li>
+<li><code>query</code> - The parameter is as a URL query parameter.</li>
+<li><code>form</code> - The parameter is included in request body.</li>
+</ul>
+<p>When no parameter location is specified, the default is <code>query</code> for <code>GET</code> and <code>DELETE</code> actions,
+and <code>form</code> for all other actions.</p>
+<h4 id="encoding-path-and-query-parameters">Encoding <code>path</code> and <code>query</code> parameters.</h4>
+<p>Because path and query parameters can only handle string encodings a simple mapping of the parameter values is required.</p>
 <ul>
 <li>String and Number values are encoded as-is, without any additional quoting.</li>
 <li>The <code>true</code>, <code>false</code> and <code>null</code> values SHOULD be encoded as <code>"1"</code>, <code>"0"</code>, and <code>""</code> respectively.</li>
 <li>Array and Object parameter values are not supported and their usage SHOULD raise an error.</li>
 </ul>
-<h4 id="encoding-for-post-put-and-patch-requests">Encoding for <code>POST</code>, <code>PUT</code> and <code>PATCH</code> requests</h4>
-<p>If the request method is <code>POST</code>, <code>PUT</code> or <code>PATCH</code> and link parameters are included, then the parameters MUST be <code>JSON</code> encoded. The encoded parameters MUST then be included in the request body and the <code>Content-Type</code> header of the request SHOULD be set to <code>application/json</code>.</p>
+<h4 id="encoding-form-parameters">Encoding <code>form</code> parameters.</h4>
+<p>If form parameters are included, then the parameters are treated as a mapping of key-value pairs.
+The resulting map MUST be <code>JSON</code> encoded. The encoded parameters MUST then be included in the request body and the <code>Content-Type</code> header of the request SHOULD be set to <code>application/json</code>.</p>
 <hr />
 <h2 id="constraints-of-the-http-transport">Constraints of the HTTP transport</h2>
 <p>The HTTP transport layer includes some constraints on the transitions that may be effected.</p>

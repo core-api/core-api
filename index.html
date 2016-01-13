@@ -177,7 +177,7 @@
         description: &quot;5 turns remaining.&quot;
         new_game()
         play([position])
-    $ coreapi action play position=b3
+    $ coreapi action play --param position=b3
     &lt;Game &quot;http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd&quot;&gt;
         board: &quot;...a\n..xb\n...c\n123&quot;
         description: &quot;4 turns remaining.&quot;
@@ -300,13 +300,12 @@ $ python
 <h4 id="links">Links</h4>
 <p>Links are the available points of interaction that the interface presents.</p>
 <p>Links have an associated URL and action, and may accept a set of named parameters.</p>
-<p>Links inside nested documents links may also have an associated transition type.
-The transition type is used to indicate if transitions should return an entirely
-new document, or if they should effect a partial transformation on the document,
-modifying or removing the nested document from its parent.</p>
-<p>The 'put', 'patch' and 'delete' actions default to a transition type of 'inline'.
-Other actions default to a transition type of 'follow'.</p>
-<p>Let's return to the python client library, and take a look at calling some links. We'll start by removing all the existing notes:</p>
+<p>Links inside nested documents may optionally be marked as an "in-place" transition.
+Links that are marked as in-place effect a partial transformation on the document,
+modifying or removing the nested document from the document tree.</p>
+<p>The 'put', 'patch' and 'delete' actions default to being in-place.</p>
+<p>Let's return to the python client library, and take a look at calling some links.
+We'll start by removing all the existing notes:</p>
 <pre><code>&gt;&gt;&gt; while doc["notes"]:
 &gt;&gt;&gt;     doc = coreapi.action(doc, ['notes', 0, 'delete'])
 </code></pre>
@@ -319,7 +318,7 @@ new document instance.</p>
     add_note(description)
 </code></pre>
 <p>Okay, let's create a new note:</p>
-<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, 'add_note', description='Email venue about conference dates')
+<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, 'add_note', params={'description': 'Email venue about conference dates'})
 &gt;&gt;&gt; print(doc)
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
@@ -332,7 +331,7 @@ new document instance.</p>
     add_note(description)
 </code></pre>
 <p>Finally we'll update the state of the note we've just created:</p>
-<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, ['notes', 0, 'edit'], complete=True)
+<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, ['notes', 0, 'edit'], params={'complete': True})
 &gt;&gt;&gt; print(doc)
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
@@ -355,7 +354,7 @@ True
 <h4 id="errors">Errors</h4>
 <p>Following a link may result in an error. An error is defined as having a list of strings, which represent any error message associated with the failed transition.</p>
 <p>Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.</p>
-<pre><code>&gt;&gt;&gt; coreapi.action(doc, 'add_note', description = 'x' * 999999)
+<pre><code>&gt;&gt;&gt; coreapi.action(doc, 'add_note', params={'description': 'x' * 999999})
 Traceback (most recent call last):
   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
 coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
