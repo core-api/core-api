@@ -26,13 +26,13 @@ The decoded object or a "no-content" indicator is then presented to [the documen
 
 ## Encoding link parameters
 
-Link parameters are encoded into the request in different ways, depending on their associated type.
+Link parameters are encoded into the request in different ways, depending on their associated location.
 
 * `path` - The parameter is included in the URL, using URL templating.
 * `query` - The parameter is as a URL query parameter.
 * `form` - The parameter is included in request body.
 
-When no parameter type is specified, the default is `query` for `GET` and `DELETE` actions,
+When no parameter location is specified, the default is `query` for `GET` and `DELETE` actions,
 and `form` for all other actions.
 
 #### Encoding `path` and `query` parameters.
