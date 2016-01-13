@@ -35,6 +35,7 @@ A link is used to represent a possible transition that the client may take.
 * A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 * Each element in the parameter list is associated with a name, which MUST be a string.
 * Each element in the parameter list is associated as either being *required* or being *optional*. The *optional* state MAY be considered a default value by client libraries.
+* Each element in the parameter list is associated has an associated parameter type which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 
 #### Data primitives
 
@@ -72,10 +73,10 @@ In the case of HTTP, the default method is 'get'.
 Clients making a link transition may include parameters to the transition, as follows:
 
 * Link transitions MAY optionally include a set of parameterized key-value pairs.
+* All parameter values MUST be valid data primitives, as described above.
 * Any *required* field items associated with the Link MUST be included in the set of parameters.
 * Any *optional* field items associated with the Link MAY be included in the set of parameters.
-* Any other key values MUST NOT be included in the set of parameters.
-* All parameter values MUST be valid data primitives, as described above.
+* The client MAY include additional parameters.
 
 #### In-place transitions
 

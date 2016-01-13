@@ -26,19 +26,27 @@ The decoded object or a "no-content" indicator is then presented to [the documen
 
 ## Encoding link parameters
 
-#### Encoding for `GET` and `DELETE` requests
+Link parameters are encoded into the request in different ways, depending on their associated type.
 
-If the request method is `GET` or `DELETE` and link parameters are included, then the parameters MUST be included as additional query parameters in the request URL.
+* `path` - The parameter is included in the URL, using URL templating.
+* `query` - The parameter is as a URL query parameter.
+* `form` - The parameter is included in request body.
 
-Because query parameters can only handle string encodings a simple mapping of the parameter values is required.
+When no parameter type is specified, the default is `query` for `GET` and `DELETE` actions,
+and `form` for all other actions.
+
+#### Encoding `path` and `query` parameters.
+
+Because path and query parameters can only handle string encodings a simple mapping of the parameter values is required.
 
 * String and Number values are encoded as-is, without any additional quoting.
 * The `true`, `false` and `null` values SHOULD be encoded as `"1"`, `"0"`, and `""` respectively.
 * Array and Object parameter values are not supported and their usage SHOULD raise an error.
 
-#### Encoding for `POST`, `PUT` and `PATCH` requests
+#### Encoding `form` parameters.
 
-If the request method is `POST`, `PUT` or `PATCH` and link parameters are included, then the parameters MUST be `JSON` encoded. The encoded parameters MUST then be included in the request body and the `Content-Type` header of the request SHOULD be set to `application/json`.
+If form parameters are included, then the parameters are treated as a mapping of key-value pairs.
+The resulting map MUST be `JSON` encoded. The encoded parameters MUST then be included in the request body and the `Content-Type` header of the request SHOULD be set to `application/json`.
 
 ---
 
