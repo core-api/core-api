@@ -111,7 +111,9 @@ A number of the Object structures described below indicate a required type for a
 
 * A string item in the "fields" list is to be interpreted as the name of an optional field.
 
-* An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string. The object MAY include a key "required". The value of this SHOULD be a boolean.
+* An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string.
+* An object item in the "fields" list MAY include a key "required". The value of this SHOULD be a boolean.
+* An object item in the "fields" list MAY include a key "location". The value of this SHOULD be a string.
 
 ### Error
 
