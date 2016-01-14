@@ -141,8 +141,6 @@
         
             <li><a href="#design-considerations">Design considerations</a></li>
         
-            <li><a href="#plans-for-the-future">Plans for the future</a></li>
-        
     
     </ul>
 </div></div>
@@ -151,21 +149,20 @@
 <h1 id="core-api"><a href="http://www.coreapi.org/">Core API</a></h1>
 <p><strong>Hypermedia driven Web APIs.</strong></p>
 <hr />
-<p>Core API is a general purpose system for exposing service interfaces.</p>
-<p>It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:</p>
+<p>Core API is a specification for creating Hypermedia driven Web APIs, that allows you to build rich, expressive, and meaningful interfaces.</p>
 <ul>
 <li><strong>Robust</strong> - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.</li>
-<li><strong>Composable</strong> - Documents may be nested, allowing you to fully express complex interfaces without having to make multiple network calls.</li>
+<li><strong>Expressive</strong> - Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls.</li>
 <li><strong>Explorable</strong> - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.</li>
-<li><strong>Evolvable</strong> - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.</li>
+<li><strong>Flexible</strong> - Rather than be coupled to a particular encoding, Core API separates out the document, encoding and transport concerns. This means that client libraries can communicate with a number of different hypermedia formats. Equally, Core API services can make themselves available over a number of different encodings.</li>
 </ul>
 <h4 id="example-services">Example services</h4>
-<p>You can interact with these example services either through your browser, by installing the command-line client, or by using one of the client libraries.</p>
+<p>You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.</p>
 <ul>
 <li><strong>Notes</strong> - Create, update and delete items from a list of notes. <a href="http://notes.coreapi.org/">http://notes.coreapi.org/</a></li>
 <li><strong>Game</strong> - Find the treasure in 5 turns or less. <a href="http://game.coreapi.org/">http://game.coreapi.org/</a></li>
 </ul>
-<p>For example, let's try interacting with the "Game" service, using the command line client.</p>
+<p>For example, let's try interacting with the "Game" service using the command line client.</p>
 <p>First make sure to <a href="https://www.python.org/downloads/">install Python</a>, then...</p>
 <pre><code class="bash">    $ pip install coreapi  # Use Python's package manager `pip` to install the command-line client.
     $ coreapi get http://game.coreapi.org/
@@ -220,8 +217,11 @@
                 "_type": "link",
                 "action": "put",
                 "fields": [
-                    "description",
-                    "complete"
+                    {
+                        "name": "description"
+                    }, {
+                        "name": "complete"
+                    }
                 ]
             }
         }
@@ -371,25 +371,6 @@ coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no mo
 <h4 id="interlinking-vs-nesting">Interlinking vs nesting</h4>
 <p>When building a Core API interface you'll need to decide on when to link to associated document, and when to nest an associated document. The former implies a necessary network request to retrieve the document, while the later embeds the document directly.</p>
 <p>Normally this decision should be self-evident, and will depend on the type of the relationship that the link expresses.</p>
-<hr />
-<h2 id="plans-for-the-future">Plans for the future</h2>
-<p>I'm currently planning a significant amount of time into building the Core API specification, tooling and ecosystem. Possible future work includes the following:</p>
-<ul>
-<li><strong>Media links</strong> - Links to images, videos and other downloadable media will be supported.</li>
-<li><strong>File uploads</strong> - The HTTP transport should support files as parameters. When files are present multipart encoding will be used.</li>
-<li><strong>Documents as parameters</strong> - We should support passing documents as parameters to a link. They can be encoded using the URL, and allow for operations such as <code>.swap_position(child_document_1, child_document_2)</code>.</li>
-<li><strong>Generator primitives</strong> - We plan to add support for a generator primitive, that transparently deals with paginated result sets.</li>
-<li><strong>Field errors</strong> - Currently errors only support a list of messages. We will also support messages being mapped to the fields that they relate too.</li>
-<li><strong>Primitive return values</strong> - As well as document transitions and media downloads, we might want to support links that return primitive values.</li>
-<li><strong>Richer types</strong> - We could consider expanding the primitives to include a richer set of types. A date-time primitive is one obvious candidate. We'll need to balance this consideration against maximizing language portability.</li>
-<li><strong>Authentication</strong> - The HTTP transport needs to discuss what authentication schemes are supported, and how this works between differing domains.</li>
-<li><strong>Javascript client</strong> - Currently we only have a Python client library. Having a fully supported Javascript library is a priority.</li>
-<li><strong>Command line client</strong> - A command line client for interfacing with Core API, including history, forwards/backwards operations etc.</li>
-<li><strong>Realtime interfaces</strong> - We need to specify at the document layer how realtime interfaces can be supported. At that point we can consider adding either or both of HTTP polling and web sockets as supported transports.</li>
-<li><strong>Server tooling</strong> - We should introduce some server tooling support. In particular a package including renderers, parsers and a test client library for Django REST framework.</li>
-<li><strong>Timestamps and validation</strong> - There may be scope for design work on timestamp and validation information being associated at the document layer. We could then build on this with better caching support, and support for conditional updates.</li>
-<li><strong>Other media types</strong> - The separation of document and encoding concerns in Core API means that we could add support for other encodings such as <code>application/hal+json</code>. These encodings might have restrictions on what parts of the document interface they can support. For example some formats might not support parameterized links, or composable documents.</li>
-</ul>
 </div>
             
         </div>

@@ -131,7 +131,7 @@
         
             <li><a href="#the-document-primitives">The document primitives</a></li>
         
-            <li><a href="#effecting-link-transitions">Effecting link transitions</a></li>
+            <li><a href="#interacting-with-documents">Interacting with documents</a></li>
         
     
     </ul>
@@ -142,7 +142,8 @@
 <hr />
 <p>The <strong>document layer</strong> is the set of primitives that a Core API client interacts with.</p>
 <p>The available primitives include both data and actions, and may be composed in nested structures.</p>
-<p>This layer is a solely abstract object representation, and is the only point of contact with the interface that the client makes.</p>
+<p>Clients interact with a Core API service solely through interacting with the document layer.
+In doing so they do not require any information about the underlying transport or encodings used.</p>
 <p>The specification for mapping documents onto byte strings is documented by <a href="../encoding">the encoding layer</a>. The specification for how network requests are made is documented by <a href="../transport">the transport layer</a>.</p>
 <hr />
 <h2 id="the-document-primitives">The document primitives</h2>
@@ -153,74 +154,48 @@
 <li>A Document is a set of key-value pairs.</li>
 <li>The keys in a Document MUST be string values.</li>
 <li>The values in a Document can be any Core API primitive.</li>
-<li>A Document has an associated URL, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
-<li>A Document has an associated title, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Document has an associated <code>"url"</code> property, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Document has an associated <code>"title"</code> property, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 </ul>
 <h4 id="links">Links</h4>
 <p>A link is used to represent a possible transition that the client may take.</p>
 <ul>
-<li>A Link has an associated URL which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
-<li>A Link has an associated action which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
-<li>A Link has an associated in-place marker which MUST be a boolean or null. The null value MAY be considered a default value by client libraries.</li>
-<li>A Link has an associated list of parameters. The empty list is valid, and MAY be considered a default value by client libraries.</li>
-<li>Each element in the parameter list is associated with a name, which MUST be a string.</li>
-<li>Each element in the parameter list is associated as either being <em>required</em> or being <em>optional</em>. The <em>optional</em> state MAY be considered a default value by client libraries.</li>
-<li>Each element in the parameter list is associated with a location which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated <code>"url"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
+<li>A Link has an associated <code>"action"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. For HTTP transports, this property <a href="../..//specification/transport/#determining-the-request-method">indicates the request method</a>.</li>
+<li>A Link has an associated <code>"inplace"</code> property which MUST be either <code>true</code>, <code>false</code> or <code>null</code>. The <code>null</code> value MAY be considered a default value by client libraries. This property <a href="../..//specification/transport/#handling-in-place-transformations">indicates if nested documents should be modified in-place or not</a>.</li>
+<li>A Link has an associated <code>"fields"</code> property, which is list of link parameters. The empty list is valid, and MAY be considered a default value by client libraries.</li>
+</ul>
+<h4 id="link-parameters">Link parameters</h4>
+<p>Links parameters allow a client to include additional information as part of a
+transition, and may affect the resulting URL, query parameters or request body.</p>
+<ul>
+<li>A link parameter has an associated <code>"name"</code> property, which MUST be a string.</li>
+<li>A link parameter has an associated <code>"required"</code> property, which much be <code>true</code> or <code>false</code>. The <code>false</code> value MAY be considered a default value by client libraries.</li>
+<li>A link parameter has an associated <code>"location"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. This property <a href="../..//specification/transport/#encoding-link-parameters">indicates how the parameter is encoded in the outgoing request</a>.</li>
 </ul>
 <h4 id="data-primitives">Data primitives</h4>
 <p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
 <ul>
-<li>Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, <code>true</code>, <code>false</code>, and <code>null</code>.</li>
+<li>Core API supports an equivalent subset of data primitives to JSON. These are Object, Array, String, Integer, Number, <code>true</code>, <code>false</code>, and <code>null</code>.</li>
 </ul>
 <h4 id="errors">Errors</h4>
 <p>Errors are exception states that may occur when a transition fails. This element allows the server to respond with a message or messages indicating why the transition could not be effected.</p>
 <ul>
-<li>An Error has an associated set of messages, which MUST be a list of strings. The empty list is valid and MAY be considered a default value by client libraries.</li>
+<li>An Error has an associated <code>"messages"</code> property, which MUST be a list of strings. The empty list is valid and MAY be considered a default value by client libraries.</li>
 <li>An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.</li>
 <li>An Error MUST NOT not be contained at any point in a Document.</li>
 </ul>
 <hr />
-<h2 id="effecting-link-transitions">Effecting link transitions</h2>
-<p>When client acts on a Link, a transition is effected, and the resulting state is returned to the client.</p>
-<h4 id="link-actions">Link actions</h4>
-<p>Links MAY optionally include an action, which MUST be a string.</p>
-<p>The set of valid actions and their meaning is determined by the transport layer.
-For HTTP URLs the valid actions will be the HTTP methods, such as 'get', 'put', 'post', and 'delete'.</p>
-<p>When no action is specified the transport layer is free to determine a default.</p>
-<p>In the case of HTTP, the default method is 'get'.</p>
-<h4 id="link-parameters">Link parameters</h4>
-<p>Clients making a link transition may include parameters to the transition, as follows:</p>
+<h2 id="interacting-with-documents">Interacting with documents</h2>
+<p>Documents provide both the data and available actions to the client, allowing clients to both inspect the available data, and to interact with the service.</p>
+<p>A link transition is effected as follows:</p>
 <ul>
-<li>Link transitions MAY optionally include a set of parameterized key-value pairs.</li>
-<li>All parameter values MUST be valid data primitives, as described above.</li>
-<li>Any <em>required</em> field items associated with the Link MUST be included in the set of parameters.</li>
-<li>Any <em>optional</em> field items associated with the Link MAY be included in the set of parameters.</li>
-<li>The client MAY include additional parameters.</li>
+<li>The client MUST provide the set of keys that index to the Link.</li>
+<li>The client MAY provide a set of parameters, which is a map of key-value pairs.</li>
+<li>The client MAY optionally explicitly override aspects of the link properties, such as the <code>action</code> property. This allows Core API to support hypermedia formats that are not able to fully express the full set of Core API primitives.</li>
 </ul>
-<h4 id="in-place-transitions">In-place transitions</h4>
-<p>The in-place marker on a Link determines how the document is transformed.</p>
-<p>This is relevant when the Link belongs to a nested document,
-and allows for links to effect partial transformations of the document.</p>
-<p>Transitions that are in-place should replace or remove the nested document
-from the existing document tree, and return the new root document.</p>
-<p>When no transition type is specified the transport layer is free to determine a default.</p>
-<p>In the case of HTTP, the default transition depends on the method. The 'put',
-'patch', and 'delete' methods default to being in-place.</p>
-<h4 id="the-resulting-network-request">The resulting network request</h4>
-<p>When undertaking a transition, the resulting transform is applied as follows.</p>
-<ul>
-<li>An <a href="../transport">appropriate transport scheme should be selected</a>, based on the scheme of the Link URL. If the URL scheme is unsupported the transition should fail and raise an exception or other error indicator.</li>
-<li>The <a href="../transport">transport layer</a> is then responsible for handling the transition URL, action, and parameters.</li>
-<li>The transition MUST return a Document, an Error, or no content.</li>
-<li>A returned Error element should result in an exception or other error state, and no transformation is effected.</li>
-</ul>
-<h4 id="the-resulting-object-transformation">The resulting object transformation</h4>
-<p>In all other cases a transition is effected.</p>
-<ul>
-<li>If the Link is not an in-place transition: The value is returned to the client.</li>
-<li>If the Link is an in-place transition and content has been returned: The parent Document of the Link is replaced with the new value, and the new root Document is returned to the client.</li>
-<li>If the Link is an in-place transition and content has been returned: The parent Document of the Link is removed from the Document tree, and the new root Document is returned to the client.</li>
-</ul>
+<p>When a link is followed, an appropriate <a href="../transport">transport</a> should be selected based on the scheme of the URL.</p>
+<p>The <a href="../transport">transport</a> is then responsible for returning either a new Document, or an Error condition.</p>
 </div>
             
         </div>

@@ -131,10 +131,6 @@
         
             <li><a href="#the-http-transport">The HTTP transport</a></li>
         
-            <li><a href="#encoding-link-parameters">Encoding link parameters</a></li>
-        
-            <li><a href="#constraints-of-the-http-transport">Constraints of the HTTP transport</a></li>
-        
     
     </ul>
 </div></div>
@@ -143,41 +139,69 @@
 <h1 id="transport">Transport</h1>
 <hr />
 <p>The <strong>transport layer</strong> defines how link transitions made at <a href="../document">the document layer</a> are mapped to network requests.</p>
-<p>Core API currently defines a single HTTP and HTTPS transport scheme.</p>
+<p>When effecting a link transition, an appropriate transport should be selected based
+on the <a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax">scheme portion of the URL</a>.</p>
+<p>Core API currently defines a single HTTP transport.</p>
 <hr />
 <h2 id="the-http-transport">The HTTP transport</h2>
-<p>A link transition is effected by making an HTTP request to the link URL.</p>
-<p>The HTTP method is determined by uppercasing the link action, and defaults to <code>GET</code>.</p>
-<p>Any link parameters provided are to be encoded as described below.</p>
-<p>Clients MAY choose to include an appropriate <code>Accept</code> header in the request, indicating the encodings that the client supports.</p>
-<p>The resulting content is decoded by selecting <a href="../encoding">an available codec</a> based on the response <code>Content-Type</code>. If no content is present in the response then the transport layer should return an indicator value, such as <code>null</code>.</p>
-<p>The decoded object or a "no-content" indicator is then presented to <a href="../document">the document layer</a>, which will effect the transform on the document.</p>
-<hr />
-<h2 id="encoding-link-parameters">Encoding link parameters</h2>
-<p>Link parameters are encoded into the request in different ways, depending on their associated location.</p>
+<p>The HTTP transport supports the <code>http:</code> and <code>https:</code> schemes.</p>
+<p>Link transitions for this transport are effected via an HTTP request/response, as determined below.</p>
+<h3 id="determining-the-request-method">Determining the request method</h3>
+<p>The request method is determined based on the link <code>action</code> property.</p>
 <ul>
-<li><code>path</code> - The parameter is included in the URL, using URL templating.</li>
-<li><code>query</code> - The parameter is as a URL query parameter.</li>
-<li><code>form</code> - The parameter is included in request body.</li>
+<li>The link <code>action</code> should be uppercased to give the resulting HTTP method.</li>
+<li>When no link <code>action</code> is specified, the default method is <code>GET</code>.</li>
 </ul>
-<p>When no parameter location is specified, the default is <code>query</code> for <code>GET</code> and <code>DELETE</code> actions,
-and <code>form</code> for all other actions.</p>
+<h3 id="encoding-link-parameters">Encoding link parameters</h3>
+<p>Link parameters are encoded into the request in different ways, depending on the parameter <code>location</code> property.</p>
+<ul>
+<li><code>location="path"</code> - The parameter is included in the URL, using <a href="http://tools.ietf.org/html/rfc6570">URL templating</a>.</li>
+<li><code>location="query"</code> - The parameter is included in the URL, as a query parameter.</li>
+<li><code>location="form"</code> - The parameter is included in request body.</li>
+</ul>
+<p>When no parameter location is specified, the default is to use <code>location="query"</code> for <code>GET</code> and <code>DELETE</code> actions,
+and <code>location="form"</code> for all other actions.</p>
 <h4 id="encoding-path-and-query-parameters">Encoding <code>path</code> and <code>query</code> parameters.</h4>
 <p>Because path and query parameters can only handle string encodings a simple mapping of the parameter values is required.</p>
 <ul>
-<li>String and Number values are encoded as-is, without any additional quoting.</li>
-<li>The <code>true</code>, <code>false</code> and <code>null</code> values SHOULD be encoded as <code>"1"</code>, <code>"0"</code>, and <code>""</code> respectively.</li>
+<li>String values are encoded as-is.</li>
+<li>Integer and Number values are encoded as their equivalent string representation.</li>
+<li>The <code>true</code> and <code>false</code> values SHOULD be encoded as the literal strings <code>"true"</code> and <code>"false"</code>.</li>
+<li>The <code>null</code> value SHOULD be encoded as the empty string, <code>""</code>.</li>
 <li>Array and Object parameter values are not supported and their usage SHOULD raise an error.</li>
 </ul>
 <h4 id="encoding-form-parameters">Encoding <code>form</code> parameters.</h4>
 <p>If form parameters are included, then the parameters are treated as a mapping of key-value pairs.
 The resulting map MUST be <code>JSON</code> encoded. The encoded parameters MUST then be included in the request body and the <code>Content-Type</code> header of the request SHOULD be set to <code>application/json</code>.</p>
-<hr />
-<h2 id="constraints-of-the-http-transport">Constraints of the HTTP transport</h2>
-<p>The HTTP transport layer includes some constraints on the transitions that may be effected.</p>
+<h3 id="determining-the-request-headers">Determining the request headers</h3>
+<p>Requests are free to include any standard HTTP request headers, in particular:</p>
 <ul>
-<li>As described above "GET" and "DELETE" links SHOULD only include String, Integer, Number, <code>true</code>, <code>false</code> and <code>null</code> parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.</li>
-<li>It is RECOMMENDED that URL lengths greater than 2,048 characters are not supported in requests. When they do occur, they MAY raise an error.</li>
+<li>An appropriate <code>Accept</code> header MAY be included in the request, indicating the encodings that the client supports.</li>
+<li>Clients MAY choose to include additional headers to support authentication, request signing, or other use cases.</li>
+</ul>
+<hr />
+<h3 id="decoding-the-response">Decoding the response</h3>
+<p>The result of following a link transition is to either return a Document, raise an Error condition.</p>
+<ul>
+<li>The resulting content is decoded by selecting <a href="../encoding">an available codec</a> based on the response <code>Content-Type</code>.</li>
+<li>Either a Document or an Error condition MUST be returned by the codec.</li>
+<li>If no content is present in the response then the transport layer MUST return an empty document.</li>
+</ul>
+<h3 id="handling-in-place-transformations">Handling in-place transformations</h3>
+<p>An in-place transformation takes place when a link has <code>inplace=true</code>, and the
+link is contained by a nested document.</p>
+<p>When the <code>inplace</code> property is <code>null</code>, an appropriate default is used:</p>
+<ul>
+<li>The <code>PUT</code>, <code>PATCH</code> and <code>DELETE</code> methods default to <code>inplace=true</code>.</li>
+<li>All other methods default to <code>inplace=false</code>.</li>
+</ul>
+<p>In the case of an in-place transformation, a <em>partial transformation</em> is effected on
+the document tree, as follows:</p>
+<ul>
+<li>If a Document is returned in the HTTP response: The nested document is replaced with
+the returned Document, and the new document tree is returned to the client.</li>
+<li>If no content is returned in HTTP response: The nested document is removed from
+the document tree, and the new document tree is returned to the client.</li>
 </ul>
 </div>
             

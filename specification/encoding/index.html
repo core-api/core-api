@@ -145,8 +145,12 @@
 <p>Servers implementations are free to support and respond with either of these schemes. Server implementations MAY choose to use the client <code>Accept</code> header to determine which of the two representations to respond with.</p>
 <hr />
 <h2 id="core-json-encoding">Core JSON encoding</h2>
-<p>A document is represented using standard JSON, with the additional restriction that the object keys "_type" and "_meta" are reserved.</p>
-<p>Any object with the key "_type" may be considered as one of the Core API primitives described below. The keys "_type" and "_meta" are otherwise removed from the normal parsing flow.</p>
+<p>A document is represented using the <a href="http://www.json.org">JSON encoding</a>. In addition to the standard set of JSON primitives, Core JSON adds the following:</p>
+<ul>
+<li>Document. <code>{"_type": "document", ...}</code></li>
+<li>Link. <code>{"_type": "link", ...}</code></li>
+<li>Error. <code>{"_type": "error", ...}</code></li>
+</ul>
 <p>The top level element in a Core JSON response MUST either be a Document or an Error.</p>
 <p>The media type for this scheme is: <code>application/vnd.coreapi+json</code>.</p>
 <p>An example Core JSON encoded document is demonstrated below.</p>
@@ -173,8 +177,11 @@
                 "_type": "link",
                 "action": "put",
                 "fields": [
-                    "description",
-                    "complete"
+                    {
+                        "name": "description"
+                    }, {
+                        "name": "complete"
+                    }
                 ]
             }
         }
@@ -191,70 +198,71 @@
     }
 }
 </code></pre>
-<h4 id="escaping-reserved-keys-during-encoding">Escaping reserved keys during encoding</h4>
-<p>When any object key matching the regular expression <code>/[\_]+(type|meta)/</code> is encountered, it MUST be escaped by pre-pending an additional underscore character.</p>
-<h4 id="unescaping-reserved-keys-during-decoding">Unescaping reserved keys during decoding</h4>
-<p>When any object key matching the regular expression <code>/_[\_]+(type|meta)/</code> is encountered, it MUST be unescaped by removing the leading underscore character.</p>
-<h4 id="handling-unexpected-types">Handling unexpected types</h4>
-<p>A number of the Object structures described below indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.</p>
 <hr />
 <h3 id="document">Document</h3>
-<p><strong>The Document primitive is represented using an object which includes a key-value pair of "_type": "document".</strong></p>
+<p><strong>The Document primitive is represented using an object which includes a key-value pair of <code>"_type": "document"</code>.</strong></p>
 <ul>
 <li>
-<p>Documents MAY include a "_meta" key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.</p>
+<p>Documents MAY include a <code>"_meta"</code> key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.</p>
 </li>
 <li>
-<p>The "_meta" object MAY include keys named "url" and "title".</p>
+<p>The <code>"_meta"</code> object MAY include keys named <code>"url"</code> and <code>"title"</code>.</p>
 </li>
 <li>
-<p>Any other keys occurring in the Document "_meta" section SHOULD be ignored by clients.</p>
+<p>Any other keys occurring in the Document <code>"_meta"</code> section SHOULD be ignored by clients.</p>
 </li>
 <li>
-<p>The value of the "url" field SHOULD be a string. This value is treated as relative to the URL of any parent containing document. When a document is loaded from the network then the URL of the top level document is treated as relative to the URL that the content was fetched from. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document or network URL, as above.</p>
+<p>The value of the <code>"url"</code> field SHOULD be a string. This value is treated as relative to the URL of any parent containing document. When a document is loaded from the network then the URL of the top level document is treated as relative to the URL that the content was fetched from. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document or network URL, as above.</p>
 </li>
 <li>
-<p>The value of the "title" field SHOULD be a string. If omitted, the default value is treated as the empty string.</p>
+<p>The value of the <code>"title"</code> field SHOULD be a string. If omitted, the default value is treated as the empty string.</p>
 </li>
 <li>
 <p>All other key-value pairs are treated as the document content.</p>
 </li>
 </ul>
 <h3 id="link">Link</h3>
-<p><strong>The Link primitive is represented using an object which includes a key-value pair of "_type": "link".</strong></p>
+<p><strong>The Link primitive is represented using an object which includes a key-value pair of <code>"_type": "link"</code>.</strong></p>
 <ul>
 <li>
-<p>Links MAY include keys named "url", "action", "inplace", and "fields".</p>
+<p>Links MAY include keys named <code>"url"</code>, <code>"action"</code>, <code>"inplace"</code>, and <code>"fields"</code>.</p>
 </li>
 <li>
 <p>Any other keys occurring in an Link SHOULD be ignored by clients.</p>
 </li>
 <li>
-<p>The value of the "url" field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.</p>
+<p>The value of the <code>"url"</code> field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.</p>
 </li>
 <li>
-<p>The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.</p>
+<p>The value of the <code>"action"</code> field SHOULD be a string. If omitted value defaults to the empty string.</p>
 </li>
 <li>
-<p>The value of the "inplace" field SHOULD be a boolean. If omitted, the link inplace marker defaults to null.</p>
+<p>The value of the <code>"inplace"</code> field SHOULD be a boolean. If omitted the value defaults to <code>null</code>.</p>
 </li>
 <li>
-<p>The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.</p>
+<p>The value of the <code>"fields"</code> field SHOULD be a list. If omitted the default value is the empty list.</p>
 </li>
-<li>
-<p>A string item in the "fields" list is to be interpreted as the name of an optional field.</p>
-</li>
-<li>
-<p>An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string.</p>
-</li>
-<li>An object item in the "fields" list MAY include a key "required". The value of this SHOULD be a boolean.</li>
-<li>An object item in the "fields" list MAY include a key "location". The value of this SHOULD be a string.</li>
 </ul>
-<h3 id="error">Error</h3>
-<p><strong>The Error primitive is represented using an object which includes a key-value pair of "_type": "error".</strong></p>
+<p><em>Link parameters:</em></p>
 <ul>
 <li>
-<p>Errors MAY include a single key named "message". The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.</p>
+<p>Each element of the <code>"fields"</code> list SHOULD be an object. Elements that are not objects are ignored.</p>
+</li>
+<li>
+<p>An object item in the <code>"fields"</code> list SHOULD contain a key <code>"name"</code>. The value of this SHOULD be a string. If omitted, the object item is ignored.</p>
+</li>
+<li>
+<p>An object item in the <code>"fields"</code> list MAY include a key <code>"required"</code>. The value of this SHOULD be a boolean. If omitted the default value is <code>false</code>.</p>
+</li>
+<li>
+<p>An object item in the <code>"fields"</code> list MAY include a key <code>"location"</code>. The value of this SHOULD be a string. If omitted the default value is the empty string.</p>
+</li>
+</ul>
+<h3 id="error">Error</h3>
+<p><strong>The Error primitive is represented using an object which includes a key-value pair of <code>"_type": "error"</code>.</strong></p>
+<ul>
+<li>
+<p>Errors MAY include a single key named <code>"message"</code>. The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.</p>
 </li>
 <li>
 <p>Any other keys occurring in an Error SHOULD be ignored by clients.</p>
@@ -266,23 +274,36 @@
 <h3 id="data-primitives">Data primitives</h3>
 <p><strong>The standard JSON primitives are represented as usual.</strong></p>
 <ul>
+<li>These are Object, Array, String, Integer, Number, <code>true</code>, <code>false</code> and <code>null</code>.</li>
+</ul>
+<hr />
+<h3 id="handling-unexpected-types">Handling unexpected types</h3>
+<ul>
 <li>
-<p>These are Object, Array, String, Number, <code>true</code>, <code>false</code> and <code>null</code>.</p>
+<p>Several of the Object structures described above indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.</p>
 </li>
 <li>
-<p>Any Object with a "_type" key that is not "document", "link" or "error" indicates an unknown type. The "_type" key and any "_meta" key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.</p>
+<p>Any Object with a <code>"_type"</code> key that is not <code>"document"</code>, <code>"link"</code> or <code>"error"</code> is invalid. The <code>"_type"</code> key and any <code>"_meta"</code> key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.</p>
 </li>
 </ul>
+<hr />
+<h3 id="escaping-reserved-keys">Escaping reserved keys</h3>
+<p>The object keys <code>"_type"</code> and <code>"_meta"</code> are reserved, and should not be included in the standard parsing of key-value contents of Document or Object types.</p>
+<p>Core JSON ensures that the reserved <code>"_type"</code> and <code>"_meta"</code> are still valid literal keys, by providing escaping and unescaping rules as detailed below.</p>
+<h4 id="escaping-reserved-keys-during-encoding">Escaping reserved keys during encoding</h4>
+<p>When any object key matching the regular expression <code>/[\_]+(type|meta)/</code> is encountered, it MUST be escaped by pre-pending an additional underscore character.</p>
+<h4 id="unescaping-reserved-keys-during-decoding">Unescaping reserved keys during decoding</h4>
+<p>When any object key matching the regular expression <code>/_[\_]+(type|meta)/</code> is encountered, it MUST be unescaped by removing the leading underscore character.</p>
 <hr />
 <h3 id="canonical-style">Canonical style</h3>
 <p>The following canonical style indicates a set of guidelines that server implementations or client libraries MAY choose to follow, in order to generate a consistent output format for the JSON encoding.</p>
 <h4 id="key-ordering">Key ordering</h4>
 <p>Clients MAY choose to order any Object or Document keys in their output, as follows.</p>
 <ul>
-<li>"_type"</li>
-<li>"_meta" (With "url" occurring before "title" in the child Object.)</li>
+<li><code>"_type"</code></li>
+<li><code>"_meta"</code> (With <code>"url"</code> occurring before <code>"title"</code> in the child Object.)</li>
 <li>All keys with a value <em>that is not</em> a Link, ordered alphabetically.</li>
-<li>All keys with a value <em>this is</em> a Link, ordered alphabetically.</li>
+<li>All keys with a value <em>that is</em> a Link, ordered alphabetically.</li>
 </ul>
 <h4 id="omitting-default-values">Omitting default values</h4>
 <p>Clients MAY choose to omit any values that are the default when encoding a document.</p>
@@ -303,7 +324,7 @@
 <p><img alt="HTML Encoding" src="../../../images/html-encoding.png" /></p>
 <p>Elements defined in the HTML encoding specification may include extra classes and attributes, and may be enclosed inside any parent HTML structure. This allows APIs to customize the style with which the browser based interaction is presented.</p>
 <p>In order to to be properly supported the rendered HTML should include javascript and styling in order to allow the user to perform any available transitions included in the document.</p>
-<p>The media type for this scheme may either be: <code>application/vnd.coreapi+html</code>, or <code>text/html</code>. To render in a Web browser, the <code>text/html</code> type should be used.</p>
+<p>The media type for this scheme is <code>text/html</code>.</p>
 <p>The <a href="https://github.com/core-api/python-client">python client library</a> can be taken as the canonical example for implementing an HTML rendering.</p>
 <h3 id="document_1">Document</h3>
 <p><strong>Documents are encoded as <code>table</code> elements with a <code>coreapi-document</code> class.</strong></p>
