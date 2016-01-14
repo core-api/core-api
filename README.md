@@ -4,23 +4,23 @@
 
 ---
 
-Core API is a general purpose system for exposing service interfaces.
+Core API is a specification for .
 
 It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:
 
 * **Robust** - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.
-* **Composable** - Documents may be nested, allowing you to fully express complex interfaces without having to make multiple network calls.
+* **Expressive** - Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls.
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.
-* **Evolvable** - Core API draws a proper separation between the object interface and the encoding and transport layers. This allows future iterations of a client library to add support for new and more efficient protocols, without needing to modify the client application.
+* **Flexible** - Core API separates the object interface from the encoding and transport layers. This means that client libraries can communicate with a number of different hypermedia formats. Equally Core API services can easily
 
 #### Example services
 
-You can interact with these example services either through your browser, by installing the command-line client, or by using one of the client libraries.
+You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.
 
 * **Notes** - Create, update and delete items from a list of notes. [http://notes.coreapi.org/](http://notes.coreapi.org/)
 * **Game** - Find the treasure in 5 turns or less. [http://game.coreapi.org/](http://game.coreapi.org/)
 
-For example, let's try interacting with the "Game" service, using the command line client.
+For example, let's try interacting with the "Game" service using the command line client.
 
 First make sure to [install Python](https://www.python.org/downloads/), then...
 
@@ -83,8 +83,11 @@ Core API has a lightweight JSON encoding called 'Core JSON'. For example:
                     "_type": "link",
                     "action": "put",
                     "fields": [
-                        "description",
-                        "complete"
+                        {
+                            "name": "description"
+                        }, {
+                            "name": "complete"
+                        }
                     ]
                 }
             }
@@ -162,11 +165,9 @@ Links are the available points of interaction that the interface presents.
 
 Links have an associated URL and action, and may accept a set of named parameters.
 
-Links may optionally be marked as effecting an "in-place" transition.
-
-When used inside a nested document, an in place transition effects a partial
-transformation on the document, modifying or removing the nested document
-from the document tree.
+Links inside nested documents may optionally be marked as an "in-place" transition.
+Links that are marked as in-place effect a partial transformation on the document,
+modifying or removing the nested document from the document tree.
 
 The 'put', 'patch' and 'delete' actions default to being in-place.
 
@@ -175,6 +176,9 @@ We'll start by removing all the existing notes:
 
     >>> while doc["notes"]:
     >>>     doc = coreapi.action(doc, ['notes', 0, 'delete'])
+
+Calling `.action()` effects a transition on the given link, and returns a
+new document instance.
 
 There should now be no notes remaining:
 
@@ -257,26 +261,6 @@ When building a Core API interface you'll need to decide on when to link to asso
 
 Normally this decision should be self-evident, and will depend on the type of the relationship that the link expresses.
 
----
-
-## Plans for the future
-
-I'm currently planning a significant amount of time into building the Core API specification, tooling and ecosystem. Possible future work includes the following:
-
-* **Media links** - Links to images, videos and other downloadable media will be supported.
-* **File uploads** - The HTTP transport should support files as parameters. When files are present multipart encoding will be used.
-* **Documents as parameters** - We should support passing documents as parameters to a link. They can be encoded using the URL, and allow for operations such as `.swap_position(child_document_1, child_document_2)`.
-* **Generator primitives** - We plan to add support for a generator primitive, that transparently deals with paginated result sets.
-* **Field errors** - Currently errors only support a list of messages. We will also support messages being mapped to the fields that they relate too.
-* **Primitive return values** - As well as document transitions and media downloads, we might want to support links that return primitive values.
-* **Richer types** - We could consider expanding the primitives to include a richer set of types. A date-time primitive is one obvious candidate. We'll need to balance this consideration against maximizing language portability.
-* **Authentication** - The HTTP transport needs to discuss what authentication schemes are supported, and how this works between differing domains.
-* **Javascript client** - Currently we only have a Python client library. Having a fully supported Javascript library is a priority.
-* **Command line client** - A command line client for interfacing with Core API, including history, forwards/backwards operations etc.
-* **Realtime interfaces** - We need to specify at the document layer how realtime interfaces can be supported. At that point we can consider adding either or both of HTTP polling and web sockets as supported transports.
-* **Server tooling** - We should introduce some server tooling support. In particular a package including renderers, parsers and a test client library for Django REST framework.
-* **Timestamps and validation** - There may be scope for design work on timestamp and validation information being associated at the document layer. We could then build on this with better caching support, and support for conditional updates.
-* **Other media types** - The separation of document and encoding concerns in Core API means that we could add support for other encodings such as `application/hal+json`. These encodings might have restrictions on what parts of the document interface they can support. For example some formats might not support parameterized links, or composable documents.
 
 [command-line-client]: http://www.coreapi.org/tools-and-resources/command-line-client/
 [python-client]: https://github.com/core-api/python-client

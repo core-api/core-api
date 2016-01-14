@@ -12,9 +12,11 @@ Servers implementations are free to support and respond with either of these sch
 
 ## Core JSON encoding
 
-A document is represented using standard JSON, with the additional restriction that the object keys "\_type" and "\_meta" are reserved.
+A document is represented using the [JSON encoding][json]. In addition to the standard set of JSON primitives, Core JSON adds the following:
 
-Any object with the key "\_type" may be considered as one of the Core API primitives described below. The keys "\_type" and "\_meta" are otherwise removed from the normal parsing flow.
+* Document. `{"_type": "document", ...}`
+* Link. `{"_type": "link", ...}`
+* Error. `{"_type": "error", ...}`
 
 The top level element in a Core JSON response MUST either be a Document or an Error.
 
@@ -45,8 +47,11 @@ An example Core JSON encoded document is demonstrated below.
                     "_type": "link",
                     "action": "put",
                     "fields": [
-                        "description",
-                        "complete"
+                        {
+                            "name": "description"
+                        }, {
+                            "name": "complete"
+                        }
                     ]
                 }
             }
@@ -63,63 +68,55 @@ An example Core JSON encoded document is demonstrated below.
         }
     }
 
-#### Escaping reserved keys during encoding
-
-When any object key matching the regular expression `/[\_]+(type|meta)/` is encountered, it MUST be escaped by pre-pending an additional underscore character.
-
-#### Unescaping reserved keys during decoding
-
-When any object key matching the regular expression `/_[\_]+(type|meta)/` is encountered, it MUST be unescaped by removing the leading underscore character.
-
-#### Handling unexpected types
-
-A number of the Object structures described below indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.
-
 ---
 
 ### Document
 
-**The Document primitive is represented using an object which includes a key-value pair of "_type": "document".**
+**The Document primitive is represented using an object which includes a key-value pair of `"_type": "document"`.**
 
-* Documents MAY include a "\_meta" key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.
+* Documents MAY include a `"_meta"` key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.
 
-* The "\_meta" object MAY include keys named "url" and "title".
+* The `"_meta"` object MAY include keys named `"url"` and `"title"`.
 
-* Any other keys occurring in the Document "\_meta" section SHOULD be ignored by clients.
+* Any other keys occurring in the Document `"_meta"` section SHOULD be ignored by clients.
 
-* The value of the "url" field SHOULD be a string. This value is treated as relative to the URL of any parent containing document. When a document is loaded from the network then the URL of the top level document is treated as relative to the URL that the content was fetched from. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document or network URL, as above.
+* The value of the `"url"` field SHOULD be a string. This value is treated as relative to the URL of any parent containing document. When a document is loaded from the network then the URL of the top level document is treated as relative to the URL that the content was fetched from. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document or network URL, as above.
 
-* The value of the "title" field SHOULD be a string. If omitted, the default value is treated as the empty string.
+* The value of the `"title"` field SHOULD be a string. If omitted, the default value is treated as the empty string.
 
 * All other key-value pairs are treated as the document content.
 
 ### Link
 
-**The Link primitive is represented using an object which includes a key-value pair of "_type": "link".**
+**The Link primitive is represented using an object which includes a key-value pair of `"_type": "link"`.**
 
-* Links MAY include keys named "url", "action", "inplace", and "fields".
+* Links MAY include keys named `"url"`, `"action"`, `"inplace"`, and `"fields"`.
 
 * Any other keys occurring in an Link SHOULD be ignored by clients.
 
-* The value of the "url" field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.
+* The value of the `"url"` field SHOULD be a string, and is treated as relative to the URL of the parent containing document. If omitted the default value is treated as the empty string, relative to the URL of the parent containing document.
 
-* The value of the "action" field SHOULD be a string. If omitted, the link action defaults to the empty string.
+* The value of the `"action"` field SHOULD be a string. If omitted value defaults to the empty string.
 
-* The value of the "inplace" field SHOULD be a boolean. If omitted, the link inplace marker defaults to null.
+* The value of the `"inplace"` field SHOULD be a boolean. If omitted the value defaults to `null`.
 
-* The value of the "fields" field SHOULD be a list. Each element of the list SHOULD either be a string or an object. If omitted the default value is treated as the empty list.
+* The value of the `"fields"` field SHOULD be a list. If omitted the default value is the empty list.
 
-* A string item in the "fields" list is to be interpreted as the name of an optional field.
+*Link parameters:*
 
-* An object item in the "fields" list SHOULD contain a key "name". The value of this SHOULD be a string.
-* An object item in the "fields" list MAY include a key "required". The value of this SHOULD be a boolean.
-* An object item in the "fields" list MAY include a key "location". The value of this SHOULD be a string.
+* Each element of the `"fields"` list SHOULD be an object. Elements that are not objects are ignored.
+
+* An object item in the `"fields"` list SHOULD contain a key `"name"`. The value of this SHOULD be a string. If omitted, the object item is ignored.
+
+* An object item in the `"fields"` list MAY include a key `"required"`. The value of this SHOULD be a boolean. If omitted the default value is `false`.
+
+* An object item in the `"fields"` list MAY include a key `"location"`. The value of this SHOULD be a string. If omitted the default value is the empty string.
 
 ### Error
 
-**The Error primitive is represented using an object which includes a key-value pair of "_type": "error".**
+**The Error primitive is represented using an object which includes a key-value pair of `"_type": "error"`.**
 
-* Errors MAY include a single key named "message". The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.
+* Errors MAY include a single key named `"message"`. The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.
 
 * Any other keys occurring in an Error SHOULD be ignored by clients.
 
@@ -129,9 +126,32 @@ A number of the Object structures described below indicate a required type for a
 
 **The standard JSON primitives are represented as usual.**
 
-* These are Object, Array, String, Number, `true`, `false` and `null`.
+* These are Object, Array, String, Integer, Number, `true`, `false` and `null`.
 
-* Any Object with a "\_type" key that is not "document", "link" or "error" indicates an unknown type. The "\_type" key and any "\_meta" key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.
+---
+
+### Handling unexpected types
+
+* Several of the Object structures described above indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.
+
+* Any Object with a `"_type"` key that is not `"document"`, `"link"` or `"error"` is invalid. The `"_type"` key and any `"_meta"` key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.
+
+---
+
+### Escaping reserved keys
+
+The object keys `"_type"` and `"_meta"` are reserved, and should not be included in the standard parsing of key-value contents of Document or Object types.
+
+Core JSON ensures that the reserved `"_type"` and `"_meta"` are still valid literal keys, by providing escaping and unescaping rules as detailed below.
+
+#### Escaping reserved keys during encoding
+
+When any object key matching the regular expression `/[\_]+(type|meta)/` is encountered, it MUST be escaped by pre-pending an additional underscore character.
+
+#### Unescaping reserved keys during decoding
+
+When any object key matching the regular expression `/_[\_]+(type|meta)/` is encountered, it MUST be unescaped by removing the leading underscore character.
+
 
 ---
 
@@ -143,10 +163,10 @@ The following canonical style indicates a set of guidelines that server implemen
 
 Clients MAY choose to order any Object or Document keys in their output, as follows.
 
-* "\_type"
-* "\_meta" (With "url" occurring before "title" in the child Object.)
+* `"_type"`
+* `"_meta"` (With `"url"` occurring before `"title"` in the child Object.)
 * All keys with a value *that is not* a Link, ordered alphabetically.
-* All keys with a value *this is* a Link, ordered alphabetically.
+* All keys with a value *that is* a Link, ordered alphabetically.
 
 #### Omitting default values
 
@@ -180,7 +200,7 @@ Elements defined in the HTML encoding specification may include extra classes an
 
 In order to to be properly supported the rendered HTML should include javascript and styling in order to allow the user to perform any available transitions included in the document.
 
-The media type for this scheme may either be: `application/vnd.coreapi+html`, or `text/html`. To render in a Web browser, the `text/html` type should be used.
+The media type for this scheme is `text/html`.
 
 The [python client library](https://github.com/core-api/python-client) can be taken as the canonical example for implementing an HTML rendering.
 
@@ -248,3 +268,6 @@ The newline character, `'\n'`, MAY be replaced with a `<br/>` element.
 **Errors are encoded as `<ul>` elements, with a `coreapi-error` class.**
 
 Each message in the error SHOULD be included as a `<li>` element, with the text of the element containing the message value.
+
+
+[json]: http://www.json.org

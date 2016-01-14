@@ -4,43 +4,45 @@
 
 The **transport layer** defines how link transitions made at [the document layer](document.md) are mapped to network requests.
 
-Core API currently defines a single HTTP and HTTPS transport scheme.
+When effecting a link transition, an appropriate transport should be selected based
+on the [scheme portion of the URL][scheme].
+
+Core API currently defines a single HTTP transport.
 
 ---
 
 ## The HTTP transport
 
-A link transition is effected by making an HTTP request to the link URL.
+The HTTP transport supports the `http:` and `https:` schemes.
 
-The HTTP method is determined by uppercasing the link action, and defaults to `GET`.
+Link transitions for this transport are effected via an HTTP request/response, as determined below.
 
-Any link parameters provided are to be encoded as described below.
+### Determining the request method
 
-Clients MAY choose to include an appropriate `Accept` header in the request, indicating the encodings that the client supports.
+The request method is determined based on the link `action` property.
 
-The resulting content is decoded by selecting [an available codec](encoding.md) based on the response `Content-Type`. If no content is present in the response then the transport layer should return an indicator value, such as `null`.
+* The link `action` should be uppercased to give the resulting HTTP method.
+* When no link `action` is specified, the default method is `GET`.
 
-The decoded object or a "no-content" indicator is then presented to [the document layer](document.md), which will effect the transform on the document.
+### Encoding link parameters
 
----
+Link parameters are encoded into the request in different ways, depending on the parameter `location` property.
 
-## Encoding link parameters
+* `location="path"` - The parameter is included in the URL, using [URL templating][rfc6570].
+* `location="query"` - The parameter is included in the URL, as a query parameter.
+* `location="form"` - The parameter is included in request body.
 
-Link parameters are encoded into the request in different ways, depending on their associated location.
-
-* `path` - The parameter is included in the URL, using URL templating.
-* `query` - The parameter is as a URL query parameter.
-* `form` - The parameter is included in request body.
-
-When no parameter location is specified, the default is `query` for `GET` and `DELETE` actions,
-and `form` for all other actions.
+When no parameter location is specified, the default is to use `location="query"` for `GET` and `DELETE` actions,
+and `location="form"` for all other actions.
 
 #### Encoding `path` and `query` parameters.
 
 Because path and query parameters can only handle string encodings a simple mapping of the parameter values is required.
 
-* String and Number values are encoded as-is, without any additional quoting.
-* The `true`, `false` and `null` values SHOULD be encoded as `"1"`, `"0"`, and `""` respectively.
+* String values are encoded as-is.
+* Integer and Number values are encoded as their equivalent string representation.
+* The `true` and `false` values SHOULD be encoded as the literal strings `"true"` and `"false"`.
+* The `null` value SHOULD be encoded as the empty string, `""`.
 * Array and Object parameter values are not supported and their usage SHOULD raise an error.
 
 #### Encoding `form` parameters.
@@ -48,11 +50,41 @@ Because path and query parameters can only handle string encodings a simple mapp
 If form parameters are included, then the parameters are treated as a mapping of key-value pairs.
 The resulting map MUST be `JSON` encoded. The encoded parameters MUST then be included in the request body and the `Content-Type` header of the request SHOULD be set to `application/json`.
 
+### Determining the request headers
+
+Requests are free to include any standard HTTP request headers, in particular:
+
+* An appropriate `Accept` header MAY be included in the request, indicating the encodings that the client supports.
+* Clients MAY choose to include additional headers to support authentication, request signing, or other use cases.
+
 ---
 
-## Constraints of the HTTP transport
+### Decoding the response
 
-The HTTP transport layer includes some constraints on the transitions that may be effected.
+The result of following a link transition is to either return a Document, raise an Error condition.
 
-* As described above "GET" and "DELETE" links SHOULD only include String, Integer, Number, `true`, `false` and `null` parameter values. Object and Array values SHOULD NOT be supported, and their usage MAY raise an error.
-* It is RECOMMENDED that URL lengths greater than 2,048 characters are not supported in requests. When they do occur, they MAY raise an error.
+* The resulting content is decoded by selecting [an available codec](encoding.md) based on the response `Content-Type`.
+* Either a Document or an Error condition MUST be returned by the codec.
+* If no content is present in the response then the transport layer MUST return an empty document.
+
+### Handling in-place transformations
+
+An in-place transformation takes place when a link has `inplace=true`, and the
+link is contained by a nested document.
+
+When the `inplace` property is `null`, an appropriate default is used:
+
+* The `PUT`, `PATCH` and `DELETE` methods default to `inplace=true`.
+* All other methods default to `inplace=false`.
+
+In the case of an in-place transformation, a *partial transformation* is effected on
+the document tree, as follows:
+
+* If a Document is returned in the HTTP response: The nested document is replaced with
+the returned Document, and the new document tree is returned to the client.
+* If no content is returned in HTTP response: The nested document is removed from
+the document tree, and the new document tree is returned to the client.
+
+
+[scheme]: https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax
+[rfc6570]: http://tools.ietf.org/html/rfc6570
