@@ -2,6 +2,13 @@
 
 The command line client allows you to interact with Core API services from the console.
 
+The client includes commands for retrieving, displaying and interacting with Core API services,
+as well as additional functionality, including:
+
+* History. Navigate backwards and forwards through a document history.
+* Credentials. Associate Authorization headers with given domains.
+* Bookmarks. Save and reload bookmarked documents.
+
 ## Installation
 
 First you'll need to make sure you've got the Python programming language available on your system. If you need to install it, you can [do so here](https://www.python.org/downloads/). Either of the 2.7 or 3.x versions will do fine.
@@ -15,8 +22,9 @@ Once you've got Python you can use its package manager to install the `coreapi` 
 Finally, make sure that the client has been successfully installed.
 
 ```bash
-    $ coreapi --version
-    coreapi version 1.3.0
+    $ coreapi
+    Usage: coreapi [OPTIONS] COMMAND [ARGS]
+    [...]
 ```
 
 ## Fetching documents
