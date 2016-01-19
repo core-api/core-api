@@ -4,14 +4,12 @@
 
 ---
 
-Core API is a specification for .
-
-It allows you to build RESTful Web APIs that describe their available interface, and provides the following benefits:
+Core API is a specification for creating Hypermedia driven Web APIs, that allows you to build rich, expressive, and meaningful interfaces.
 
 * **Robust** - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.
 * **Expressive** - Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls.
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.
-* **Flexible** - Core API separates the object interface from the encoding and transport layers. This means that client libraries can communicate with a number of different hypermedia formats. Equally Core API services can easily
+* **Flexible** - Rather than be coupled to a particular encoding, Core API separates out the document, encoding and transport concerns. This means that client libraries can communicate with a number of different hypermedia formats. Equally, Core API services can make themselves available over a number of different encodings.
 
 #### Example services
 
@@ -228,14 +226,14 @@ Core API supports the same subset of data primitives as JSON. These are Object, 
 
 #### Errors
 
-Following a link may result in an error. An error is defined as having a list of strings, which represent any error message associated with the failed transition.
+Following a link may result in an error. An error is a set of key-value pairs, which is used to represent any error information associated with the failed transition.
 
 Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.
 
     >>> coreapi.action(doc, 'add_note', params={'description': 'x' * 999999})
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
+    coreapi.exceptions.ErrorMessage: {"description": ["Ensure this parameter has no more than 100 characters."]}
 
 ---
 

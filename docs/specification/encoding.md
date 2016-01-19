@@ -116,9 +116,15 @@ An example Core JSON encoded document is demonstrated below.
 
 **The Error primitive is represented using an object which includes a key-value pair of `"_type": "error"`.**
 
-* Errors MAY include a single key named `"message"`. The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.
+* Error MAY include a `"_meta"` key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.
 
-* Any other keys occurring in an Error SHOULD be ignored by clients.
+* The `"_meta"` object MAY include a key named `"title"`.
+
+* Any other keys occurring in the Error `"_meta"` section SHOULD be ignored by clients.
+
+* The value of the `"title"` field SHOULD be a string. If omitted, the default value is treated as the empty string.
+
+* All other key-value pairs are treated as the error content.
 
 * Errors SHOULD only occur as the top level element. Any Error occurring as a child element inside a Document, Object or Array SHOULD be ignored.
 
