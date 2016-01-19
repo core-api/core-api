@@ -262,10 +262,19 @@
 <p><strong>The Error primitive is represented using an object which includes a key-value pair of <code>"_type": "error"</code>.</strong></p>
 <ul>
 <li>
-<p>Errors MAY include a single key named <code>"message"</code>. The value of this SHOULD be a list of strings. If omitted the default value is treated as the empty list.</p>
+<p>Error MAY include a <code>"_meta"</code> key. The value of this SHOULD be an object. If omitted, the default value is treated as an empty Object.</p>
 </li>
 <li>
-<p>Any other keys occurring in an Error SHOULD be ignored by clients.</p>
+<p>The <code>"_meta"</code> object MAY include a key named <code>"title"</code>.</p>
+</li>
+<li>
+<p>Any other keys occurring in the Error <code>"_meta"</code> section SHOULD be ignored by clients.</p>
+</li>
+<li>
+<p>The value of the <code>"title"</code> field SHOULD be a string. If omitted, the default value is treated as the empty string.</p>
+</li>
+<li>
+<p>All other key-value pairs are treated as the error content.</p>
 </li>
 <li>
 <p>Errors SHOULD only occur as the top level element. Any Error occurring as a child element inside a Document, Object or Array SHOULD be ignored.</p>

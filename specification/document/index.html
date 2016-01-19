@@ -147,10 +147,10 @@ In doing so they do not require any information about the underlying transport o
 <p>The specification for mapping documents onto byte strings is documented by <a href="../encoding">the encoding layer</a>. The specification for how network requests are made is documented by <a href="../transport">the transport layer</a>.</p>
 <hr />
 <h2 id="the-document-primitives">The document primitives</h2>
+<p>The top level element in a Core API interface MUST be a Document or Error.</p>
 <h4 id="documents">Documents</h4>
 <p>A document is used as a container for the data and actions provided by the interface.</p>
 <ul>
-<li>The top level element in a Core API interface MUST be a Document.</li>
 <li>A Document is a set of key-value pairs.</li>
 <li>The keys in a Document MUST be string values.</li>
 <li>The values in a Document can be any Core API primitive.</li>
@@ -180,8 +180,13 @@ transition, and may affect the resulting URL, query parameters or request body.<
 </ul>
 <h4 id="errors">Errors</h4>
 <p>Errors are exception states that may occur when a transition fails. This element allows the server to respond with a message or messages indicating why the transition could not be effected.</p>
+<p>Errors are similar to Documents, but because they do not represent a successful transition they are not
+associated with a URL.</p>
 <ul>
-<li>An Error has an associated <code>"messages"</code> property, which MUST be a list of strings. The empty list is valid and MAY be considered a default value by client libraries.</li>
+<li>An error is a set of key-value pairs.</li>
+<li>The keys in a Error MUST be string values.</li>
+<li>The values in a Error can be any Core API primitive.</li>
+<li>A Error has an associated <code>"title"</code> property, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 <li>An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.</li>
 <li>An Error MUST NOT not be contained at any point in a Document.</li>
 </ul>

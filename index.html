@@ -352,12 +352,12 @@ new document instance.</p>
 True
 </code></pre>
 <h4 id="errors">Errors</h4>
-<p>Following a link may result in an error. An error is defined as having a list of strings, which represent any error message associated with the failed transition.</p>
+<p>Following a link may result in an error. An error is a set of key-value pairs, which is used to represent any error information associated with the failed transition.</p>
 <p>Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.</p>
 <pre><code>&gt;&gt;&gt; coreapi.action(doc, 'add_note', params={'description': 'x' * 999999})
 Traceback (most recent call last):
   File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
+coreapi.exceptions.ErrorMessage: {"description": ["Ensure this parameter has no more than 100 characters."]}
 </code></pre>
 <hr />
 <h2 id="design-considerations">Design considerations</h2>
