@@ -226,14 +226,14 @@ Core API supports the same subset of data primitives as JSON. These are Object, 
 
 #### Errors
 
-Following a link may result in an error. An error is defined as having a list of strings, which represent any error message associated with the failed transition.
+Following a link may result in an error. An error is a set of key-value pairs, which is used to represent any error information associated with the failed transition.
 
 Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.
 
     >>> coreapi.action(doc, 'add_note', params={'description': 'x' * 999999})
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    coreapi.exceptions.ErrorMessage: ['description - Ensure this parameter has no more than 100 characters.']
+    coreapi.exceptions.ErrorMessage: {"description": ["Ensure this parameter has no more than 100 characters."]}
 
 ---
 

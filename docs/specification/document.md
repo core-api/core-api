@@ -15,11 +15,12 @@ The specification for mapping documents onto byte strings is documented by [the 
 
 ## The document primitives
 
+The top level element in a Core API interface MUST be a Document or Error.
+
 #### Documents
 
 A document is used as a container for the data and actions provided by the interface.
 
-* The top level element in a Core API interface MUST be a Document.
 * A Document is a set of key-value pairs.
 * The keys in a Document MUST be string values.
 * The values in a Document can be any Core API primitive.
@@ -54,7 +55,13 @@ Data primitives are the set of basic datatypes that may be used to represent dat
 
 Errors are exception states that may occur when a transition fails. This element allows the server to respond with a message or messages indicating why the transition could not be effected.
 
-* An Error has an associated `"messages"` property, which MUST be a list of strings. The empty list is valid and MAY be considered a default value by client libraries.
+Errors are similar to Documents, but because they do not represent a successful transition they are not
+associated with a URL.
+
+* An error is a set of key-value pairs.
+* The keys in a Error MUST be string values.
+* The values in a Error can be any Core API primitive.
+* A Error has an associated `"title"` property, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.
 * An Error MUST NOT not be contained at any point in a Document.
 
