@@ -70,6 +70,43 @@ An example Core JSON encoded document is demonstrated below.
 
 ---
 
+## HAL encoding
+
+Core API documents can be encoded in HAL, with a few limitations:
+
+#### HAL does not supports parameter or action information on links.
+
+When interacting with a HAL service using Core API, you'll need to explicitly
+set any actions other than GET. For example, using the command line client:
+
+    coreapi action add_note -a post -p description="A new todo note"
+
+Additionally, parameters will not be included in the link descriptions displayed
+by Core API documents.
+
+#### Indexing by keys vs indexing by `rel` values.
+
+HAL uses `rel` values to identify and index links and embedded documents,
+whereas Core API uses the key in the document.
+
+In order to handle this Core API maps between HAL `rel` values and roughly equivalent key values.
+For example, if decoding a HAL document then the link's `curie` name will be as the key, if it exists.
+
+#### Valid document structures.
+
+HAL supports documents and links as top level items, where Core API supports
+documents and links nested anywhere in the parent document.
+
+This introduces some limitations on the valid document structures that Core API
+can support in HAL representations.
+
+#### Link help information.
+
+Core API does not yet support help information being associated with links,
+which HAL provides for.
+
+---
+
 ### Document
 
 **The Document primitive is represented using an object which includes a key-value pair of `"_type": "document"`.**

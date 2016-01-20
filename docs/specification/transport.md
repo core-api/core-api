@@ -61,7 +61,7 @@ Requests are free to include any standard HTTP request headers, in particular:
 
 ### Decoding the response
 
-The result of following a link transition is to either return a Document, raise an Error condition.
+The result of following a link transition is to either return a Document, or raise an Error condition.
 
 * The resulting content is decoded by selecting [an available codec](encoding.md) based on the response `Content-Type`.
 * Either a Document or an Error condition MUST be returned by the codec.
@@ -84,6 +84,18 @@ the document tree, as follows:
 the returned Document, and the new document tree is returned to the client.
 * If no content is returned in HTTP response: The nested document is removed from
 the document tree, and the new document tree is returned to the client.
+
+### Coercing 4xx and 5xx responses to errors
+
+When a 4xx or 5xx response is received the transport layer SHOULD coerce any
+Document returned into an Error. This allows media types that do not support
+an error primitive to be handled gracefully.
+
+When a 4xx or 5xx response is received that contains a media type that is
+not a supported hypermedia format, the transport MAY attempt to use fallback
+media types to decode the content and return an Error. For example, a transport
+MAY support graceful handling of error responses that have been returned in
+plain `application/json` and/or `text/html` formats.
 
 
 [scheme]: https://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Syntax
