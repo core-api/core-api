@@ -20,12 +20,6 @@ The following tooling is currently available for Core API.
 * A [Javascript client library][javascript-client] is currently planned.
 * We have an [example server implementation][example-server], for demonstration purposes.
 
-#### Discussion
-
-For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
-
-For discussion of the tools and specification, use the [Hypermedia Web mailing list](https://groups.google.com/forum/#!forum/hypermedia-web).
-
 #### Example services
 
 You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.
@@ -101,6 +95,7 @@ The top level element in any Core API interface is always a Document.
 
 Let's take a look at a Core API document by using the command line client.
 
+```bash
     $ pip install coreapi
     $ coreapi get http://notes.coreapi.org/
     <Notes "http://notes.coreapi.org/">
@@ -117,6 +112,7 @@ Let's take a look at a Core API document by using the command line client.
                 edit([description], [complete])
         ]
         add_note(description)
+```
 
 We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.
 
@@ -132,6 +128,7 @@ in-place effect a partial transformation on the document, modifying or removing 
 Let's return to the command line client, and take a look at calling some links.
 We'll start by removing an existing note:
 
+```bash
     $ coreapi action notes 0 delete
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -142,19 +139,23 @@ We'll start by removing an existing note:
                 edit([description], [complete])
         ]
         add_note(description)
+```
 
 Let's remove the final remaining note.
 
+```bash
     $ coreapi action notes 0 delete
     <Notes "http://notes.coreapi.org/">
         notes: []
         add_note(description)
+```
 
 There should now be no notes remaining.
 
 Okay, let's create a new note. In this case we'll want to include a named parameter
 when acting on the link.
 
+```bash
     $ coreapi action add_note --params description="Email venue about conference dates"
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -165,9 +166,11 @@ when acting on the link.
                 edit([description], [complete])
         ]
         add_note(description)
+```
 
 Finally we'll update the state of the note we've just created:
 
+```bash
     $ coreapi action notes 0 edit --params complete=true
     <Notes "http://notes.coreapi.org/">
         notes: [
@@ -178,6 +181,7 @@ Finally we'll update the state of the note we've just created:
                 edit([description], [complete])
         ]
         add_note(description)
+```
 
 #### Data primitives
 
@@ -185,10 +189,12 @@ Data primitives are the set of basic datatypes that may be used to represent dat
 
 Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, `true`, `false`, and `null`.
 
+```bash
     $ coreapi show notes 0 description
     "Email venue about conference dates"
     $ coreapi show notes 0 complete
     true
+```
 
 #### Errors
 
@@ -198,19 +204,29 @@ Encountering an error prevents any transition from taking place, and will normal
 
 For example, in this case the server responds with an error when we fail to include a parameter:
 
+```bash
     $ coreapi action add_note
     <Error: Invalid parameters>
         description: [
             "This field is required."
         ]
+```
 
 In this case the server responds with an error when we include an invalid parameter:
 
+```bash
     $ coreapi action add_note -p description='xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxx'
     <Error: Invalid parameters>
     description: [
         "Ensure this field has no more than 100 characters."
     ]
+```
+
+#### Get involved
+
+For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
+
+For discussion of the tools and specification, use the [Hypermedia Web mailing list](https://groups.google.com/forum/#!forum/hypermedia-web).
 
 
 [command-line-client]: http://www.coreapi.org/tools-and-resources/command-line-client/
