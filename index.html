@@ -131,8 +131,6 @@
         
             <li><a href="#tooling">Tooling</a></li>
         
-            <li><a href="#discussion">Discussion</a></li>
-        
             <li><a href="#example-services">Example services</a></li>
         
             <li><a href="#what-does-it-look-like">What does it look like?</a></li>
@@ -162,9 +160,6 @@
 <li>A <a href="https://github.com/core-api/javascript-client">Javascript client library</a> is currently planned.</li>
 <li>We have an <a href="https://github.com/core-api/example-server">example server implementation</a>, for demonstration purposes.</li>
 </ul>
-<h4 id="discussion">Discussion</h4>
-<p>For news and updates follow <a href="https://twitter.com/core_api">@core-api</a>, or <a href="https://twitter.com/_tomchristie">@_tomchristie</a>.</p>
-<p>For discussion of the tools and specification, use the <a href="https://groups.google.com/forum/#!forum/hypermedia-web">Hypermedia Web mailing list</a>.</p>
 <h4 id="example-services">Example services</h4>
 <p>You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.</p>
 <ul>
@@ -239,23 +234,24 @@ and servers are able to interact with any one of several different formats.</p>
 <p>Documents are key-value pairs that contain the data and actions presented by the interface. Documents always have an associated URL, and should also have a title.</p>
 <p>The top level element in any Core API interface is always a Document.</p>
 <p>Let's take a look at a Core API document by using the command line client.</p>
-<pre><code>$ pip install coreapi
-$ coreapi get http://notes.coreapi.org/
-&lt;Notes "http://notes.coreapi.org/"&gt;
-    notes: [
-        &lt;Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca"&gt;
-            complete: true
-            description: "Do the weekly shopping"
-            delete()
-            edit([description], [complete]),
-        &lt;Note "http://notes.coreapi.org/0ace0b3b-9db2-4c10-989e-76c5c61265e7"&gt;
-            complete: false
-            description: "Fix the kitchen door"
-            delete()
-            edit([description], [complete])
-    ]
-    add_note(description)
+<pre><code class="bash">    $ pip install coreapi
+    $ coreapi get http://notes.coreapi.org/
+    &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
+        notes: [
+            &lt;Note &quot;http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca&quot;&gt;
+                complete: true
+                description: &quot;Do the weekly shopping&quot;
+                delete()
+                edit([description], [complete]),
+            &lt;Note &quot;http://notes.coreapi.org/0ace0b3b-9db2-4c10-989e-76c5c61265e7&quot;&gt;
+                complete: false
+                description: &quot;Fix the kitchen door&quot;
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 </code></pre>
+
 <p>We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.</p>
 <h4 id="links">Links</h4>
 <p>Links are the available points of interaction that the interface presents.</p>
@@ -264,74 +260,84 @@ $ coreapi get http://notes.coreapi.org/
 in-place effect a partial transformation on the document, modifying or removing the nested document from the document tree. The 'put', 'patch' and 'delete' actions default to being in-place.</p>
 <p>Let's return to the command line client, and take a look at calling some links.
 We'll start by removing an existing note:</p>
-<pre><code>$ coreapi action notes 0 delete
-&lt;Notes "http://notes.coreapi.org/"&gt;
-    notes: [
-        &lt;Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca"&gt;
-            complete: true
-            description: "Do the weekly shopping"
-            delete()
-            edit([description], [complete])
-    ]
-    add_note(description)
+<pre><code class="bash">    $ coreapi action notes 0 delete
+    &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
+        notes: [
+            &lt;Note &quot;http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca&quot;&gt;
+                complete: true
+                description: &quot;Do the weekly shopping&quot;
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 </code></pre>
+
 <p>Let's remove the final remaining note.</p>
-<pre><code>$ coreapi action notes 0 delete
-&lt;Notes "http://notes.coreapi.org/"&gt;
-    notes: []
-    add_note(description)
+<pre><code class="bash">    $ coreapi action notes 0 delete
+    &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
+        notes: []
+        add_note(description)
 </code></pre>
+
 <p>There should now be no notes remaining.</p>
 <p>Okay, let's create a new note. In this case we'll want to include a named parameter
 when acting on the link.</p>
-<pre><code>$ coreapi action add_note --params description="Email venue about conference dates"
-&lt;Notes "http://notes.coreapi.org/"&gt;
-    notes: [
-        &lt;Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/"&gt;
-            complete: false
-            description: "Email venue about conference dates"
-            delete()
-            edit([description], [complete])
-    ]
-    add_note(description)
+<pre><code class="bash">    $ coreapi action add_note --params description=&quot;Email venue about conference dates&quot;
+    &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
+        notes: [
+            &lt;Note &quot;http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/&quot;&gt;
+                complete: false
+                description: &quot;Email venue about conference dates&quot;
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 </code></pre>
+
 <p>Finally we'll update the state of the note we've just created:</p>
-<pre><code>$ coreapi action notes 0 edit --params complete=true
-&lt;Notes "http://notes.coreapi.org/"&gt;
-    notes: [
-        &lt;Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/"&gt;
-            complete: true
-            description: "Email venue about conference dates"
-            delete()
-            edit([description], [complete])
-    ]
-    add_note(description)
+<pre><code class="bash">    $ coreapi action notes 0 edit --params complete=true
+    &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
+        notes: [
+            &lt;Note &quot;http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/&quot;&gt;
+                complete: true
+                description: &quot;Email venue about conference dates&quot;
+                delete()
+                edit([description], [complete])
+        ]
+        add_note(description)
 </code></pre>
+
 <h4 id="data-primitives">Data primitives</h4>
 <p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
 <p>Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, <code>true</code>, <code>false</code>, and <code>null</code>.</p>
-<pre><code>$ coreapi show notes 0 description
-"Email venue about conference dates"
-$ coreapi show notes 0 complete
-true
+<pre><code class="bash">    $ coreapi show notes 0 description
+    &quot;Email venue about conference dates&quot;
+    $ coreapi show notes 0 complete
+    true
 </code></pre>
+
 <h4 id="errors">Errors</h4>
 <p>Following a link may result in an error. An error is a set of key-value pairs, which is used to represent any error information associated with the failed transition.</p>
 <p>Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.</p>
 <p>For example, in this case the server responds with an error when we fail to include a parameter:</p>
-<pre><code>$ coreapi action add_note
-&lt;Error: Invalid parameters&gt;
+<pre><code class="bash">    $ coreapi action add_note
+    &lt;Error: Invalid parameters&gt;
+        description: [
+            &quot;This field is required.&quot;
+        ]
+</code></pre>
+
+<p>In this case the server responds with an error when we include an invalid parameter:</p>
+<pre><code class="bash">    $ coreapi action add_note -p description='xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxx'
+    &lt;Error: Invalid parameters&gt;
     description: [
-        "This field is required."
+        &quot;Ensure this field has no more than 100 characters.&quot;
     ]
 </code></pre>
-<p>In this case the server responds with an error when we include an invalid parameter:</p>
-<pre><code>$ coreapi action add_note -p description='xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxx'
-&lt;Error: Invalid parameters&gt;
-description: [
-    "Ensure this field has no more than 100 characters."
-]
-</code></pre>
+
+<h4 id="get-involved">Get involved</h4>
+<p>For news and updates follow <a href="https://twitter.com/core_api">@core-api</a>, or <a href="https://twitter.com/_tomchristie">@_tomchristie</a>.</p>
+<p>For discussion of the tools and specification, use the <a href="https://groups.google.com/forum/#!forum/hypermedia-web">Hypermedia Web mailing list</a>.</p>
 </div>
             
         </div>
