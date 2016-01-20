@@ -224,7 +224,9 @@ description: [
 ]
 ```
 
-#### Get involved
+---
+
+## Get involved
 
 For news and updates follow [@core-api](https://twitter.com/core_api), or [@_tomchristie](https://twitter.com/_tomchristie).
 
