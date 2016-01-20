@@ -29,31 +29,33 @@ You can interact with these example services either directly through your browse
 
 For example, let's try interacting with the "Game" service using the command line client.
 
+In this example, you have have 5 guesses to try to find the position of the hidden treasure in a 3x3 grid.
+
 First make sure to [install Python](https://www.python.org/downloads/), then...
 
 ```bash
-    $ pip install coreapi  # Use Python's package manager `pip` to install the command-line client.
-    $ coreapi get http://game.coreapi.org/
-    <Home "http://game.coreapi.org/">
-        new_game()
-    $ coreapi action new_game
-    <Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
-        board: "...a
-                ...b
-                ...c
-                123"
-        description: "5 turns remaining."
-        new_game()
-        play([position])
-    $ coreapi action play --param position=b3
-    <Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
-        board: "...a
-                ..xb
-                ...c
-                123"
-        description: "4 turns remaining."
-        new_game()
-        play([position])
+$ pip install coreapi  # Use Python's package manager `pip` to install the command-line client.
+$ coreapi get http://game.coreapi.org/
+<Home "http://game.coreapi.org/">
+    new_game()
+$ coreapi action new_game
+<Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
+    board: "...a
+            ...b
+            ...c
+            123"
+    description: "5 turns remaining."
+    new_game()
+    play([position])
+$ coreapi action play --param position=b3
+<Game "http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd">
+    board: "...a
+            ..xb
+            ...c
+            123"
+    description: "4 turns remaining."
+    new_game()
+    play([position])
 ```
 
 #### What does it look like?
@@ -96,22 +98,22 @@ The top level element in any Core API interface is always a Document.
 Let's take a look at a Core API document by using the command line client.
 
 ```bash
-    $ pip install coreapi
-    $ coreapi get http://notes.coreapi.org/
-    <Notes "http://notes.coreapi.org/">
-        notes: [
-            <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
-                complete: true
-                description: "Do the weekly shopping"
-                delete()
-                edit([description], [complete]),
-            <Note "http://notes.coreapi.org/0ace0b3b-9db2-4c10-989e-76c5c61265e7">
-                complete: false
-                description: "Fix the kitchen door"
-                delete()
-                edit([description], [complete])
-        ]
-        add_note(description)
+$ pip install coreapi
+$ coreapi get http://notes.coreapi.org/
+<Notes "http://notes.coreapi.org/">
+    notes: [
+        <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
+            complete: true
+            description: "Do the weekly shopping"
+            delete()
+            edit([description], [complete]),
+        <Note "http://notes.coreapi.org/0ace0b3b-9db2-4c10-989e-76c5c61265e7">
+            complete: false
+            description: "Fix the kitchen door"
+            delete()
+            edit([description], [complete])
+    ]
+    add_note(description)
 ```
 
 We've got a document here that contains a couple of other nested documents. We can also see the actions and data that the interface exposes.
@@ -129,25 +131,25 @@ Let's return to the command line client, and take a look at calling some links.
 We'll start by removing an existing note:
 
 ```bash
-    $ coreapi action notes 0 delete
-    <Notes "http://notes.coreapi.org/">
-        notes: [
-            <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
-                complete: true
-                description: "Do the weekly shopping"
-                delete()
-                edit([description], [complete])
-        ]
-        add_note(description)
+$ coreapi action notes 0 delete
+<Notes "http://notes.coreapi.org/">
+    notes: [
+        <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
+            complete: true
+            description: "Do the weekly shopping"
+            delete()
+            edit([description], [complete])
+    ]
+    add_note(description)
 ```
 
 Let's remove the final remaining note.
 
 ```bash
-    $ coreapi action notes 0 delete
-    <Notes "http://notes.coreapi.org/">
-        notes: []
-        add_note(description)
+$ coreapi action notes 0 delete
+<Notes "http://notes.coreapi.org/">
+    notes: []
+    add_note(description)
 ```
 
 There should now be no notes remaining.
@@ -156,31 +158,31 @@ Okay, let's create a new note. In this case we'll want to include a named parame
 when acting on the link.
 
 ```bash
-    $ coreapi action add_note --params description="Email venue about conference dates"
-    <Notes "http://notes.coreapi.org/">
-        notes: [
-            <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
-                complete: false
-                description: "Email venue about conference dates"
-                delete()
-                edit([description], [complete])
-        ]
-        add_note(description)
+$ coreapi action add_note --params description="Email venue about conference dates"
+<Notes "http://notes.coreapi.org/">
+    notes: [
+        <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
+            complete: false
+            description: "Email venue about conference dates"
+            delete()
+            edit([description], [complete])
+    ]
+    add_note(description)
 ```
 
 Finally we'll update the state of the note we've just created:
 
 ```bash
-    $ coreapi action notes 0 edit --params complete=true
-    <Notes "http://notes.coreapi.org/">
-        notes: [
-            <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
-                complete: true
-                description: "Email venue about conference dates"
-                delete()
-                edit([description], [complete])
-        ]
-        add_note(description)
+$ coreapi action notes 0 edit --params complete=true
+<Notes "http://notes.coreapi.org/">
+    notes: [
+        <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
+            complete: true
+            description: "Email venue about conference dates"
+            delete()
+            edit([description], [complete])
+    ]
+    add_note(description)
 ```
 
 #### Data primitives
@@ -190,10 +192,10 @@ Data primitives are the set of basic datatypes that may be used to represent dat
 Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, `true`, `false`, and `null`.
 
 ```bash
-    $ coreapi show notes 0 description
-    "Email venue about conference dates"
-    $ coreapi show notes 0 complete
-    true
+$ coreapi show notes 0 description
+"Email venue about conference dates"
+$ coreapi show notes 0 complete
+true
 ```
 
 #### Errors
@@ -205,21 +207,21 @@ Encountering an error prevents any transition from taking place, and will normal
 For example, in this case the server responds with an error when we fail to include a parameter:
 
 ```bash
-    $ coreapi action add_note
-    <Error: Invalid parameters>
-        description: [
-            "This field is required."
-        ]
+$ coreapi action add_note
+<Error: Invalid parameters>
+    description: [
+        "This field is required."
+    ]
 ```
 
 In this case the server responds with an error when we include an invalid parameter:
 
 ```bash
-    $ coreapi action add_note -p description='xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxx'
-    <Error: Invalid parameters>
-    description: [
-        "Ensure this field has no more than 100 characters."
-    ]
+$ coreapi action add_note -p description='xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxx'
+<Error: Invalid parameters>
+description: [
+    "Ensure this field has no more than 100 characters."
+]
 ```
 
 #### Get involved
