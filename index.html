@@ -129,17 +129,15 @@
     
         <li class="main active"><a href="#core-api">Core API</a></li>
         
-            <li><a href="#example-services">Example services</a></li>
-        
             <li><a href="#tooling">Tooling</a></li>
         
             <li><a href="#discussion">Discussion</a></li>
         
+            <li><a href="#example-services">Example services</a></li>
+        
             <li><a href="#what-does-it-look-like">What does it look like?</a></li>
         
             <li><a href="#overview">Overview</a></li>
-        
-            <li><a href="#design-considerations">Design considerations</a></li>
         
     
     </ul>
@@ -156,6 +154,17 @@
 <li><strong>Explorable</strong> - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.</li>
 <li><strong>Flexible</strong> - Rather than be coupled to a particular encoding, Core API separates out the document, encoding and transport concerns. This means that client libraries can communicate with a number of different hypermedia formats. Equally, Core API services can make themselves available over a number of different encodings.</li>
 </ul>
+<h4 id="tooling">Tooling</h4>
+<p>The following tooling is currently available for Core API.</p>
+<ul>
+<li>A <a href="http://www.coreapi.org/tools-and-resources/command-line-client/">command line client</a> for interacting with services from the console.</li>
+<li>There is a complete <a href="https://github.com/core-api/python-client">Python client library</a> for Core API.</li>
+<li>A <a href="https://github.com/core-api/javascript-client">Javascript client library</a> is currently planned.</li>
+<li>We have an <a href="https://github.com/core-api/example-server">example server implementation</a>, for demonstration purposes.</li>
+</ul>
+<h4 id="discussion">Discussion</h4>
+<p>For news and updates follow <a href="https://twitter.com/core_api">@core-api</a>, or <a href="https://twitter.com/_tomchristie">@_tomchristie</a>.</p>
+<p>For discussion of the tools and specification, use the <a href="https://groups.google.com/forum/#!forum/hypermedia-web">Hypermedia Web mailing list</a>.</p>
 <h4 id="example-services">Example services</h4>
 <p>You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.</p>
 <ul>
@@ -170,75 +179,34 @@
         new_game()
     $ coreapi action new_game
     &lt;Game &quot;http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd&quot;&gt;
-        board: &quot;...a\n...b\n...c\n123&quot;
+        board: &quot;...a
+                ...b
+                ...c
+                123&quot;
         description: &quot;5 turns remaining.&quot;
         new_game()
         play([position])
     $ coreapi action play --param position=b3
     &lt;Game &quot;http://game.coreapi.org/dee07521-6862-4744-95ec-812db90135bd&quot;&gt;
-        board: &quot;...a\n..xb\n...c\n123&quot;
+        board: &quot;...a
+                ..xb
+                ...c
+                123&quot;
         description: &quot;4 turns remaining.&quot;
         new_game()
         play([position])
 </code></pre>
 
-<h4 id="tooling">Tooling</h4>
-<ul>
-<li>A <a href="http://www.coreapi.org/tools-and-resources/command-line-client/">command line client</a> for interacting with services from the console.</li>
-<li>There is a complete <a href="https://github.com/core-api/python-client">Python client library</a> for Core API.</li>
-<li>A <a href="https://github.com/core-api/javascript-client">Javascript client library</a> is currently planned.</li>
-<li>We have an <a href="https://github.com/core-api/example-server">example server implementation</a>, for demonstration purposes.</li>
-</ul>
-<h4 id="discussion">Discussion</h4>
-<p>For news and updates follow <a href="https://twitter.com/core_api">@core-api</a>, or <a href="https://twitter.com/_tomchristie">@_tomchristie</a>.</p>
-<p>For discussion of the tools and specification, use the <a href="https://groups.google.com/forum/#!forum/hypermedia-web">Hypermedia Web mailing list</a>.</p>
 <h4 id="what-does-it-look-like">What does it look like?</h4>
-<p>Core API has a lightweight JSON encoding called 'Core JSON'. For example:</p>
-<pre><code>{
-    "_type": "document",
-    "_meta": {
-        "url": "/",
-        "title": "Notes"
-    },
-    "notes": [
-        {
-            "_type": "document",
-            "_meta": {
-                "url": "/1de153fe-6747-41d3-bc0e-d9d7d87e448a",
-                "title": "Note"
-            },
-            "complete": false,
-            "description": "Email venue about conference dates",
-            "delete": {
-                "_type": "link",
-                "action": "delete"
-            },
-            "edit": {
-                "_type": "link",
-                "action": "put",
-                "fields": [
-                    {
-                        "name": "description"
-                    }, {
-                        "name": "complete"
-                    }
-                ]
-            }
-        }
-    ],
-    "add_note": {
-        "_type": "link",
-        "action": "post",
-        "fields": [
-            {
-                "name": "description",
-                "required": true
-            }
-        ]
-    }
-}
-</code></pre>
-<p>Additionally, an HTML based encoding is defined. This allows servers to present APIs that can be interacted with directly from a Web browser. The previous example rendered in HTML looks like this:</p>
+<p>Core API decouples the binary encoding from the document model, meaning that clients
+and servers are able to interact with any one of several different formats.</p>
+<p>The following are currently supported:</p>
+<ul>
+<li>The <a href="http://www.coreapi.org/specification/encoding/#core-json-encoding">Core JSON hypermedia format</a>.</li>
+<li>The <a href="http://www.coreapi.org/specification/encoding/#hal-encoding">HAL hypermedia format</a>.</li>
+<li>An <a href="http://www.coreapi.org/specification/encoding/#html-encoding">HTML based encoding</a>.</li>
+</ul>
+<p>The HTML based encoding allows servers to present APIs that can be interacted with directly from a Web browser, for example:</p>
 <p><img alt="HTML encoding example" src="http://www.coreapi.org/images/html-encoding.png" /></p>
 <hr />
 <h2 id="overview">Overview</h2>
@@ -265,31 +233,23 @@
 </tr>
 </tbody>
 </table>
-<p>The following is an overview of the document layer, describing how the client interacts with a Core API interface.</p>
+<p>The following is an brief overview of the document layer, demonstrating how the client interacts with a Core API interface.</p>
 <h4 id="document">Document</h4>
 <p>Documents are the basic building blocks of Core API.</p>
 <p>Documents are key-value pairs that contain the data and actions presented by the interface. Documents always have an associated URL, and should also have a title.</p>
 <p>The top level element in any Core API interface is always a Document.</p>
-<p>Let's take a look at a Core API document by using the Python client library.</p>
+<p>Let's take a look at a Core API document by using the command line client.</p>
 <pre><code>$ pip install coreapi
-$ python
-&gt;&gt;&gt; import coreapi
-&gt;&gt;&gt; doc = coreapi.get('http://notes.coreapi.org/')
-&gt;&gt;&gt; print(doc)
+$ coreapi get http://notes.coreapi.org/
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
-        &lt;Note "http://notes.coreapi.org/1f1bc8d6-9411-48d9-a2fc-6d8b82a48888"&gt;
-            complete: true
-            description: "Write command line client"
-            delete()
-            edit([description], [complete]),
         &lt;Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca"&gt;
             complete: true
-            description: "Example"
+            description: "Do the weekly shopping"
             delete()
             edit([description], [complete]),
         &lt;Note "http://notes.coreapi.org/0ace0b3b-9db2-4c10-989e-76c5c61265e7"&gt;
-            complete: true
+            complete: false
             description: "Fix the kitchen door"
             delete()
             edit([description], [complete])
@@ -300,26 +260,31 @@ $ python
 <h4 id="links">Links</h4>
 <p>Links are the available points of interaction that the interface presents.</p>
 <p>Links have an associated URL and action, and may accept a set of named parameters.</p>
-<p>Links inside nested documents may optionally be marked as an "in-place" transition.
-Links that are marked as in-place effect a partial transformation on the document,
-modifying or removing the nested document from the document tree.</p>
-<p>The 'put', 'patch' and 'delete' actions default to being in-place.</p>
-<p>Let's return to the python client library, and take a look at calling some links.
-We'll start by removing all the existing notes:</p>
-<pre><code>&gt;&gt;&gt; while doc["notes"]:
-&gt;&gt;&gt;     doc = coreapi.action(doc, ['notes', 0, 'delete'])
+<p>Core API also has a concept of in-place transformations. Links that are marked as
+in-place effect a partial transformation on the document, modifying or removing the nested document from the document tree. The 'put', 'patch' and 'delete' actions default to being in-place.</p>
+<p>Let's return to the command line client, and take a look at calling some links.
+We'll start by removing an existing note:</p>
+<pre><code>$ coreapi action notes 0 delete
+&lt;Notes "http://notes.coreapi.org/"&gt;
+    notes: [
+        &lt;Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca"&gt;
+            complete: true
+            description: "Do the weekly shopping"
+            delete()
+            edit([description], [complete])
+    ]
+    add_note(description)
 </code></pre>
-<p>Calling <code>.action()</code> effects a transition on the given link, and returns a
-new document instance.</p>
-<p>There should now be no notes remaining:</p>
-<pre><code>&gt;&gt;&gt; print(doc)
+<p>Let's remove the final remaining note.</p>
+<pre><code>$ coreapi action notes 0 delete
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: []
     add_note(description)
 </code></pre>
-<p>Okay, let's create a new note:</p>
-<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, 'add_note', params={'description': 'Email venue about conference dates'})
-&gt;&gt;&gt; print(doc)
+<p>There should now be no notes remaining.</p>
+<p>Okay, let's create a new note. In this case we'll want to include a named parameter
+when acting on the link.</p>
+<pre><code>$ coreapi action add_note --params description="Email venue about conference dates"
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
         &lt;Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/"&gt;
@@ -331,8 +296,7 @@ new document instance.</p>
     add_note(description)
 </code></pre>
 <p>Finally we'll update the state of the note we've just created:</p>
-<pre><code>&gt;&gt;&gt; doc = coreapi.action(doc, ['notes', 0, 'edit'], params={'complete': True})
-&gt;&gt;&gt; print(doc)
+<pre><code>$ coreapi action notes 0 edit --params complete=true
 &lt;Notes "http://notes.coreapi.org/"&gt;
     notes: [
         &lt;Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/"&gt;
@@ -346,31 +310,28 @@ new document instance.</p>
 <h4 id="data-primitives">Data primitives</h4>
 <p>Data primitives are the set of basic datatypes that may be used to represent data in the interface.</p>
 <p>Core API supports the same subset of data primitives as JSON. These are Object, Array, String, Integer, Number, <code>true</code>, <code>false</code>, and <code>null</code>.</p>
-<pre><code>&gt;&gt;&gt; doc['notes'][0]['description']
-'Email venue about conference dates'
-&gt;&gt;&gt; doc['notes'][0]['complete']
-True
+<pre><code>$ coreapi show notes 0 description
+"Email venue about conference dates"
+$ coreapi show notes 0 complete
+true
 </code></pre>
 <h4 id="errors">Errors</h4>
 <p>Following a link may result in an error. An error is a set of key-value pairs, which is used to represent any error information associated with the failed transition.</p>
 <p>Encountering an error prevents any transition from taking place, and will normally be represented by an exception or other error status by the client library.</p>
-<pre><code>&gt;&gt;&gt; coreapi.action(doc, 'add_note', params={'description': 'x' * 999999})
-Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-coreapi.exceptions.ErrorMessage: {"description": ["Ensure this parameter has no more than 100 characters."]}
+<p>For example, in this case the server responds with an error when we fail to include a parameter:</p>
+<pre><code>$ coreapi action add_note
+&lt;Error: Invalid parameters&gt;
+    description: [
+        "This field is required."
+    ]
 </code></pre>
-<hr />
-<h2 id="design-considerations">Design considerations</h2>
-<p>Because Core API documents are composable there are a few design decisions you'll want to be aware of, that may not exist in other API systems.</p>
-<h4 id="rich-interfaces">Rich interfaces</h4>
-<p>The status quo with many Web APIs today is to have a close relationship between items in the storage backend and API endpoints. While Core API <em>does</em> allow you to build collection type APIs it can also express richer interfaces.</p>
-<p>You probably want to think of a Core API interface as being similar to a web page, but without any layout or style information. You can embed multiple controls and related elements inside a single document.</p>
-<h4 id="actions-should-effect-child-elements">Actions should effect child elements</h4>
-<p>When in-place link transitions are followed they will only ever update the part of the document that the link is contained by. You should make sure that links are always included at the topmost level of any elements they might effect.</p>
-<p>Failing to follow this constraint will mean that clients may need to have some implicit knowledge about which other parts of a document to reload once a transition takes place. This introduces coupling, and increases the number of required network requests.</p>
-<h4 id="interlinking-vs-nesting">Interlinking vs nesting</h4>
-<p>When building a Core API interface you'll need to decide on when to link to associated document, and when to nest an associated document. The former implies a necessary network request to retrieve the document, while the later embeds the document directly.</p>
-<p>Normally this decision should be self-evident, and will depend on the type of the relationship that the link expresses.</p>
+<p>In this case the server responds with an error when we include an invalid parameter:</p>
+<pre><code>$ coreapi action add_note -p description='xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxxxxxxxx-xxx'
+&lt;Error: Invalid parameters&gt;
+description: [
+    "Ensure this field has no more than 100 characters."
+]
+</code></pre>
 </div>
             
         </div>

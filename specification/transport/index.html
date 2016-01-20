@@ -181,7 +181,7 @@ The resulting map MUST be <code>JSON</code> encoded. The encoded parameters MUST
 </ul>
 <hr />
 <h3 id="decoding-the-response">Decoding the response</h3>
-<p>The result of following a link transition is to either return a Document, raise an Error condition.</p>
+<p>The result of following a link transition is to either return a Document, or raise an Error condition.</p>
 <ul>
 <li>The resulting content is decoded by selecting <a href="../encoding">an available codec</a> based on the response <code>Content-Type</code>.</li>
 <li>Either a Document or an Error condition MUST be returned by the codec.</li>
@@ -203,6 +203,15 @@ the returned Document, and the new document tree is returned to the client.</li>
 <li>If no content is returned in HTTP response: The nested document is removed from
 the document tree, and the new document tree is returned to the client.</li>
 </ul>
+<h3 id="coercing-4xx-and-5xx-responses-to-errors">Coercing 4xx and 5xx responses to errors</h3>
+<p>When a 4xx or 5xx response is received the transport layer SHOULD coerce any
+Document returned into an Error. This allows media types that do not support
+an error primitive to be handled gracefully.</p>
+<p>When a 4xx or 5xx response is received that contains a media type that is
+not a supported hypermedia format, the transport MAY attempt to use fallback
+media types to decode the content and return an Error. For example, a transport
+MAY support graceful handling of error responses that have been returned in
+plain <code>application/json</code> and/or <code>text/html</code> formats.</p>
 </div>
             
         </div>
