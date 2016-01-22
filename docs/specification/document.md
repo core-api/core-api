@@ -42,7 +42,7 @@ Links parameters allow a client to include additional information as part of a
 transition, and may affect the resulting URL, query parameters or request body.
 
 * A link parameter has an associated `"name"` property, which MUST be a string.
-* A link parameter has an associated `"required"` property, which much be `true` or `false`. The `false` value MAY be considered a default value by client libraries.
+* A link parameter has an associated `"required"` property, which MUST be `true` or `false`. The `false` value MAY be considered a default value by client libraries.
 * A link parameter has an associated `"location"` property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. This property [indicates how the parameter is encoded in the outgoing request][http-location].
 
 #### Data primitives
