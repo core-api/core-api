@@ -63,7 +63,7 @@ associated with a URL.
 * The values in a Error can be any Core API primitive.
 * A Error has an associated `"title"` property, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.
-* An Error MUST NOT not be contained at any point in a Document.
+* An Error MUST NOT be contained at any point in a Document.
 
 ---
 
