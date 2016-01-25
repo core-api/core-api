@@ -200,30 +200,6 @@
     }
 }
 </code></pre>
-<hr />
-<h2 id="hal-encoding">HAL encoding</h2>
-<p>Core API documents can be encoded in HAL, with a few limitations:</p>
-<h4 id="hal-does-not-supports-parameter-or-action-information-on-links">HAL does not supports parameter or action information on links.</h4>
-<p>When interacting with a HAL service using Core API, you'll need to explicitly
-set any actions other than GET. For example, using the command line client:</p>
-<pre><code>coreapi action add_note -a post -p description="A new todo note"
-</code></pre>
-<p>Additionally, parameters will not be included in the link descriptions displayed
-by Core API documents.</p>
-<h4 id="indexing-by-keys-vs-indexing-by-rel-values">Indexing by keys vs indexing by <code>rel</code> values.</h4>
-<p>HAL uses <code>rel</code> values to identify and index links and embedded documents,
-whereas Core API uses the key in the document.</p>
-<p>In order to handle this Core API maps between HAL <code>rel</code> values and roughly equivalent key values.
-For example, if decoding a HAL document then the link's <code>curie</code> name will be as the key, if it exists.</p>
-<h4 id="valid-document-structures">Valid document structures.</h4>
-<p>HAL supports documents and links as top level items, where Core API supports
-documents and links nested anywhere in the parent document.</p>
-<p>This introduces some limitations on the valid document structures that Core API
-can support in HAL representations.</p>
-<h4 id="link-help-information">Link help information.</h4>
-<p>Core API does not yet support help information being associated with links,
-which HAL provides for.</p>
-<hr />
 <h3 id="document">Document</h3>
 <p><strong>The Document primitive is represented using an object which includes a key-value pair of <code>"_type": "document"</code>.</strong></p>
 <ul>
@@ -310,7 +286,6 @@ which HAL provides for.</p>
 <ul>
 <li>These are Object, Array, String, Integer, Number, <code>true</code>, <code>false</code> and <code>null</code>.</li>
 </ul>
-<hr />
 <h3 id="handling-unexpected-types">Handling unexpected types</h3>
 <ul>
 <li>
@@ -320,7 +295,6 @@ which HAL provides for.</p>
 <p>Any Object with a <code>"_type"</code> key that is not <code>"document"</code>, <code>"link"</code> or <code>"error"</code> is invalid. The <code>"_type"</code> key and any <code>"_meta"</code> key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.</p>
 </li>
 </ul>
-<hr />
 <h3 id="escaping-reserved-keys">Escaping reserved keys</h3>
 <p>The object keys <code>"_type"</code> and <code>"_meta"</code> are reserved, and should not be included in the standard parsing of key-value contents of Document or Object types.</p>
 <p>Core JSON ensures that the reserved <code>"_type"</code> and <code>"_meta"</code> are still valid literal keys, by providing escaping and unescaping rules as detailed below.</p>
@@ -328,7 +302,6 @@ which HAL provides for.</p>
 <p>When any object key matching the regular expression <code>/[\_]+(type|meta)/</code> is encountered, it MUST be escaped by pre-pending an additional underscore character.</p>
 <h4 id="unescaping-reserved-keys-during-decoding">Unescaping reserved keys during decoding</h4>
 <p>When any object key matching the regular expression <code>/_[\_]+(type|meta)/</code> is encountered, it MUST be unescaped by removing the leading underscore character.</p>
-<hr />
 <h3 id="canonical-style">Canonical style</h3>
 <p>The following canonical style indicates a set of guidelines that server implementations or client libraries MAY choose to follow, in order to generate a consistent output format for the JSON encoding.</p>
 <h4 id="key-ordering">Key ordering</h4>
@@ -351,6 +324,29 @@ which HAL provides for.</p>
 <h4 id="indentation-and-spacing">Indentation and spacing</h4>
 <p>Client MAY choose to use a concise style as the default. Using this style will ensure that no spacing or indentation is used between tokens.</p>
 <p>Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.</p>
+<hr />
+<h2 id="hal-encoding">HAL encoding</h2>
+<p>Core API documents can be encoded in HAL, with a few limitations:</p>
+<h4 id="hal-does-not-supports-parameter-or-action-information-on-links">HAL does not supports parameter or action information on links.</h4>
+<p>When interacting with a HAL service using Core API, you'll need to explicitly
+set any actions other than GET. For example, using the command line client:</p>
+<pre><code>coreapi action add_note -a post -p description="A new todo note"
+</code></pre>
+<p>Additionally, parameters will not be included in the link descriptions displayed
+by Core API documents.</p>
+<h4 id="indexing-by-keys-vs-indexing-by-rel-values">Indexing by keys vs indexing by <code>rel</code> values.</h4>
+<p>HAL uses <code>rel</code> values to identify and index links and embedded documents,
+whereas Core API uses the key in the document.</p>
+<p>In order to handle this Core API maps between HAL <code>rel</code> values and roughly equivalent key values.
+For example, if decoding a HAL document then the link's <code>curie</code> name will be as the key, if it exists.</p>
+<h4 id="valid-document-structures">Valid document structures.</h4>
+<p>HAL supports documents and links as top level items, where Core API supports
+documents and links nested anywhere in the parent document.</p>
+<p>This introduces some limitations on the valid document structures that Core API
+can support in HAL representations.</p>
+<h4 id="link-help-information">Link help information.</h4>
+<p>Core API does not yet support help information being associated with links,
+which HAL provides for.</p>
 <hr />
 <h2 id="html-encoding">HTML encoding</h2>
 <p>The HTML encoding for Core API allows servers to respond in a way that allows for direct Web browser based interaction with the API.</p>
