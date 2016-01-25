@@ -170,7 +170,7 @@ In doing so they do not require any information about the underlying transport o
 transition, and may affect the resulting URL, query parameters or request body.</p>
 <ul>
 <li>A link parameter has an associated <code>"name"</code> property, which MUST be a string.</li>
-<li>A link parameter has an associated <code>"required"</code> property, which much be <code>true</code> or <code>false</code>. The <code>false</code> value MAY be considered a default value by client libraries.</li>
+<li>A link parameter has an associated <code>"required"</code> property, which MUST be <code>true</code> or <code>false</code>. The <code>false</code> value MAY be considered a default value by client libraries.</li>
 <li>A link parameter has an associated <code>"location"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. This property <a href="../..//specification/transport/#encoding-link-parameters">indicates how the parameter is encoded in the outgoing request</a>.</li>
 </ul>
 <h4 id="data-primitives">Data primitives</h4>
@@ -188,7 +188,7 @@ associated with a URL.</p>
 <li>The values in a Error can be any Core API primitive.</li>
 <li>A Error has an associated <code>"title"</code> property, which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 <li>An Error is an exception case that may be encountered when effecting a transition, and occurs outside of the normal context of a Document element.</li>
-<li>An Error MUST NOT not be contained at any point in a Document.</li>
+<li>An Error MUST NOT be contained at any point in a Document.</li>
 </ul>
 <hr />
 <h2 id="interacting-with-documents">Interacting with documents</h2>
