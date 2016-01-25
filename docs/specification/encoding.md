@@ -187,6 +187,8 @@ Clients MAY choose to allow an optional verbose style. Using this style will ens
 
 ## HAL encoding
 
+*HAL services MUST expose their endpoints with the `application/hal+json` media type.*
+
 Core API documents can be encoded in HAL, with a few limitations:
 
 #### HAL does not supports parameter or action information on links.
@@ -219,6 +221,24 @@ can support in HAL representations.
 
 Core API does not yet support help information being associated with links,
 which HAL provides for.
+
+---
+
+## JSON Hyper-Schema
+
+*JSON Hyper-Schema endpoints MUST use the `application/schema+json` media type.*
+
+Core API can support decoding & interacting with JSON HyperaSchema endpoints.
+
+The schema style is less expressive that true hypermedia, as it consists of a single
+monolithic entry point. Calls to the endpoint typically result in data being returned
+from the service, rather than a new hypermedia document. Nonetheless, using a Core API
+client library to interact with a service using its schema definition is far more robust
+and meaningful than constructing HTTP requests explicitly.
+
+The additional benefit of schemas is that they can be created for existing APIs without
+any internal changes being required. Furthermore, if clients load the schema definition
+from disk, then no initial HTTP call to request the entrypoint is required.
 
 ---
 

@@ -9,5 +9,6 @@ pages:
 - ['specification/encoding.md', 'Specification', 'The encoding layer']
 - ['specification/transport.md', 'Specification', 'The transport layer']
 - ['tools-and-resources/command-line-client.md', 'Tools & resources', 'The command line client']
+- ['tools-and-resources/example-services.md', 'Tools & resources', 'Example services']
 
 copyright: Copyright &copy; 2015, <a href="https://twitter.com/_tomchristie">Tom Christie</a>.

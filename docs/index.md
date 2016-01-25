@@ -67,6 +67,7 @@ The following are currently supported:
 
 * The [Core JSON hypermedia format][corejson-encoding].
 * The [HAL hypermedia format][hal-encoding].
+* The [JSON HyperSchema format][hyperschema-encoding].
 * An [HTML based encoding][html-encoding].
 
 The HTML based encoding allows servers to present APIs that can be interacted with directly from a Web browser, for example:
@@ -239,4 +240,5 @@ For discussion of the tools and specification, use the [Hypermedia Web mailing l
 [example-server]: https://github.com/core-api/example-server
 [corejson-encoding]: http://www.coreapi.org/specification/encoding/#core-json-encoding
 [hal-encoding]: http://www.coreapi.org/specification/encoding/#hal-encoding
+[hyperschema-encoding]: http://www.coreapi.org/specification/encoding/#json-hyper-schema
 [html-encoding]: http://www.coreapi.org/specification/encoding/#html-encoding
