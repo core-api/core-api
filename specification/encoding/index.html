@@ -83,6 +83,10 @@
                                 <a href="../../tools-and-resources/command-line-client">The command line client</a>
                             </li>
                         
+                            <li >
+                                <a href="../../tools-and-resources/example-services">Example services</a>
+                            </li>
+                        
                         </ul>
                     </li>
                 
@@ -132,6 +136,8 @@
             <li><a href="#core-json-encoding">Core JSON encoding</a></li>
         
             <li><a href="#hal-encoding">HAL encoding</a></li>
+        
+            <li><a href="#json-hyper-schema">JSON Hyper-Schema</a></li>
         
             <li><a href="#html-encoding">HTML encoding</a></li>
         
@@ -326,6 +332,7 @@
 <p>Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.</p>
 <hr />
 <h2 id="hal-encoding">HAL encoding</h2>
+<p><em>HAL services MUST expose their endpoints with the <code>application/hal+json</code> media type.</em></p>
 <p>Core API documents can be encoded in HAL, with a few limitations:</p>
 <h4 id="hal-does-not-supports-parameter-or-action-information-on-links">HAL does not supports parameter or action information on links.</h4>
 <p>When interacting with a HAL service using Core API, you'll need to explicitly
@@ -347,6 +354,18 @@ can support in HAL representations.</p>
 <h4 id="link-help-information">Link help information.</h4>
 <p>Core API does not yet support help information being associated with links,
 which HAL provides for.</p>
+<hr />
+<h2 id="json-hyper-schema">JSON Hyper-Schema</h2>
+<p><em>JSON Hyper-Schema endpoints MUST use the <code>application/schema+json</code> media type.</em></p>
+<p>Core API can support decoding &amp; interacting with JSON HyperaSchema endpoints.</p>
+<p>The schema style is less expressive that true hypermedia, as it consists of a single
+monolithic entry point. Calls to the endpoint typically result in data being returned
+from the service, rather than a new hypermedia document. Nonetheless, using a Core API
+client library to interact with a service using its schema definition is far more robust
+and meaningful than constructing HTTP requests explicitly.</p>
+<p>The additional benefit of schemas is that they can be created for existing APIs without
+any internal changes being required. Furthermore, if clients load the schema definition
+from disk, then no initial HTTP call to request the entrypoint is required.</p>
 <hr />
 <h2 id="html-encoding">HTML encoding</h2>
 <p>The HTML encoding for Core API allows servers to respond in a way that allows for direct Web browser based interaction with the API.</p>
