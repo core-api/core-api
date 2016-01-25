@@ -6,8 +6,6 @@
 
 Core API is a specification for creating Hypermedia driven Web APIs, that allows you to build rich, expressive, and meaningful interfaces.
 
-It can interact with HAL hypermedia APIs, JSON HyperSchema endpoints, and Core JSON APIs.
-
 * **Robust** - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.
 * **Expressive** - Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls.
 * **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.

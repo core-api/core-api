@@ -2,8 +2,9 @@
 
 The command line client allows you to interact with Core API services from the console.
 
-The client includes commands for retrieving, displaying and interacting with Core API services,
-as well as additional functionality, including:
+The client includes commands for retrieving, displaying and interacting with various services, including HAL, JSON HyperSchema, and Core JSON.
+
+It includes a rich set of functionality, including:
 
 * History. Navigate backwards and forwards through a document history.
 * Credentials. Associate Authorization headers with given domains.
