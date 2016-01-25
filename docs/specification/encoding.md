@@ -68,45 +68,6 @@ An example Core JSON encoded document is demonstrated below.
         }
     }
 
----
-
-## HAL encoding
-
-Core API documents can be encoded in HAL, with a few limitations:
-
-#### HAL does not supports parameter or action information on links.
-
-When interacting with a HAL service using Core API, you'll need to explicitly
-set any actions other than GET. For example, using the command line client:
-
-    coreapi action add_note -a post -p description="A new todo note"
-
-Additionally, parameters will not be included in the link descriptions displayed
-by Core API documents.
-
-#### Indexing by keys vs indexing by `rel` values.
-
-HAL uses `rel` values to identify and index links and embedded documents,
-whereas Core API uses the key in the document.
-
-In order to handle this Core API maps between HAL `rel` values and roughly equivalent key values.
-For example, if decoding a HAL document then the link's `curie` name will be as the key, if it exists.
-
-#### Valid document structures.
-
-HAL supports documents and links as top level items, where Core API supports
-documents and links nested anywhere in the parent document.
-
-This introduces some limitations on the valid document structures that Core API
-can support in HAL representations.
-
-#### Link help information.
-
-Core API does not yet support help information being associated with links,
-which HAL provides for.
-
----
-
 ### Document
 
 **The Document primitive is represented using an object which includes a key-value pair of `"_type": "document"`.**
@@ -171,15 +132,11 @@ which HAL provides for.
 
 * These are Object, Array, String, Integer, Number, `true`, `false` and `null`.
 
----
-
 ### Handling unexpected types
 
 * Several of the Object structures described above indicate a required type for an element. When the value type is not as expected, the value SHOULD be ignored, and the indicated default value used instead.
 
 * Any Object with a `"_type"` key that is not `"document"`, `"link"` or `"error"` is invalid. The `"_type"` key and any `"_meta"` key are to be removed from the normal parse flow, and the element is to be treated by the client as a standard Object.
-
----
 
 ### Escaping reserved keys
 
@@ -194,9 +151,6 @@ When any object key matching the regular expression `/[\_]+(type|meta)/` is enco
 #### Unescaping reserved keys during decoding
 
 When any object key matching the regular expression `/_[\_]+(type|meta)/` is encountered, it MUST be unescaped by removing the leading underscore character.
-
-
----
 
 ### Canonical style
 
@@ -228,6 +182,43 @@ Clients MAY take advantage of the relative URL transformations made when parsing
 Client MAY choose to use a concise style as the default. Using this style will ensure that no spacing or indentation is used between tokens.
 
 Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.
+
+---
+
+## HAL encoding
+
+Core API documents can be encoded in HAL, with a few limitations:
+
+#### HAL does not supports parameter or action information on links.
+
+When interacting with a HAL service using Core API, you'll need to explicitly
+set any actions other than GET. For example, using the command line client:
+
+    coreapi action add_note -a post -p description="A new todo note"
+
+Additionally, parameters will not be included in the link descriptions displayed
+by Core API documents.
+
+#### Indexing by keys vs indexing by `rel` values.
+
+HAL uses `rel` values to identify and index links and embedded documents,
+whereas Core API uses the key in the document.
+
+In order to handle this Core API maps between HAL `rel` values and roughly equivalent key values.
+For example, if decoding a HAL document then the link's `curie` name will be as the key, if it exists.
+
+#### Valid document structures.
+
+HAL supports documents and links as top level items, where Core API supports
+documents and links nested anywhere in the parent document.
+
+This introduces some limitations on the valid document structures that Core API
+can support in HAL representations.
+
+#### Link help information.
+
+Core API does not yet support help information being associated with links,
+which HAL provides for.
 
 ---
 
