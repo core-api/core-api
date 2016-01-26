@@ -167,9 +167,9 @@ $ coreapi action app create
     message: "There were no credentials in your `Authorization` header. Try `Authorization: Bearer <OAuth access token>` or `Authorization: Basic <base64-encoded email + \":\" + password>`."
 
 # Add our credentials.
-$ coreapi credentials add api.heroku.com "Bearer 7b365743b4fdf2cdb1620538a064eebb532d5ba7"
+$ coreapi credentials add api.heroku.com "Bearer ***"
 Added credentials
-api.heroku.com "Bearer 7b365743b4fdf2cdb1620538a064eebb532d5ba7"
+api.heroku.com "Bearer ***"
 
 # Create a new app.
 $ coreapi action app create
