@@ -33,7 +33,7 @@ A link is used to represent a possible transition that the client may take.
 
 * A Link has an associated `"url"` property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.
 * A Link has an associated `"action"` property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. For HTTP transports, this property [indicates the request method][http-action].
-* A Link has an associated `"inplace"` property which MUST be either `true`, `false` or `null`. The `null` value MAY be considered a default value by client libraries. This property [indicates if nested documents should be modified in-place or not][http-inplace].
+* A Link has an associated `"transform"` property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. This property indicates how the resulting document should be modified, [such as if nested documents should be modified in-place or not][http-transform].
 * A Link has an associated `"fields"` property, which is list of link parameters. The empty list is valid, and MAY be considered a default value by client libraries.
 
 #### Link parameters
@@ -82,5 +82,5 @@ When a link is followed, an appropriate [transport](transport.md) should be sele
 The [transport](transport.md) is then responsible for returning either a new Document, or an Error condition.
 
 [http-action]: /specification/transport/#determining-the-request-method
-[http-inplace]: /specification/transport/#handling-in-place-transformations
+[http-transform]: /specification/transport/#handling-in-place-transformations
 [http-location]: /specification/transport/#encoding-link-parameters
