@@ -192,12 +192,12 @@ The resulting map MUST be <code>JSON</code> encoded. The encoded parameters MUST
 <li>If no content is present in the response then the transport layer MUST return an empty document.</li>
 </ul>
 <h3 id="handling-in-place-transformations">Handling in-place transformations</h3>
-<p>An in-place transformation takes place when a link has <code>inplace=true</code>, and the
+<p>An in-place transformation takes place when a link has <code>transform="inplace"</code>, and the
 link is contained by a nested document.</p>
-<p>When the <code>inplace</code> property is <code>null</code>, an appropriate default is used:</p>
+<p>When the <code>transform</code> property is the empty string, an appropriate default is used:</p>
 <ul>
-<li>The <code>PUT</code>, <code>PATCH</code> and <code>DELETE</code> methods default to <code>inplace=true</code>.</li>
-<li>All other methods default to <code>inplace=false</code>.</li>
+<li>The <code>PUT</code>, <code>PATCH</code> and <code>DELETE</code> methods default to <code>transform="inplace"</code>.</li>
+<li>All other methods default to <code>transform="new"</code>.</li>
 </ul>
 <p>In the case of an in-place transformation, a <em>partial transformation</em> is effected on
 the document tree, as follows:</p>

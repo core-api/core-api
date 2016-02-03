@@ -166,7 +166,7 @@ In doing so they do not require any information about the underlying transport o
 <ul>
 <li>A Link has an associated <code>"url"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries.</li>
 <li>A Link has an associated <code>"action"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. For HTTP transports, this property <a href="../..//specification/transport/#determining-the-request-method">indicates the request method</a>.</li>
-<li>A Link has an associated <code>"inplace"</code> property which MUST be either <code>true</code>, <code>false</code> or <code>null</code>. The <code>null</code> value MAY be considered a default value by client libraries. This property <a href="../..//specification/transport/#handling-in-place-transformations">indicates if nested documents should be modified in-place or not</a>.</li>
+<li>A Link has an associated <code>"transform"</code> property which MUST be a string. The empty string is valid, and MAY be considered a default value by client libraries. This property indicates how the resulting document should be modified, <a href="../..//specification/transport/#handling-in-place-transformations">such as if nested documents should be modified in-place or not</a>.</li>
 <li>A Link has an associated <code>"fields"</code> property, which is list of link parameters. The empty list is valid, and MAY be considered a default value by client libraries.</li>
 </ul>
 <h4 id="link-parameters">Link parameters</h4>

@@ -232,7 +232,7 @@
 <p><strong>The Link primitive is represented using an object which includes a key-value pair of <code>"_type": "link"</code>.</strong></p>
 <ul>
 <li>
-<p>Links MAY include keys named <code>"url"</code>, <code>"action"</code>, <code>"inplace"</code>, and <code>"fields"</code>.</p>
+<p>Links MAY include keys named <code>"url"</code>, <code>"action"</code>, <code>"transform"</code>, and <code>"fields"</code>.</p>
 </li>
 <li>
 <p>Any other keys occurring in an Link SHOULD be ignored by clients.</p>
@@ -244,7 +244,7 @@
 <p>The value of the <code>"action"</code> field SHOULD be a string. If omitted value defaults to the empty string.</p>
 </li>
 <li>
-<p>The value of the <code>"inplace"</code> field SHOULD be a boolean. If omitted the value defaults to <code>null</code>.</p>
+<p>The value of the <code>"transform"</code> field SHOULD be a string. If omitted value defaults to the empty string.</p>
 </li>
 <li>
 <p>The value of the <code>"fields"</code> field SHOULD be a list. If omitted the default value is the empty list.</p>
@@ -397,7 +397,7 @@ from disk, then no initial HTTP call to request the entrypoint is required.</p>
 <p>The key under which the Link is contained by its parent Object or Document SHOULD be contained in the text content of the element.</p>
 <p>The URL of the Link SHOULD be contained in the <code>href</code> value of the element.</p>
 <p>The action value of the Link SHOULD be include in a <code>data-action</code> attribute.</p>
-<p>The inplace value of the Link SHOULD be include in a <code>data-inplace</code> attribute.</p>
+<p>The transform value of the Link SHOULD be include in a <code>data-transform</code> attribute.</p>
 <p>The fields for the Link SHOULD be included in a <code>data-fields</code> attribute, which should be a whitespace separated list of the field names.</p>
 <h3 id="data-primitives_1">Data primitives</h3>
 <p><strong>Data primitives are encoded as <code>&lt;code&gt;</code> and <code>&lt;span&gt;</code> elements.</strong></p>
