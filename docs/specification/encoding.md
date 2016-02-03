@@ -88,7 +88,7 @@ An example Core JSON encoded document is demonstrated below.
 
 **The Link primitive is represented using an object which includes a key-value pair of `"_type": "link"`.**
 
-* Links MAY include keys named `"url"`, `"action"`, `"inplace"`, and `"fields"`.
+* Links MAY include keys named `"url"`, `"action"`, `"transform"`, and `"fields"`.
 
 * Any other keys occurring in an Link SHOULD be ignored by clients.
 
@@ -96,7 +96,7 @@ An example Core JSON encoded document is demonstrated below.
 
 * The value of the `"action"` field SHOULD be a string. If omitted value defaults to the empty string.
 
-* The value of the `"inplace"` field SHOULD be a boolean. If omitted the value defaults to `null`.
+* The value of the `"transform"` field SHOULD be a string. If omitted value defaults to the empty string.
 
 * The value of the `"fields"` field SHOULD be a list. If omitted the default value is the empty list.
 
@@ -302,7 +302,7 @@ The URL of the Link SHOULD be contained in the `href` value of the element.
 
 The action value of the Link SHOULD be include in a `data-action` attribute.
 
-The inplace value of the Link SHOULD be include in a `data-inplace` attribute.
+The transform value of the Link SHOULD be include in a `data-transform` attribute.
 
 The fields for the Link SHOULD be included in a `data-fields` attribute, which should be a whitespace separated list of the field names.
 

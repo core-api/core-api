@@ -69,13 +69,13 @@ The result of following a link transition is to either return a Document, or rai
 
 ### Handling in-place transformations
 
-An in-place transformation takes place when a link has `inplace=true`, and the
+An in-place transformation takes place when a link has `transform="inplace"`, and the
 link is contained by a nested document.
 
-When the `inplace` property is `null`, an appropriate default is used:
+When the `transform` property is the empty string, an appropriate default is used:
 
-* The `PUT`, `PATCH` and `DELETE` methods default to `inplace=true`.
-* All other methods default to `inplace=false`.
+* The `PUT`, `PATCH` and `DELETE` methods default to `transform="inplace"`.
+* All other methods default to `transform="new"`.
 
 In the case of an in-place transformation, a *partial transformation* is effected on
 the document tree, as follows:
