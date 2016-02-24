@@ -4,12 +4,24 @@
 
 ---
 
-Core API is a specification for creating Hypermedia driven Web APIs, that allows you to build rich, expressive, and meaningful interfaces.
+Core API allows you to interact with you API in a more meaningful way.
 
-* **Robust** - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.
-* **Expressive** - Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls.
-* **Explorable** - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.
-* **Flexible** - Rather than be coupled to a particular encoding, Core API separates out the document, encoding and transport concerns. This means that client libraries can communicate with a number of different hypermedia formats. Equally, Core API services can make themselves available over a number of different encodings.
+It can be used either:
+
+* On the client side, to interact with APIs over a wide range of schema and hypermedia formats.
+* On the server side, to build APIs that make themselves available in a number of encodings.
+
+Core API currently supports `Open API`, `HAL` and `JSON Hyper-Schema`. It has a **command line
+tool** that you can use to interact with APIs exposing any of these formats, as well as a **Python**
+client library.
+
+Using a Core API client is a more **robust** and **meaningful** way to interact with
+you API than constructing HTTP requests and decoding responses. The dynamic client library
+is always up to date with the API, and client code focuses solely on the interface being provided,
+rather that dealing with network details and encodings.
+
+When used on the server side, Core API lets you build **explorable** and **expressive** APIs.
+Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls, and the HTML encoding allows for fully web-browsable APIs.
 
 #### Tooling
 

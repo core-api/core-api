@@ -2,7 +2,82 @@
 
 Below are some examples of using Core API to interact with existing APIs.
 
-## FoxyCart
+## Heroku (JSON Hyper-Schema)
+
+Heroku publish a JSON Hyper-Schema document for their API, which the Core API
+command line client can interact with.
+
+Let's follow [their QuickStart example][heroku-example], using the command line client.
+
+First make sure you have [a Heroku account][heroku-account] and have [obtained an auth token][heroku-auth-token].
+
+```bash
+# Install the command line client, if not already done.
+$ pip install coreapi
+[...]
+Successfully installed coreapi
+
+# Attempt to retrieve the API schema.
+$ coreapi get https://api.heroku.com/schema
+<Error: Not Found>
+    message: "The requested API endpoint was not found. Are you using the right HTTP verb (i.e. `GET` vs. `POST`), and did you specify your intended version with the `Accept` header?"
+
+# Use Heroku's versioned accept header.
+$ coreapi headers add accept "application/vnd.heroku+json; version=3"
+Added header
+Accept: application/vnd.heroku+json; version=3
+
+# Retrieve the API schema.
+$ coreapi get https://api.heroku.com/schema
+<Heroku Platform API "https://api.heroku.com/schema">
+    account: {
+        destroy(account_identity)
+        read(account_identity)
+        update(account_identity, new_password, password)
+    }
+    account-feature: {
+        instances()
+        read(account_feature_identity)
+        update(account_feature_identity, enabled)
+    }
+    ...
+
+# Note: If you've setup the Heroku client, its possible that you may not need
+# to add credentials to your command line client, as it may be able to obtain
+# existing Heroku credentials from your `.netrc` file.
+$ coreapi action app create
+<Error: Unauthorized>
+    id: "unauthorized"
+    message: "There were no credentials in your `Authorization` header. Try `Authorization: Bearer <OAuth access token>` or `Authorization: Basic <base64-encoded email + \":\" + password>`."
+
+# Add our credentials.
+$ coreapi credentials add api.heroku.com "Bearer ***"
+Added credentials
+api.heroku.com "Bearer ***"
+
+# Create a new app.
+$ coreapi action app create
+{
+    "repo_size": null,
+    "name": "radiant-woodland-74673",
+    "created_at": "2016-01-25T14:00:11Z",
+    ...
+}
+
+# Rename the app.
+$ coreapi action app update -p app_identity='radiant-woodland-74673' -p name=coreapi-kicks-ass
+{
+    "repo_size": null,
+    "name": "coreapi-kicks-ass",
+    "created_at": "2016-01-25T14:00:11Z",
+    ...
+}
+
+# Remove the app.
+$ coreapi action app destroy -p app_identity=coreapi-kicks-ass
+```
+
+## FoxyCart (HAL)
 
 FoxyCart expose a hypermedia API, using HAL.
 
@@ -117,83 +192,7 @@ $ coreapi bookmarks get foxycart
     token()
 ```
 
-## Heroku
-
-Heroku publish a JSON Hyper-Schema document for their API, which the Core API
-command line client can interact with.
-
-Let's follow [their QuickStart example][heroku-example], using the command line client.
-
-First make sure you have [a Heroku account][heroku-account] and have [obtained an auth token][heroku-auth-token].
-
-
-```bash
-# Install the command line client, if not already done.
-$ pip install coreapi
-[...]
-Successfully installed coreapi
-
-# Attempt to retrieve the API schema.
-$ coreapi get https://api.heroku.com/schema
-<Error: Not Found>
-    message: "The requested API endpoint was not found. Are you using the right HTTP verb (i.e. `GET` vs. `POST`), and did you specify your intended version with the `Accept` header?"
-
-# Use Heroku's versioned accept header.
-$ coreapi headers add accept "application/vnd.heroku+json; version=3"
-Added header
-Accept: application/vnd.heroku+json; version=3
-
-# Retrieve the API schema.
-$ coreapi get https://api.heroku.com/schema
-<Heroku Platform API "https://api.heroku.com/schema">
-    account: {
-        destroy(account_identity)
-        read(account_identity)
-        update(account_identity, new_password, password)
-    }
-    account-feature: {
-        instances()
-        read(account_feature_identity)
-        update(account_feature_identity, enabled)
-    }
-    ...
-
-# Note: If you've setup the Heroku client, its possible that you may not need
-# to add credentials to your command line client, as it may be able to obtain
-# existing Heroku credentials from your `.netrc` file.
-$ coreapi action app create
-<Error: Unauthorized>
-    id: "unauthorized"
-    message: "There were no credentials in your `Authorization` header. Try `Authorization: Bearer <OAuth access token>` or `Authorization: Basic <base64-encoded email + \":\" + password>`."
-
-# Add our credentials.
-$ coreapi credentials add api.heroku.com "Bearer ***"
-Added credentials
-api.heroku.com "Bearer ***"
-
-# Create a new app.
-$ coreapi action app create
-{
-    "repo_size": null,
-    "name": "radiant-woodland-74673",
-    "created_at": "2016-01-25T14:00:11Z",
-    ...
-}
-
-# Rename the app.
-$ coreapi action app update -p app_identity='radiant-woodland-74673' -p name=coreapi-kicks-ass
-{
-    "repo_size": null,
-    "name": "coreapi-kicks-ass",
-    "created_at": "2016-01-25T14:00:11Z",
-    ...
-}
-
-# Remove the app.
-$ coreapi action app destroy -p app_identity=coreapi-kicks-ass
-```
-
-[foxycart-example]: https://api.foxycart.com/docs/getting-started
 [heroku-example]: https://devcenter.heroku.com/articles/platform-api-quickstart
 [heroku-account]: https://devcenter.heroku.com/articles/platform-api-quickstart#prerequisites
 [heroku-auth-token]: https://devcenter.heroku.com/articles/platform-api-quickstart#authentication
+[foxycart-example]: https://api.foxycart.com/docs/getting-started
