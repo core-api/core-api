@@ -151,13 +151,21 @@
 <h1 id="core-api"><a href="http://www.coreapi.org/">Core API</a></h1>
 <p><strong>Hypermedia driven Web APIs.</strong></p>
 <hr />
-<p>Core API is a specification for creating Hypermedia driven Web APIs, that allows you to build rich, expressive, and meaningful interfaces.</p>
+<p>Core API allows you to interact with you API in a more meaningful way.</p>
+<p>It can be used either:</p>
 <ul>
-<li><strong>Robust</strong> - Clients interacting with a Core API service always have the available interactions presented to them. This allows for generic client libraries that are always automatically up to date with the services they interact with.</li>
-<li><strong>Expressive</strong> - Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls.</li>
-<li><strong>Explorable</strong> - Client libraries allow you to inspect and interact with a Core API interface, and the HTML encoding allows for fully web browsable APIs.</li>
-<li><strong>Flexible</strong> - Rather than be coupled to a particular encoding, Core API separates out the document, encoding and transport concerns. This means that client libraries can communicate with a number of different hypermedia formats. Equally, Core API services can make themselves available over a number of different encodings.</li>
+<li>On the client side, to interact with APIs over a wide range of schema and hypermedia formats.</li>
+<li>On the server side, to build APIs that make themselves available in a number of encodings.</li>
 </ul>
+<p>Core API currently supports <code>Open API</code>, <code>HAL</code> and <code>JSON Hyper-Schema</code>. It has a <strong>command line
+tool</strong> that you can use to interact with APIs exposing any of these formats, as well as a <strong>Python</strong>
+client library.</p>
+<p>Using a Core API client is a more <strong>robust</strong> and <strong>meaningful</strong> way to interact with
+you API than constructing HTTP requests and decoding responses. The dynamic client library
+is always up to date with the API, and client code focuses solely on the interface being provided,
+rather that dealing with network details and encodings.</p>
+<p>When used on the server side, Core API lets you build <strong>explorable</strong> and <strong>expressive</strong> APIs.
+Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls, and the HTML encoding allows for fully web-browsable APIs.</p>
 <h4 id="tooling">Tooling</h4>
 <p>The following tooling is currently available for Core API.</p>
 <ul>

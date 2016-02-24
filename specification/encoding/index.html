@@ -139,6 +139,8 @@
         
             <li><a href="#json-hyper-schema">JSON Hyper-Schema</a></li>
         
+            <li><a href="#openapi-swagger">OpenAPI / Swagger</a></li>
+        
             <li><a href="#html-encoding">HTML encoding</a></li>
         
     
@@ -366,6 +368,16 @@ and meaningful than constructing HTTP requests explicitly.</p>
 <p>The additional benefit of schemas is that they can be created for existing APIs without
 any internal changes being required. Furthermore, if clients load the schema definition
 from disk, then no initial HTTP call to request the entrypoint is required.</p>
+<hr />
+<h2 id="openapi-swagger">OpenAPI / Swagger</h2>
+<p>Core API can support decoding &amp; interacting with OpenAPI / Swagger endpoints.</p>
+<p>The following constraints currently exist, although future work is planned on each of these:</p>
+<ul>
+<li>Core API does not yet support file upload or download.</li>
+<li>Core API does not yet support encodings other than JSON for request data].</li>
+<li>Core API does not yet support choosing delimiters for lists in query parameters.</li>
+<li>Core API does not yet support help information being associated with links.</li>
+</ul>
 <hr />
 <h2 id="html-encoding">HTML encoding</h2>
 <p>The HTML encoding for Core API allows servers to respond in a way that allows for direct Web browser based interaction with the API.</p>
