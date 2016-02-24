@@ -151,21 +151,21 @@
 <h1 id="core-api"><a href="http://www.coreapi.org/">Core API</a></h1>
 <p><strong>Hypermedia driven Web APIs.</strong></p>
 <hr />
-<p>Core API allows you to interact with you API in a more meaningful way.</p>
+<p><strong>Core API allows you to interact with you API in a more meaningful way.</strong></p>
 <p>It can be used either:</p>
 <ul>
 <li>On the client side, to interact with APIs over a wide range of schema and hypermedia formats.</li>
 <li>On the server side, to build APIs that make themselves available in a number of encodings.</li>
 </ul>
-<p>Core API currently supports <code>Open API</code>, <code>HAL</code> and <code>JSON Hyper-Schema</code>. It has a <strong>command line
-tool</strong> that you can use to interact with APIs exposing any of these formats, as well as a <strong>Python</strong>
-client library.</p>
+<p>Core API currently supports <strong>Open API/Swagger</strong>, <strong>HAL</strong> and <strong>JSON Hyper-Schema</strong>.</p>
+<p>It has a <strong>command line tool</strong> that you can use to interact with APIs exposing any of these formats, as well as a <strong>Python</strong> client library.</p>
 <p>Using a Core API client is a more <strong>robust</strong> and <strong>meaningful</strong> way to interact with
 you API than constructing HTTP requests and decoding responses. The dynamic client library
 is always up to date with the API, and client code focuses solely on the interface being provided,
 rather that dealing with network details and encodings.</p>
 <p>When used on the server side, Core API lets you build <strong>explorable</strong> and <strong>expressive</strong> APIs.
 Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls, and the HTML encoding allows for fully web-browsable APIs.</p>
+<hr />
 <h4 id="tooling">Tooling</h4>
 <p>The following tooling is currently available for Core API.</p>
 <ul>
@@ -212,9 +212,10 @@ $ coreapi action play --param position=b3
 and servers are able to interact with any one of several different formats.</p>
 <p>The following are currently supported:</p>
 <ul>
-<li>The <a href="http://www.coreapi.org/specification/encoding/#core-json-encoding">Core JSON hypermedia format</a>.</li>
-<li>The <a href="http://www.coreapi.org/specification/encoding/#hal-encoding">HAL hypermedia format</a>.</li>
-<li>The <a href="http://www.coreapi.org/specification/encoding/#json-hyper-schema">JSON HyperSchema format</a>.</li>
+<li><a href="http://www.coreapi.org/specification/encoding/#core-json-encoding">Core JSON</a> (A JSON based encoding designed specifically for Core API).</li>
+<li><a href="http://www.coreapi.org/specification/encoding/#hal-encoding">HAL</a>.</li>
+<li><a href="http://www.coreapi.org/specification/encoding/#json-hyper-schema">JSON HyperSchema</a>.</li>
+<li><a href="http://www.coreapi.org/specification/encoding/#openapi-swagger">OpenAPI / Swagger</a>.</li>
 <li>An <a href="http://www.coreapi.org/specification/encoding/#html-encoding">HTML based encoding</a>.</li>
 </ul>
 <p>The HTML based encoding allows servers to present APIs that can be interacted with directly from a Web browser, for example:</p>
