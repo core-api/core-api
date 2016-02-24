@@ -4,16 +4,16 @@
 
 ---
 
-Core API allows you to interact with you API in a more meaningful way.
+**Core API allows you to interact with you API in a more meaningful way.**
 
 It can be used either:
 
 * On the client side, to interact with APIs over a wide range of schema and hypermedia formats.
 * On the server side, to build APIs that make themselves available in a number of encodings.
 
-Core API currently supports `Open API`, `HAL` and `JSON Hyper-Schema`. It has a **command line
-tool** that you can use to interact with APIs exposing any of these formats, as well as a **Python**
-client library.
+Core API currently supports **Open API/Swagger**, **HAL** and **JSON Hyper-Schema**.
+
+It has a **command line tool** that you can use to interact with APIs exposing any of these formats, as well as a **Python** client library.
 
 Using a Core API client is a more **robust** and **meaningful** way to interact with
 you API than constructing HTTP requests and decoding responses. The dynamic client library
@@ -22,6 +22,8 @@ rather that dealing with network details and encodings.
 
 When used on the server side, Core API lets you build **explorable** and **expressive** APIs.
 Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls, and the HTML encoding allows for fully web-browsable APIs.
+
+---
 
 #### Tooling
 
@@ -77,9 +79,10 @@ and servers are able to interact with any one of several different formats.
 
 The following are currently supported:
 
-* The [Core JSON hypermedia format][corejson-encoding].
-* The [HAL hypermedia format][hal-encoding].
-* The [JSON HyperSchema format][hyperschema-encoding].
+* [Core JSON][corejson-encoding] (A JSON based encoding designed specifically for Core API).
+* [HAL][hal-encoding].
+* [JSON HyperSchema][hyperschema-encoding].
+* [OpenAPI / Swagger][openapi-encoding].
 * An [HTML based encoding][html-encoding].
 
 The HTML based encoding allows servers to present APIs that can be interacted with directly from a Web browser, for example:
@@ -252,5 +255,6 @@ For discussion of the tools and specification, use the [Hypermedia Web mailing l
 [example-server]: https://github.com/core-api/example-server
 [corejson-encoding]: http://www.coreapi.org/specification/encoding/#core-json-encoding
 [hal-encoding]: http://www.coreapi.org/specification/encoding/#hal-encoding
+[openapi-encoding]: http://www.coreapi.org/specification/encoding/#openapi-swagger
 [hyperschema-encoding]: http://www.coreapi.org/specification/encoding/#json-hyper-schema
 [html-encoding]: http://www.coreapi.org/specification/encoding/#html-encoding
