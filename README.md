@@ -1,5 +1,7 @@
 # [Core API](http://www.coreapi.org/)
 
+[![Join the chat at https://gitter.im/core-api/core-api](https://badges.gitter.im/core-api/core-api.svg)](https://gitter.im/core-api/core-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **Hypermedia driven Web APIs.**
 
 ---
