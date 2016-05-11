@@ -4,7 +4,7 @@
 
 ---
 
-**Core API allows you to interact with you API in a more meaningful way.**
+**Core API allows you to interact with your API in a more meaningful way.**
 
 It can be used either:
 
