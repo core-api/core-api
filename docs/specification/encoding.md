@@ -249,7 +249,7 @@ Core API can support decoding & interacting with OpenAPI / Swagger endpoints.
 The following constraints currently exist, although future work is planned on each of these:
 
 * Core API does not yet support file upload or download.
-* Core API does not yet support encodings other than JSON for request data].
+* Core API does not yet support encodings other than JSON for request data.
 * Core API does not yet support choosing delimiters for lists in query parameters.
 * Core API does not yet support help information being associated with links.
 
