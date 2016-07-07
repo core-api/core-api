@@ -17,6 +17,11 @@ $ pip install coreapi
 [...]
 Successfully installed coreapi
 
+# Install the JSON Hyper-Schema codec support
+$ pip install jsonhyperschema-codec
+[...]
+Successfully installed jsonhyperschema-codec
+
 # Attempt to retrieve the API schema.
 $ coreapi get https://api.heroku.com/schema
 <Error: Not Found>
@@ -77,6 +82,63 @@ $ coreapi action app update -p app_identity='radiant-woodland-74673' -p name=cor
 $ coreapi action app destroy -p app_identity=coreapi-kicks-ass
 ```
 
+## OpenAPI / Swagger
+
+```bash
+# Install the command line client, if not already done.
+$ pip install coreapi
+[...]
+Successfully installed coreapi
+
+# Install the OpenAPI codec support
+$ pip install openapi-codec
+[...]
+Successfully installed openapi-codec
+
+# The PetStore API does not return a hypermedia/schema content type, so this attempt will fail:
+$ coreapi get http://petstore.swagger.io/v2/swagger.json
+coreapi.exceptions.UnsupportedContentType: Unsupported media in Content-Type header 'application/json'
+
+# Instead we'll need to specify the format of the document explicitly:
+$ coreapi get http://petstore.swagger.io/v2/swagger.json --format openapi
+<Swagger Petstore "http://petstore.swagger.io/v2/swagger.json">
+    pet: {
+        addPet(name, photoUrls, [category], [status], [tags], [id])
+        deletePet(petId, [api_key])
+        findPetsByStatus(status)
+        findPetsByTags(tags)
+        getPetById(petId)
+        updatePet(name, photoUrls, [category], [status], [tags], [id])
+        updatePetWithForm(petId, [name], [status])
+        uploadFile(petId, [additionalMetadata], [file])
+    }
+    store: {
+        deleteOrder(orderId)
+        getInventory()
+        getOrderById(orderId)
+        placeOrder([status], [shipDate], [complete], [petId], [id], [quantity])
+    }
+    user: {
+        createUser([username], [firstName], [lastName], [userStatus], [email], [phone], [password], [id])
+        createUsersWithArrayInput(body)
+        createUsersWithListInput(body)
+        deleteUser(username)
+        getUserByName(username)
+        loginUser(username, password)
+        logoutUser()
+        updateUser(username, [username], [firstName], [lastName], [userStatus], [email], [phone], [password], [id])
+    }
+
+# We can now interact with the Pet Store API
+$ coreapi action store getInventory
+{
+    "sold": 5208,
+    "new": 2,
+    ...
+    "not available": 1
+}
+```
+
 ## FoxyCart (HAL)
 
 FoxyCart expose a hypermedia API, using HAL.
@@ -88,6 +150,11 @@ Let's try following [their Getting Started example][foxycart-example], using the
 $ pip install coreapi
 [...]
 Successfully installed coreapi
+
+# Install the HAL codec support
+$ pip install hal-codec
+[...]
+Successfully installed hal-codec
 
 # Attempt to get the sandbox API entry point.
 $ coreapi get https://api-sandbox.foxycart.com
