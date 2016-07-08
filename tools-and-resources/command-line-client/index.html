@@ -245,8 +245,8 @@ other schema and hypermedia types.</p>
         add_note(description)
 </code></pre>
 
-<p>Some actions may take parameters which can be either optional or required. To include parameters, use the <code>-p key=value</code> syntax.</p>
-<pre><code class="bash">    $ coreapi action notes 0 edit -p complete=true
+<p>Some actions may take parameters which can be either optional or required. To include parameters, use the <code>--param key value</code> syntax.</p>
+<pre><code class="bash">    $ coreapi action notes 0 edit --param complete=true
     &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
         notes: [
             &lt;Note &quot;http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca&quot;&gt;
@@ -256,7 +256,7 @@ other schema and hypermedia types.</p>
                 edit([description], [complete])
         ]
         add_note(description)
-    $ coreapi action add_note -p description=&quot;Try Core API.&quot;
+    $ coreapi action add_note --param description=&quot;Try Core API.&quot;
     &lt;Notes &quot;http://notes.coreapi.org/&quot;&gt;
         notes: [
             &lt;Note &quot;http://notes.coreapi.org/1fc3f188-0051-43e4-9e43-5bcefd6b0ada&quot;&gt;
@@ -271,6 +271,13 @@ other schema and hypermedia types.</p>
                 edit([description], [complete])
         ]
         add_note(description)
+</code></pre>
+
+<p>When using <code>--param</code>, the type of the input will be determined automatically.
+If you want to be more explicit about the parameter type then use <code>--data</code> for
+any null, numeric, boolean, list, or object inputs, and use <code>--string</code> for string inputs.</p>
+<p>For example:</p>
+<pre><code class="bash">    coreapi action notes 0 edit --data complete=true --string description=&quot;Write the great American novel.&quot;
 </code></pre>
 
 </div>
