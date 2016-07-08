@@ -50,7 +50,8 @@ In this example, you have have 5 guesses to try to find the position of the hidd
 First make sure to [install Python](https://www.python.org/downloads/), then...
 
 ```bash
-$ pip install coreapi  # Use Python's package manager `pip` to install the command-line client.
+# Use Python's package manager `pip` to install the command-line client.
+$ pip install coreapi-cli
 $ coreapi get http://game.coreapi.org/
 <Home "http://game.coreapi.org/">
     new_game()
@@ -116,7 +117,8 @@ The top level element in any Core API interface is always a Document.
 Let's take a look at a Core API document by using the command line client.
 
 ```bash
-$ pip install coreapi
+# Use Python's package manager `pip` to install the command-line client.
+$ pip install coreapi-cli
 $ coreapi get http://notes.coreapi.org/
 <Notes "http://notes.coreapi.org/">
     notes: [
@@ -176,7 +178,7 @@ Okay, let's create a new note. In this case we'll want to include a named parame
 when acting on the link.
 
 ```bash
-$ coreapi action add_note --params description="Email venue about conference dates"
+$ coreapi action add_note --param description="Email venue about conference dates"
 <Notes "http://notes.coreapi.org/">
     notes: [
         <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
@@ -191,7 +193,7 @@ $ coreapi action add_note --params description="Email venue about conference dat
 Finally we'll update the state of the note we've just created:
 
 ```bash
-$ coreapi action notes 0 edit --params complete=true
+$ coreapi action notes 0 edit --param complete=true
 <Notes "http://notes.coreapi.org/">
     notes: [
         <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">

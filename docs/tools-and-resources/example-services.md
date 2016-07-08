@@ -70,10 +70,10 @@ $ coreapi action app create
 }
 
 # Rename the app.
-$ coreapi action app update -p app_identity='radiant-woodland-74673' -p name=coreapi-kicks-ass
+$ coreapi action app update -p app_identity='radiant-woodland-74673' -p name=coreapi-example
 {
     "repo_size": null,
-    "name": "coreapi-kicks-ass",
+    "name": "coreapi-example",
     "created_at": "2016-01-25T14:00:11Z",
     ...
 }

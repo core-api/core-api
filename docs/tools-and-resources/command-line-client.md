@@ -120,10 +120,10 @@ The `action` command is used to navigate and interact with a document.
         add_note(description)
 ```
 
-Some actions may take parameters which can be either optional or required. To include parameters, use the `-p key=value` syntax.
+Some actions may take parameters which can be either optional or required. To include parameters, use the `--param key value` syntax.
 
 ```bash
-    $ coreapi action notes 0 edit -p complete=true
+    $ coreapi action notes 0 edit --param complete=true
     <Notes "http://notes.coreapi.org/">
         notes: [
             <Note "http://notes.coreapi.org/123d4e35-cb09-40c3-98d3-d119e9079fca">
@@ -133,7 +133,7 @@ Some actions may take parameters which can be either optional or required. To in
                 edit([description], [complete])
         ]
         add_note(description)
-    $ coreapi action add_note -p description="Try Core API."
+    $ coreapi action add_note --param description="Try Core API."
     <Notes "http://notes.coreapi.org/">
         notes: [
             <Note "http://notes.coreapi.org/1fc3f188-0051-43e4-9e43-5bcefd6b0ada">
@@ -148,4 +148,14 @@ Some actions may take parameters which can be either optional or required. To in
                 edit([description], [complete])
         ]
         add_note(description)
+```
+
+When using `--param`, the type of the input will be determined automatically.
+If you want to be more explicit about the parameter type then use `--data` for
+any null, numeric, boolean, list, or object inputs, and use `--string` for string inputs.
+
+For example:
+
+```bash
+    coreapi action notes 0 edit --data complete=true --string description="Write the great American novel."
 ```
