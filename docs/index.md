@@ -48,7 +48,7 @@ In this example, you have have 5 guesses to try to find the position of the hidd
 First make sure to [install Python](https://www.python.org/downloads/), then...
 
 ```bash
-$ pip install coreapi  # Use Python's package manager `pip` to install the command-line client.
+$ pip install coreapi-cli  # Use Python's package manager `pip` to install the command-line client.
 $ coreapi get http://game.coreapi.org/
 <Home "http://game.coreapi.org/">
     new_game()

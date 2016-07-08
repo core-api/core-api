@@ -17,7 +17,7 @@ First you'll need to make sure you've got the Python programming language availa
 Once you've got Python you can use its package manager to install the `coreapi` command.
 
 ```bash
-    $ pip install coreapi
+    $ pip install coreapi-cli
 ```
 
 Finally, make sure that the client has been successfully installed.

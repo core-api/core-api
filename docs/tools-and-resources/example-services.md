@@ -13,9 +13,9 @@ First make sure you have [a Heroku account][heroku-account] and have [obtained a
 
 ```bash
 # Install the command line client, if not already done.
-$ pip install coreapi
+$ pip install coreapi-cli
 [...]
-Successfully installed coreapi
+Successfully installed coreapi-cli
 
 # Install the JSON Hyper-Schema codec support
 $ pip install jsonhyperschema-codec
@@ -86,9 +86,9 @@ $ coreapi action app destroy -p app_identity=coreapi-kicks-ass
 
 ```bash
 # Install the command line client, if not already done.
-$ pip install coreapi
+$ pip install coreapi-cli
 [...]
-Successfully installed coreapi
+Successfully installed coreapi-cli
 
 # Install the OpenAPI codec support
 $ pip install openapi-codec
@@ -147,9 +147,9 @@ Let's try following [their Getting Started example][foxycart-example], using the
 
 ```bash
 # Install the command line client, if not already done.
-$ pip install coreapi
+$ pip install coreapi-cli
 [...]
-Successfully installed coreapi
+Successfully installed coreapi-cli
 
 # Install the HAL codec support
 $ pip install hal-codec
