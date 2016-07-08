@@ -130,9 +130,3 @@ Some actions may take parameters which can be either optional or required. To in
         ]
         add_note(description)
 ```
-
-## Contributing
-
-The command line client is included as part of the
-[python client library](https://github.com/core-api/python-client). Any issues
-or contributions should be made against that repository.
