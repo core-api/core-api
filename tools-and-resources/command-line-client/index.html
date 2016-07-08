@@ -167,6 +167,22 @@
     [...]
 </code></pre>
 
+<h3 id="installing-additional-codecs">Installing additional codecs</h3>
+<p>The command line client uses a plugin system to allow users to install and
+configure which media types are supported. Core JSON support is included
+by default, but other codecs may also be installed, allowing support for
+other schema and hypermedia types.</p>
+<pre><code class="bash">    $ pip install openapi-codec jsonhyperschema-codec hal-codec
+    [...]
+    Successfully installed
+    $ coreapi codecs show
+    Codecs
+    corejson &quot;application/vnd.coreapi+json&quot;
+    openapi &quot;application/openapi+json&quot;
+    jsonhyperschema &quot;application/schema+json&quot;
+    hal &quot;application/hal+json&quot;
+</code></pre>
+
 <h2 id="fetching-documents">Fetching documents</h2>
 <p>You can test the command line client against one of the example services.</p>
 <ul>
