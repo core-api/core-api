@@ -133,11 +133,7 @@
     
         <li class="main active"><a href="#core-api">Core API</a></li>
         
-            <li><a href="#tooling">Tooling</a></li>
-        
-            <li><a href="#example-services">Example services</a></li>
-        
-            <li><a href="#what-does-it-look-like">What does it look like?</a></li>
+            <li><a href="#examples">Examples</a></li>
         
             <li><a href="#overview">Overview</a></li>
         
@@ -149,38 +145,34 @@
                 <div class="col-md-9" role="main">
 
 <h1 id="core-api"><a href="http://www.coreapi.org/">Core API</a></h1>
-<p><strong>Hypermedia driven Web APIs.</strong></p>
 <hr />
-<p><strong>Core API allows you to interact with your API in a more meaningful way.</strong></p>
-<p>It can be used either:</p>
-<ul>
-<li>On the client side, to interact with APIs over a wide range of schema and hypermedia formats.</li>
-<li>On the server side, to build APIs that make themselves available in a number of encodings.</li>
-</ul>
-<p>Core API currently supports <strong>Open API/Swagger</strong>, <strong>HAL</strong> and <strong>JSON Hyper-Schema</strong>.</p>
-<p>It has a <strong>command line tool</strong> that you can use to interact with APIs exposing any of these formats, as well as a <strong>Python</strong> client library.</p>
+<p>Core API is a format-independent <strong>Document Object Model</strong> for representing Web APIs.</p>
+<p>It can be used to represent <strong>either Schema or Hypermedia responses</strong>, and allows you
+to interact with an API at the layer of an application interface, rather than a network interface.</p>
+<p>Core API currently has implementations available for <strong>Core JSON</strong>, <strong>Open API/Swagger</strong>,
+<strong>HAL</strong>, and <strong>JSON Hyper-Schema</strong>.</p>
+<p>There is a <strong>command line tool</strong> that you can use to interact with APIs exposing
+any of these formats, as well as a <strong>Python client library</strong>.</p>
 <p>Using a Core API client is a more <strong>robust</strong> and <strong>meaningful</strong> way to interact with
 you API than constructing HTTP requests and decoding responses. The dynamic client library
 is always up to date with the API, and client code focuses solely on the interface being provided,
 rather that dealing with network details and encodings.</p>
-<p>When used on the server side, Core API lets you build <strong>explorable</strong> and <strong>expressive</strong> APIs.
-Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls, and the HTML encoding allows for fully web-browsable APIs.</p>
 <hr />
-<h4 id="tooling">Tooling</h4>
-<p>The following tooling is currently available for Core API.</p>
-<ul>
-<li>A <a href="http://www.coreapi.org/tools-and-resources/command-line-client/">command line client</a> for interacting with services from the console.</li>
-<li>There is a complete <a href="https://github.com/core-api/python-client">Python client library</a> for Core API.</li>
-<li>A <a href="https://github.com/core-api/javascript-client">Javascript client library</a> is currently planned.</li>
-<li>We have an <a href="https://github.com/core-api/example-server">example server implementation</a>, for demonstration purposes.</li>
-</ul>
-<h4 id="example-services">Example services</h4>
+<h2 id="examples">Examples</h2>
+<p>Core API can be used to interact with any API that exposes a supported Schema or Hypermedia format.</p>
+<p>There are various examples of <a href=".//tools-and-resources/example-services/">using Core API as a client against existing APIs</a>.</p>
+<h4 id="hypermedia-services">Hypermedia services</h4>
+<p>Below are two hypermedia style services available for demonstrating Core API.</p>
 <p>You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.</p>
 <ul>
 <li><strong>Notes</strong> - Create, update and delete items from a list of notes. <a href="http://notes.coreapi.org/">http://notes.coreapi.org/</a></li>
 <li><strong>Game</strong> - Find the treasure in 5 turns or less. <a href="http://game.coreapi.org/">http://game.coreapi.org/</a></li>
 </ul>
-<p>For example, let's try interacting with the "Game" service using the command line client.</p>
+<p>Note that because Core API can be used to provide multiple different output formats,
+it can also be used to provide <strong>APIs that can be interacted with directly in the
+browser</strong>, by returning an HTML rendered format of the API response.</p>
+<h4 id="using-a-core-api-client">Using a Core API client</h4>
+<p>Let's try interacting with the "Game" service using the command line client.</p>
 <p>In this example, you have have 5 guesses to try to find the position of the hidden treasure in a 3x3 grid.</p>
 <p>First make sure to <a href="https://www.python.org/downloads/">install Python</a>, then...</p>
 <pre><code class="bash">$ pip install coreapi-cli  # Use Python's package manager `pip` to install the command-line client.
@@ -207,19 +199,6 @@ $ coreapi action play --param position=b3
     play([position])
 </code></pre>
 
-<h4 id="what-does-it-look-like">What does it look like?</h4>
-<p>Core API decouples the binary encoding from the document model, meaning that clients
-and servers are able to interact with any one of several different formats.</p>
-<p>The following are currently supported:</p>
-<ul>
-<li><a href="http://www.coreapi.org/specification/encoding/#core-json-encoding">Core JSON</a> (A JSON based encoding designed specifically for Core API).</li>
-<li><a href="http://www.coreapi.org/specification/encoding/#hal-encoding">HAL</a>.</li>
-<li><a href="http://www.coreapi.org/specification/encoding/#json-hyper-schema">JSON HyperSchema</a>.</li>
-<li><a href="http://www.coreapi.org/specification/encoding/#openapi-swagger">OpenAPI / Swagger</a>.</li>
-<li>An <a href="http://www.coreapi.org/specification/encoding/#html-encoding">HTML based encoding</a>.</li>
-</ul>
-<p>The HTML based encoding allows servers to present APIs that can be interacted with directly from a Web browser, for example:</p>
-<p><img alt="HTML encoding example" src="http://www.coreapi.org/images/html-encoding.png" /></p>
 <hr />
 <h2 id="overview">Overview</h2>
 <p>There are three layers to the Core API specification.</p>
