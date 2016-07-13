@@ -4,7 +4,7 @@
 
 The **encoding layer** defines the mapping between [the document layer](document.md), and its byte string encoding.
 
-Core API defines a canonical encoding scheme called Core JSON, other encodings are also be supported.
+Core API defines a canonical encoding scheme called Core JSON. Other encodings are also supported.
 
 ---
 
