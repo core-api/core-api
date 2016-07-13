@@ -2,56 +2,55 @@
 
 [![Join the chat at https://gitter.im/core-api/core-api](https://badges.gitter.im/core-api/core-api.svg)](https://gitter.im/core-api/core-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**Hypermedia driven Web APIs.**
-
 ---
 
-**Core API allows you to interact with your API in a more meaningful way.**
+Core API is a format-independent **Document Object Model** for representing Web APIs.
 
-It can be used either:
+It can be used to represent **either Schema or Hypermedia responses**, and allows you
+to interact with an API at the layer of an application interface, rather than a network interface.
 
-* On the client side, to interact with APIs over a wide range of schema and hypermedia formats.
-* On the server side, to build APIs that make themselves available in a number of encodings.
+Core API currently has implementations available for **Core JSON**, **Open API/Swagger**,
+**HAL**, and **JSON Hyper-Schema**.
 
-Core API currently supports **Open API/Swagger**, **HAL** and **JSON Hyper-Schema**.
-
-It has a **command line tool** that you can use to interact with APIs exposing any of these formats, as well as a **Python** client library.
+There is a **command line tool** that you can use to interact with APIs exposing
+any of these formats, as well as a **Python client library**.
 
 Using a Core API client is a more **robust** and **meaningful** way to interact with
 you API than constructing HTTP requests and decoding responses. The dynamic client library
 is always up to date with the API, and client code focuses solely on the interface being provided,
 rather that dealing with network details and encodings.
 
-When used on the server side, Core API lets you build **explorable** and **expressive** APIs.
-Documents may be nested, and support in-place transitions, allowing you to express rich and complex interfaces without having to make multiple network calls, and the HTML encoding allows for fully web-browsable APIs.
-
 ---
 
-#### Tooling
+## Examples
 
-The following tooling is currently available for Core API.
+Core API can be used to interact with any API that exposes a supported Schema or Hypermedia format.
 
-* A [command line client][command-line-client] for interacting with services from the console.
-* There is a complete [Python client library][python-client] for Core API.
-* A [Javascript client library][javascript-client] is currently planned.
-* We have an [example server implementation][example-server], for demonstration purposes.
+There are various examples of [using Core API as a client against existing APIs](/tools-and-resources/example-services/).
 
-#### Example services
+#### Hypermedia services
+
+Below are two hypermedia style services available for demonstrating Core API.
 
 You can interact with these example services either directly through your browser, by installing the command-line client, or by using one of the client libraries.
 
 * **Notes** - Create, update and delete items from a list of notes. [http://notes.coreapi.org/](http://notes.coreapi.org/)
 * **Game** - Find the treasure in 5 turns or less. [http://game.coreapi.org/](http://game.coreapi.org/)
 
-For example, let's try interacting with the "Game" service using the command line client.
+Note that because Core API can be used to provide multiple different output formats,
+it can also be used to provide **APIs that can be interacted with directly in the
+browser**, by returning an HTML rendered format of the API response.
+
+#### Using a Core API client
+
+Let's try interacting with the "Game" service using the command line client.
 
 In this example, you have have 5 guesses to try to find the position of the hidden treasure in a 3x3 grid.
 
 First make sure to [install Python](https://www.python.org/downloads/), then...
 
 ```bash
-# Use Python's package manager `pip` to install the command-line client.
-$ pip install coreapi-cli
+$ pip install coreapi-cli  # Use Python's package manager `pip` to install the command-line client.
 $ coreapi get http://game.coreapi.org/
 <Home "http://game.coreapi.org/">
     new_game()
@@ -74,23 +73,6 @@ $ coreapi action play --param position=b3
     new_game()
     play([position])
 ```
-
-#### What does it look like?
-
-Core API decouples the binary encoding from the document model, meaning that clients
-and servers are able to interact with any one of several different formats.
-
-The following are currently supported:
-
-* [Core JSON][corejson-encoding] (A JSON based encoding designed specifically for Core API).
-* [HAL][hal-encoding].
-* [JSON HyperSchema][hyperschema-encoding].
-* [OpenAPI / Swagger][openapi-encoding].
-* An [HTML based encoding][html-encoding].
-
-The HTML based encoding allows servers to present APIs that can be interacted with directly from a Web browser, for example:
-
-![HTML encoding example](http://www.coreapi.org/images/html-encoding.png)
 
 ---
 
@@ -117,8 +99,7 @@ The top level element in any Core API interface is always a Document.
 Let's take a look at a Core API document by using the command line client.
 
 ```bash
-# Use Python's package manager `pip` to install the command-line client.
-$ pip install coreapi-cli
+$ pip install coreapi
 $ coreapi get http://notes.coreapi.org/
 <Notes "http://notes.coreapi.org/">
     notes: [
@@ -178,7 +159,7 @@ Okay, let's create a new note. In this case we'll want to include a named parame
 when acting on the link.
 
 ```bash
-$ coreapi action add_note --param description="Email venue about conference dates"
+$ coreapi action add_note --params description="Email venue about conference dates"
 <Notes "http://notes.coreapi.org/">
     notes: [
         <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
@@ -193,7 +174,7 @@ $ coreapi action add_note --param description="Email venue about conference date
 Finally we'll update the state of the note we've just created:
 
 ```bash
-$ coreapi action notes 0 edit --param complete=true
+$ coreapi action notes 0 edit --params complete=true
 <Notes "http://notes.coreapi.org/">
     notes: [
         <Note "http://notes.coreapi.org/e7785f34-2b74-41d2-ab3f-f754f688987c/">
