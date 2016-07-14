@@ -154,6 +154,7 @@
 <p>Core API defines a canonical encoding scheme called Core JSON. Other encodings are also supported.</p>
 <hr />
 <h2 id="core-json">Core JSON</h2>
+<p><em>An implementation for Core JSON is built-in to the Python client library</em>: <a href="https://github.com/core-api/python-client/">core-api/python-client</a></p>
 <p>Core JSON is a format that can be used to represent either Schema responses or Hypermedia response. It is designed to map cleanly to the Core API document model.</p>
 <p>A document is represented using the <a href="http://www.json.org">JSON encoding</a>. In addition to the standard set of JSON primitives, Core JSON adds the following:</p>
 <ul>
@@ -334,6 +335,7 @@
 <p>Clients MAY choose to allow an optional verbose style. Using this style will ensure that ":" delimiters have a following whitespace, "," delimiters have no following whitespace, and elements are newline indented, with four space character indentation level.</p>
 <hr />
 <h2 id="hal">HAL</h2>
+<p><em>Python implementation</em>: <a href="https://github.com/core-api/python-hal-codec/">core-api/python-hal-codec</a></p>
 <p><em>HAL services MUST expose their endpoints with the <code>application/hal+json</code> media type.</em></p>
 <p>Core API documents can be encoded in HAL, with a few limitations:</p>
 <h4 id="hal-does-not-supports-parameter-or-action-information-on-links">HAL does not supports parameter or action information on links.</h4>
@@ -358,6 +360,7 @@ can support in HAL representations.</p>
 which HAL provides for.</p>
 <hr />
 <h2 id="json-hyper-schema">JSON Hyper-Schema</h2>
+<p><em>Python implementation</em>: <a href="https://github.com/core-api/python-jsonhyperschema-codec/">core-api/python-jsonhyperschema-codec</a></p>
 <p><em>JSON Hyper-Schema endpoints MUST use the <code>application/schema+json</code> media type.</em></p>
 <p>Core API can support decoding &amp; interacting with JSON HyperaSchema endpoints.</p>
 <p>The schema style is less expressive that true hypermedia, as it consists of a single
@@ -370,6 +373,7 @@ any internal changes being required. Furthermore, if clients load the schema def
 from disk, then no initial HTTP call to request the entrypoint is required.</p>
 <hr />
 <h2 id="openapi-swagger">OpenAPI / Swagger</h2>
+<p><em>Python implementation</em>: <a href="https://github.com/core-api/python-openapi-codec/">core-api/python-openapi-codec</a></p>
 <p>Core API can support decoding &amp; interacting with OpenAPI / Swagger endpoints.</p>
 <p>The following constraints currently exist, although future work is planned on each of these:</p>
 <ul>
@@ -380,6 +384,7 @@ from disk, then no initial HTTP call to request the entrypoint is required.</p>
 </ul>
 <hr />
 <h2 id="html">HTML</h2>
+<p><em>Python implementation</em>: <a href="https://github.com/core-api/python-html-codec/">core-api/python-html-codec</a></p>
 <p>Core API also allows servers to respond in a way that allows for direct Web browser
 based interaction with the API.</p>
 <p>By providing an HTML encoding, a service may expose either an API that can be interacted
