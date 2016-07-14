@@ -10,6 +10,8 @@ Core API defines a canonical encoding scheme called Core JSON. Other encodings a
 
 ## Core JSON
 
+*An implementation for Core JSON is built-in to the Python client library*: [core-api/python-client](https://github.com/core-api/python-client/)
+
 Core JSON is a format that can be used to represent either Schema responses or Hypermedia response. It is designed to map cleanly to the Core API document model.
 
 A document is represented using the [JSON encoding][json]. In addition to the standard set of JSON primitives, Core JSON adds the following:
@@ -187,6 +189,8 @@ Clients MAY choose to allow an optional verbose style. Using this style will ens
 
 ## HAL
 
+*Python implementation*: [core-api/python-hal-codec](https://github.com/core-api/python-hal-codec/)
+
 *HAL services MUST expose their endpoints with the `application/hal+json` media type.*
 
 Core API documents can be encoded in HAL, with a few limitations:
@@ -226,6 +230,8 @@ which HAL provides for.
 
 ## JSON Hyper-Schema
 
+*Python implementation*: [core-api/python-jsonhyperschema-codec](https://github.com/core-api/python-jsonhyperschema-codec/)
+
 *JSON Hyper-Schema endpoints MUST use the `application/schema+json` media type.*
 
 Core API can support decoding & interacting with JSON HyperaSchema endpoints.
@@ -244,6 +250,8 @@ from disk, then no initial HTTP call to request the entrypoint is required.
 
 ## OpenAPI / Swagger
 
+*Python implementation*: [core-api/python-openapi-codec](https://github.com/core-api/python-openapi-codec/)
+
 Core API can support decoding & interacting with OpenAPI / Swagger endpoints.
 
 The following constraints currently exist, although future work is planned on each of these:
@@ -256,6 +264,8 @@ The following constraints currently exist, although future work is planned on ea
 ---
 
 ## HTML
+
+*Python implementation*: [core-api/python-html-codec](https://github.com/core-api/python-html-codec/)
 
 Core API also allows servers to respond in a way that allows for direct Web browser
 based interaction with the API.
