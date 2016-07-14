@@ -16,9 +16,9 @@ There is a **command line tool** that you can use to interact with APIs exposing
 any of these formats, as well as a **Python client library**.
 
 Using a Core API client is a more **robust** and **meaningful** way to interact with
-you API than constructing HTTP requests and decoding responses. The dynamic client library
+your API than constructing HTTP requests and decoding responses. The dynamic client library
 is always up to date with the API, and client code focuses solely on the interface being provided,
-rather that dealing with network details and encodings.
+rather than dealing with network details and encodings.
 
 ---
 
