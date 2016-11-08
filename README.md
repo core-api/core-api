@@ -26,7 +26,7 @@ rather than dealing with network details and encodings.
 
 Core API can be used to interact with any API that exposes a supported Schema or Hypermedia format.
 
-There are various examples of [using Core API as a client against existing APIs](/tools-and-resources/example-services/).
+There are various examples of [using Core API as a client against existing APIs](/docs/tools-and-resources/example-services.md).
 
 #### Hypermedia services
 
