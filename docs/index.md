@@ -97,7 +97,7 @@ The top level element in any Core API interface is always a Document.
 Let's take a look at a Core API document by using the command line client.
 
 ```bash
-$ pip install coreapi
+$ pip install coreapi-cli
 $ coreapi get http://notes.coreapi.org/
 <Notes "http://notes.coreapi.org/">
     notes: [
