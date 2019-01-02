@@ -2,6 +2,13 @@
 
 [![Join the chat at https://gitter.im/core-api/core-api](https://badges.gitter.im/core-api/core-api.svg)](https://gitter.im/core-api/core-api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+> **DEPRECATION NOTICE**: As of `djangorestframework` 3.9,
+> the plan is to phase out CoreAPI in favor of [OpenAPI](https://www.openapis.org/)
+> as the default schema representation. New projects should consider using OpenAPI 
+> rather than CoreAPI. See the 
+> [DRF 3.9](https://www.django-rest-framework.org/community/3.9-announcement/#whats-next)
+> release announcment for more details.
+
 ---
 
 Core API is a format-independent **Document Object Model** for representing Web APIs.
